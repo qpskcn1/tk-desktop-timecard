@@ -16,6 +16,8 @@ import sys
 import logging
 import signal
 from datetime import datetime
+import traceback
+
 
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
@@ -25,6 +27,10 @@ from .ui.dialog import Ui_Dialog
 logger = sgtk.platform.get_logger(__name__)
 task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
 shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
+AWPROCESS = ['aw-qt.exe',
+             'aw-server.exe',
+             'aw-watcher-afk.exe',
+             'aw-watcher-window.exe']
 
 
 class AppDialog(QtGui.QWidget):
@@ -67,22 +73,27 @@ class AppDialog(QtGui.QWidget):
         otherwise, report to console
         """
         try:
-            procs = self.checkAWProcess("aw-qt.exe")
+            procs = self.checkAWProcess("aw-*")
             if len(procs) > 0:
                 self.ui.textBrowser.setText("You've already checked in before!")
             else:
-                subprocess.Popen(['Y:\\studio\\dev\\work\\yi\\timelog\\activitywatch\\aw-qt.exe'])
+                for app in AWPROCESS[1:]:
+                    appPath = os.path.join("Y:\\studio\\dev\\work\\yi\\timelog\\activitywatch", app)
+                    subprocess.Popen(app, executable=appPath)
                 QtGui.QApplication.processEvents()
                 self.ui.textBrowser.setText("You have successfully checked in!")
                 self._logger.info("%s checked in! UTC%s"
                                   % (self.user['firstname'], datetime.utcnow()))
         except Exception as e:
-            logger.exception("Failed to Check In, because %s" % e)
+            self.ui.textBrowser.setText("Failed to Check In, because %s" % e)
+            logger.exception("Failed to Check In, because %s \n %s"
+                             % (e, traceback.format_exc()))
 
     def checkOut(self):
         try:
             self.killAllAW()
         except Exception as e:
+            self.ui.textBrowser.setText("Failed to Check Out, because %s" % e)
             logger.exception("Failed to Check Out, because %s" % e)
 
     def killAllAW(self):
@@ -91,13 +102,9 @@ class AppDialog(QtGui.QWidget):
         """
         procs = self.checkAWProcess("aw-*")
         if len(procs) > 0:
-            valid_procs = ['aw-qt.exe',
-                           'aw-server.exe',
-                           'aw-watcher-afk.exe',
-                           'aw-watcher-window.exe']
             for proc in procs:
                 # make sure to kill the correct proc
-                if proc['name'] in valid_procs:
+                if proc['name'] in AWPROCESS:
                     os.kill(int(proc['pid']), signal.SIGTERM)
                 else:
                     logger.exception("Failed to kill %s" % proc['name'])
