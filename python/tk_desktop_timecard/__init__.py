@@ -10,7 +10,6 @@
 
 from sgtk.platform.qt import QtCore, QtGui
 
-
 def show_dialog(app):
     """
     Show the main dialog ui

@@ -2,6 +2,7 @@ import requests
 import json
 import re
 from datetime import datetime
+from models import Event
 import os
 
 
@@ -71,7 +72,7 @@ class parsingAWData(object):
         hostname = os.environ.get("COMPUTERNAME", "unknown")
         url_window = "http://localhost:5600/api/0/buckets/aw-watcher-window_%s/events" % hostname
         url_afk = "http://localhost:5600/api/0/buckets/aw-watcher-afk_%s/events" % hostname
-        params = {'limit': 1792, 'start': None, 'end': datetime.utcnow()}
+        params = {'limit': 2, 'start': startTime, 'end': datetime.utcnow()}
         r_window = requests.get(url_window, params=params)
         r_afk = requests.get(url_afk, params=params)
         data_window = json.loads(r_window.text)
@@ -82,13 +83,16 @@ class parsingAWData(object):
         """
         Aggregate windows and calculate time
         """
-        duration = {}
         develop_duration = 0
         for window in data_window:
             if "sublime" in window['data']['app']:
                 develop_duration += window['duration']
-        print "development duration: {} minutes".format(develop_duration/60)
+        print "development duration: {} minutes".format(develop_duration / 60)
+
 
 p = parsingAWData("tk-desktop-timecard", r"C:\Users\testclient\AppData\Roaming\Shotgun\Logs\tk-desktop-timecard.log")
 data_window, data_afk = p.getAWData()
-p.calculate(data_window, data_afk)
+print data_window[1]
+print type(data_window[1])
+e = Event(**data_window[1])
+print e.timestamp

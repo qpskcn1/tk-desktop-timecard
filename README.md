@@ -1,1 +1,1 @@
-# Monitor License Usage inside OFG
+# A Shotgun Desktop app that helps artists log their working time into Shotgun
