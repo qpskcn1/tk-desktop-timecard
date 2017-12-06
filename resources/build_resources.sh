@@ -11,7 +11,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 # The path to output all built .py files to: 
-UI_PYTHON_PATH=../python/tk_multi_licensemonitor/ui
+UI_PYTHON_PATH=../python/tk_desktop_timecard/ui
 
 # Remove any problematic profiles from pngs.
 # for f in *.png; do mogrify $f; done

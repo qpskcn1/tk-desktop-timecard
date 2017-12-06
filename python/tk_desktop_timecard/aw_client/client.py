@@ -213,8 +213,8 @@ class RequestQueue(threading.Thread):
 
     def __init__(self, client, dispatch_interval=0):
         # threading.Thread.__init__(self, daemon=True)
-        threadClean = threading.Thread(self)
-        threadClean.daemon = True
+        threading.Thread.__init__(self)
+        threading.Thread.daemon = True
 
         self.client = client
         self.dispatch_interval = dispatch_interval  # Time to wait between dispatching events, useful for throttling.

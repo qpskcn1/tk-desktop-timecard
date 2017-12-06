@@ -3,15 +3,16 @@ import json
 import numbers
 import logging
 from datetime import datetime, timedelta
+import iso8601
 import pytz
 
 # logger = sgtk.platform.get_logger(__name__)
 logger = logging.getLogger(__name__)
-handler = logging.StreamHandler()
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter("%(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+# handler = logging.StreamHandler()
+# handler.setLevel(logging.INFO)
+# formatter = logging.Formatter("%(levelname)s - %(message)s")
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
 
 
 def _timestamp_parse(ts):
@@ -19,10 +20,10 @@ def _timestamp_parse(ts):
     Takes something representing a timestamp and
     returns a timestamp in the representation we want.
     """
-    if isinstance(ts, str):
-        ts.iso8601.parse_date(ts)
     if isinstance(ts, unicode):
-        ts = datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S.%f+00:00")
+        ts = str(ts)
+    if isinstance(ts, str):
+        ts = iso8601.parse_date(ts)
     # Set resolution to milliseconds instead of microseconds
     # (Fixes incompability with software based on unix time, for example mongodb)
     ts = ts.replace(microsecond=int(ts.microsecond / 1000) * 1000)

@@ -32,5 +32,6 @@ def build_res(res_name):
 
 
 if __name__ == "__main__":
+    print "Start"
     build_ui('dialog')
     build_res('resources')

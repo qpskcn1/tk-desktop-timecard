@@ -1,44 +1,41 @@
-import time
+import os
+import sys
+from pprint import pprint
 
-from random import random
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
+# sgtk.util.append_path_to_env_var("PYTHONPATH", startup_path)
+
 from datetime import datetime, timedelta
-import pytz
-from requests.exceptions import HTTPError
 
-from aw_core.models import Event
-from aw_client import ActivityWatchClient
+# from aw_core.transforms import filter_period_intersect, filter_keyvals
+# import aw_client
 
-def create_unique_event():
-    return Event(
-        timestamp=datetime.now(pytz.utc),
-        duration=timedelta(),
-        data={"label": str(random())}
-    )
+# client = aw_client.ActivityWatchClient()
+# starttime = datetime.now().replace(hour=0, minute=0)
 
-client = ActivityWatchClient("aw-test-client", testing=True)
-client.connect()
+# windowevents = client.get_events("aw-watcher-window_OFG-TESTBENCH", start=starttime)
+# chrome_events = filter_keyvals(windowevents, "app", ["sublime_text.exe"])
 
-bucket_name = "test-bucket"
-bucket_etype = "test"
-# Delete bucket before creating it, and handle error if it doesn't already exist
-try:
-    client.delete_bucket(bucket_name)
-except HTTPError as e:
-    pass
-client.create_bucket(bucket_name, bucket_etype)
+# afkevents = client.get_events("aw-watcher-afk_OFG-TESTBENCH", start=starttime)
+# afkevents_filtered = filter_keyvals(afkevents, "status", ["not-afk"])
 
-e1 = create_unique_event()
-client.insert_event(bucket_name, e1)
+# chrome_events_filtered = filter_period_intersect(windowevents, afkevents_filtered)
 
-print("Getting events")
-events = client.get_events(bucket_name)
+# print chrome_events_filtered
 
-print("Asserting events")
-assert events[0]['data']['label'] == e1['data']['label']
+from aw_core.transforms import full_chunk, filter_keyvals
+import aw_client
 
-print("Getting bucket")
-buckets = client.get_buckets()
-print("Asserting bucket")
-assert bucket_name in buckets
-assert bucket_name == buckets[bucket_name]['id']
-assert bucket_etype == buckets[bucket_name]['type']
+client = aw_client.ActivityWatchClient()
+starttime = datetime.now().replace(hour=0, minute=0)
+
+windowevents = client.get_events("aw-watcher-window_OFG-TESTBENCH", start=starttime, limit=-1)
+nuke_events = filter_keyvals(windowevents, "app", ["Nuke10.5.exe"])
+chunk_result = full_chunk(nuke_events, "title", False)
+chunks = chunk_result.chunks
+def chunkDuration(chunk):
+	return chunks[chunk]['duration']
+
+# pprint(sorted(chunks, key=chunkDuration, reverse=True))
+pprint(chunks)
+# pprint(nuke_events)
