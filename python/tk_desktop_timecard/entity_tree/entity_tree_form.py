@@ -116,7 +116,7 @@ class EntityTreeForm(QtGui.QWidget):
 
             if True:
                 # create a filter proxy model between the source model and the task tree view:
-                filter_model = EntityTreeProxyModel(self, ["content", {"entity": "name"}] + extra_fields)
+                filter_model = EntityTreeProxyModel(self, ["content", {"entity": "name"}, "time_logs_sum"] + extra_fields)
                 monitor_qobject_lifetime(filter_model, "%s entity filter model" % search_label)
                 filter_model.setSourceModel(entity_model)
                 self._ui.entity_tree.setModel(filter_model)

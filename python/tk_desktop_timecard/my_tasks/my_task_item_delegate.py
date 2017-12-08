@@ -21,6 +21,9 @@ from .task_widget import TaskWidget
 from ..framework_qtwidgets import WidgetDelegate
 from ..util import map_to_source
 
+logger = sgtk.platform.get_logger(__name__)
+
+
 class MyTaskItemDelegate(WidgetDelegate):
     """
     """
@@ -94,9 +97,10 @@ class MyTaskItemDelegate(WidgetDelegate):
         if not item:
             return
 
-        sg_data = item.get_sg_data()
-        
+        sg_data = item.get_sg_data()    
         # set the thumbnail to the icon for the item:
+        logger.debug("item icon")
+        logger.debug(item.icon())
         widget.set_thumbnail(item.icon())
         
         # set entity info:        
@@ -105,16 +109,21 @@ class MyTaskItemDelegate(WidgetDelegate):
         entity_type = entity.get("type")
         entity_type_icon = model.get_entity_icon(entity_type) if entity_type else None
         widget.set_entity(entity_name, entity_type, entity_type_icon)
-        
+
         # set task info:
         task_name = sg_data.get("content")
         task_type_icon = model.get_entity_icon("Task")
         widget.set_task(task_name, task_type_icon)
-        
+
+        # set timelog info:
+        timelog_sum = sg_data.get("time_logs_sum")
+        timelog_type_icon = model.get_entity_icon("EventLogEntry")
+        widget.set_timelog(timelog_sum, timelog_type_icon)
+
         # set 'other' info:
         other_data = [str(sg_data.get(field)) for field in self._extra_display_fields]
         other_text = ", ".join(other_data)
         widget.set_other(other_text)
-                
+
         # finally, update the selected state of the widget:
         widget.set_selected((style_options.state & QtGui.QStyle.State_Selected) == QtGui.QStyle.State_Selected) 

@@ -17,6 +17,7 @@ from sgtk.platform.qt import QtCore
 
 from ..user_cache import g_user_cache
 
+
 class EntityTreeProxyModel(EntityProxyModel):
     """
     Proxy model that handles searching and sorting of the

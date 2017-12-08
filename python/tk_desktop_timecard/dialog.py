@@ -72,8 +72,9 @@ class AppDialog(QtGui.QWidget):
         self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
         self.ui.CIBtn.clicked.connect(self.checkIn)
         self.ui.COBtn.clicked.connect(self.checkOut)
-        # create my tasks form:
+        # create my tasks form and my time form:
         self.createTasksFrom()
+        self.createTimeForm()
 
         # add refresh action with appropriate keyboard shortcut:
         refresh_action = QtGui.QAction("Refresh", self)
@@ -286,3 +287,18 @@ class AppDialog(QtGui.QWidget):
         self._app.log_debug("Path cache up to date!")
         if self._my_tasks_model:
             self._my_tasks_model.async_refresh()
+
+    def createTimeForm(self):
+        try:
+            self._my_time_form = QtGui.QTreeView()
+            self._my_time_model = QtGui.QStandardItemModel()
+            self._my_time_model.setHorizontalHeaderLabels(['Application', 'Time'])
+            self._my_time_form.setModel(self._my_time_model)
+            self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
+
+            test_item = QtGui.QStandardItem("test 1hr")
+            test_item.setDragEnabled(True)
+            self._my_time_model.appendRow(test_item)
+        except Exception as e:
+            logger.exception("Failed to Load my tasks, because %s \n %s"
+                             % (e, traceback.format_exc()))

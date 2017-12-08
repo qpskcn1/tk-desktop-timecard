@@ -56,12 +56,23 @@ class TaskWidget(QtGui.QWidget):
     def set_task(self, name, icon):
         """
         """
-        self._ui.task_label.setText("<big>%s</big>" % name)
+        self._ui.task_label.setText("%s" % name)
         if not icon:
             self._ui.task_icon.hide()
         else:
             self._ui.task_icon.show()
             self._set_label_image(self._ui.task_icon, icon, 20, 20)
+
+    def set_timelog(self, time, icon):
+        """
+        """
+        # self._ui.timelog_label.setText("%.1f hrs" % (time / 60.0))
+        self._ui.timelog_label.setText("%.1f hrs" % (time / 60.0))
+        if not icon:
+            self._ui.timelog_icon.hide()
+        else:
+            self._ui.timelog_icon.show()
+            self._set_label_image(self._ui.timelog_icon, icon, 20, 20)
 
     def set_other(self, text):
         """

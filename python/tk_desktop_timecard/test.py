@@ -27,15 +27,26 @@ from aw_core.transforms import full_chunk, filter_keyvals
 import aw_client
 
 client = aw_client.ActivityWatchClient()
-starttime = datetime.now().replace(hour=0, minute=0)
+# starttime = datetime.now().replace(hour=0, minute=0)
+testdatatime = datetime.strptime("2017-12-06T00:00:00.134880", "%Y-%m-%dT%H:%M:%S.%f")
+starttime = testdatatime.replace(hour=0, minute=0)
+endtime = testdatatime.replace(hour=23, minute=59)
 
-windowevents = client.get_events("aw-watcher-window_OFG-TESTBENCH", start=starttime, limit=-1)
-nuke_events = filter_keyvals(windowevents, "app", ["Nuke10.5.exe"])
-chunk_result = full_chunk(nuke_events, "title", False)
+windowevents = client.get_events("aw-watcher-window_OFG-TESTBENCH",
+                                 start=starttime,
+                                 end=endtime,
+                                 limit=-1)
+# nuke_events = filter_keyvals(windowevents, "app", ["Nuke10.5.exe"])
+chunk_result = full_chunk(windowevents, "app", False)
 chunks = chunk_result.chunks
 def chunkDuration(chunk):
-	return chunks[chunk]['duration']
+    return chunks[chunk]['duration']
 
 # pprint(sorted(chunks, key=chunkDuration, reverse=True))
-pprint(chunks)
+pprint(chunk_result)
+# pprint(chunk_result.duration)
 # pprint(nuke_events)
+
+# for chunk in chunks:
+#     if chunks[chunk]['duration'] > timedelta(0, 60):
+#         print("App: {}, Duration: {}".format(chunk, chunks[chunk]['duration']))

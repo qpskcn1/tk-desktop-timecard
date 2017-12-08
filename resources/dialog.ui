@@ -21,6 +21,13 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="COBtn">
+     <property name="text">
+      <string>Check Out</string>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="0" colspan="4">
     <widget class="QTextBrowser" name="textBrowser">
      <property name="maximumSize">
@@ -35,13 +42,6 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="3">
-    <widget class="QPushButton" name="COBtn">
-     <property name="text">
-      <string>Check Out</string>
      </property>
     </widget>
    </item>
@@ -65,9 +65,9 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="TimeGroupBox">
+      <widget class="QTabWidget" name="timeTabWidget">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -79,39 +79,9 @@ p, li { white-space: pre-wrap; }
          <bold>true</bold>
         </font>
        </property>
-       <property name="title">
-        <string>Your Time</string>
+       <property name="currentIndex">
+        <number>-1</number>
        </property>
-       <widget class="QListWidget" name="listWidget">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>256</width>
-          <height>521</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="addTimeBtn">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>550</y>
-          <width>145</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Add Time</string>
-        </property>
-       </widget>
       </widget>
      </item>
     </layout>

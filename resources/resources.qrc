@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="res">
     <file>logo.png</file>
+    <file>thumb_empty.png</file>
   </qresource>
 </RCC>
