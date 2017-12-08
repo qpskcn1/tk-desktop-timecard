@@ -18,12 +18,17 @@ import signal
 from datetime import datetime
 import traceback
 
-
+from .my_tasks.my_tasks_form import MyTasksForm
+from .my_tasks.my_tasks_model import MyTasksModel
+from .util import monitor_qobject_lifetime
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
 from sgtk.platform.qt import QtCore, QtGui
 from .ui.dialog import Ui_Dialog
 
+# There are two loggers
+# logger is shotgun logger
+# _logger is a independet logger
 logger = sgtk.platform.get_logger(__name__)
 task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
 shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
@@ -59,12 +64,28 @@ class AppDialog(QtGui.QWidget):
             start_processing=True,
             max_threads=1
         )
+        monitor_qobject_lifetime(self._task_manager, "Main task manager")
+        self._task_manager.start_processing()
 
         # lastly, set up our very basic UI
         self.user = sgtk.util.get_current_user(self._app.sgtk)
         self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
         self.ui.CIBtn.clicked.connect(self.checkIn)
         self.ui.COBtn.clicked.connect(self.checkOut)
+        # create my tasks form:
+        self.createTasksFrom()
+
+        # add refresh action with appropriate keyboard shortcut:
+        refresh_action = QtGui.QAction("Refresh", self)
+        refresh_action.setShortcut(QtGui.QKeySequence(QtGui.QKeySequence.Refresh))
+        refresh_action.triggered.connect(self._on_refresh_triggered)
+        self.addAction(refresh_action)
+        # on OSX, also add support for F5 (the default for OSX is Cmd+R)
+        if sys.platform == "darwin":
+            osx_f5_refresh_action = QtGui.QAction("Refresh (F5)", self)
+            osx_f5_refresh_action.setShortcut(QtGui.QKeySequence(QtCore.Qt.Key_F5))
+            osx_f5_refresh_action.triggered.connect(self._on_refresh_triggered)
+            self.addAction(osx_f5_refresh_action)
 
     def checkIn(self):
         """
@@ -150,6 +171,8 @@ class AppDialog(QtGui.QWidget):
         shotgun_globals.unregister_bg_task_manager(self._task_manager)
 
         try:
+            if self._my_tasks_model:
+                self._my_tasks_model.destroy()
             # shut down main threadpool
             self._task_manager.shut_down()
         except Exception as e:
@@ -182,3 +205,84 @@ class AppDialog(QtGui.QWidget):
     def new_message(self, level, message):
         # This is required for the logger
         pass
+
+    def createTasksFrom(self):
+        try:
+            self._my_tasks_model = self._build_my_tasks_model()
+            self._my_tasks_form = MyTasksForm(self._my_tasks_model,
+                                              allow_task_creation=False,
+                                              parent=self)
+            self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
+            self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
+            # self.ui.taskTabWidget.addTab(None, "Others")
+            # self._my_tasks_form.create_new_task.connect(self.create_new_task)
+        except Exception as e:
+            logger.exception("Failed to Load my tasks, because %s \n %s"
+                             % (e, traceback.format_exc()))
+
+    def _build_my_tasks_model(self):
+        if not self.user:
+            # can't show my tasks if we don't know who 'my' is!
+            logger.debug("There is no tasks because user is not defined")
+            return None
+        # get any extra display fields we'll need to retrieve:
+        extra_display_fields = self._app.get_setting("my_tasks_extra_display_fields")
+        # get the my task filters from the config.
+        my_tasks_filters = self._app.get_setting("my_tasks_filters")
+        model = MyTasksModel(self._app.context.project,
+                             self.user,
+                             extra_display_fields,
+                             my_tasks_filters,
+                             parent=self,
+                             bg_task_manager=self._task_manager)
+        monitor_qobject_lifetime(model, "My Tasks Model")
+        model.async_refresh()
+        logger.debug("Tasks Model Build Finished")
+        return model
+
+    def _on_entity_selected(self, selection_details, breadcrumb_trail):
+        """
+        Called when something has been selected in an entity tree view.  From
+        this selection, a list of publishes and work files can then be found
+        which will be used to populate the main file grid/details view.
+        """
+        # ignore if the sender isn't the current tab:
+        if self.ui.taskTabWidget.currentWidget() != self.sender():
+            return
+        # selected_entity = self._on_selected_entity_changed(selection_details, breadcrumb_trail)
+        selected_entity = None
+        if selected_entity:
+            self._update_selected_entity(selected_entity["type"], selected_entity["id"])
+        else:
+            self._update_selected_entity(None, None)
+
+    def _update_selected_entity(self, entity_type, entity_id, skip_current=True):
+        """
+        Updates the selected entity in all entity views.
+
+        :param entity_type: Type of the entity selected.
+        :param entity_id: Id of the entity selected.
+        :param skip_current: Hint to not update the current view.
+        """
+        current_widget = self._ui.taskTabWidget.currentWidget()
+
+        # loop through all widgets and update the selection in each one:
+        for ti in range(self.ui.taskTabWidget.count()):
+            widget = self.ui.taskTabWidget.widget(ti)
+
+            if skip_current and widget == current_widget:
+                continue
+
+            widget.select_entity(entity_type, entity_id)
+
+    def _on_refresh_triggered(self, checked=False):
+        """
+        Slot triggered when a refresh is requested via the refresh keyboard shortcut
+
+        :param checked:    True if the refresh action is checked - ignored
+        """
+        self._app.log_debug("Synchronizing remote path cache...")
+        self._app.sgtk.synchronize_filesystem_structure()
+        self._app.log_debug("Path cache up to date!")
+        if self._my_tasks_model:
+            self._my_tasks_model.async_refresh()

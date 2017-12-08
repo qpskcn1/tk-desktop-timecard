@@ -1,0 +1,692 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"windows",
+				"aw-watcher-window_OFG-TESTBENCH"
+			],
+			[
+				"set",
+				"setDaemon\tfunction"
+			],
+			[
+				"time",
+				"timeperiod\tmodule"
+			],
+			[
+				"ca",
+				"calculate"
+			],
+			[
+				"get",
+				"getLastCheckInTime\tfunction"
+			],
+			[
+				"log",
+				"log_file_path"
+			],
+			[
+				"_log",
+				"_log_file_path\tstatement"
+			],
+			[
+				"process",
+				"processExists\tfunction"
+			],
+			[
+				"license",
+				"licenseCount\tstatement"
+			],
+			[
+				"check",
+				"check_output\tfunction"
+			],
+			[
+				"core",
+				"core_python_path\tstatement"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"alter",
+				"altPlayers"
+			],
+			[
+				"execu",
+				"__execute_hook\tfunction"
+			],
+			[
+				"teml",
+				"template_shader\tstatement"
+			],
+			[
+				"templa",
+				"template_shader\tstatement"
+			],
+			[
+				"template",
+				"template_alembic_cache\tstatement"
+			],
+			[
+				"published",
+				"publishedFileType\tparam"
+			],
+			[
+				"cur",
+				"curFrameRate\tstatement"
+			],
+			[
+				"cmb",
+				"cmbResolution\tstatement"
+			],
+			[
+				"resStr",
+				"resStrSg\tstatement"
+			],
+			[
+				"publi",
+				"published_file_type"
+			],
+			[
+				"obj",
+				"obj_pattern\tstatement"
+			],
+			[
+				"shader",
+				"shader_hookups\tstatement"
+			],
+			[
+				"shading_gr",
+				"shading_groups\tstatement"
+			],
+			[
+				"open",
+				"openWindow"
+			],
+			[
+				"al",
+				"altPlayers"
+			],
+			[
+				"curre",
+				"currentWnd"
+			],
+			[
+				"reference",
+				"reference_node"
+			],
+			[
+				"camer",
+				"cameraSelection\tparam"
+			],
+			[
+				"result",
+				"resultPlayblastPath\tstatement"
+			],
+			[
+				"shot",
+				"shotPlayblastPath\tstatement"
+			],
+			[
+				"alem",
+				"alembic_args\tstatement"
+			],
+			[
+				"comment",
+				"comment_edit\tstatement"
+			],
+			[
+				"Pla",
+				"PlayblastDialog"
+			],
+			[
+				"Play",
+				"PlayblastDialog\tparam"
+			],
+			[
+				"ster",
+				"stereo_token\tstatement"
+			],
+			[
+				"sterer",
+				"stereo_dirs\tstatement"
+			],
+			[
+				"original",
+				"original_destination\tstatement"
+			],
+			[
+				"ste",
+				"stereo_dir\tstatement"
+			],
+			[
+				"tank",
+				"tank_vendor\tmodule"
+			],
+			[
+				"tk-multi",
+				"tk-multi-loader2"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 178.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 430.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-desktop-timecard"
+	],
+	"file_history":
+	[
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-workfiles2/v0.9.7/python/tk_multi_workfiles/browser_form.py",
+		"/C/Python27/Lib/subprocess.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-desktop-timecard/python/tk_desktop_timecard/lib/iso8601.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-desktop-timecard/python/tk_desktop_timecard/aw_client/test.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank_vendor/shotgun_api3/lib/__init__.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank_vendor/__init__.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-demo/v1.0.0/python/tk_multi_demo/demos/custom_field_widget/__init__.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-demo/v1.0.0/python/tk_multi_demo/demos/custom_field_widget/favorite_widget.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-demo/v1.0.0/python/tk_multi_demo/demos/field_widgets_form/demo.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-demo/v1.0.0/python/tk_multi_demo/demos/field_widgets_form/demo.yml",
+		"/Y/studio/dev/work/yi/timelog/aw-core/aw_core/log.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-desktop-timecard/python/tk_desktop_timecard/aw_core/decorators.py",
+		"/Y/studio/dev/work/yi/timelog/aw-client/aw_client/__init__.py",
+		"/Y/studio/dev/work/yi/timelog/activitywatch/aw_server/static/static/js/app.8625f398e2eb312ab305.js",
+		"/C/Users/testclient/AppData/Local/activitywatch/activitywatch/Logs/aw-server/aw-server_2017-12-04T14-49-01.log.json",
+		"/Y/studio/dev/work/yi/timelog/activitywatch/aw_core/schemas/event.json",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/AnimationSGConfig/config/env/shot_step.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/AnimationSGConfig/config/env/shotgun_playlist.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/AnimationSGConfig/config/env/shotgun_version.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/AnimationSGConfig/config/env/project.yml",
+		"/C/Python27/Lib/site-packages/file_read_backwards/file_read_backwards.py",
+		"/Y/studio/dev/work/yi/2017/Project1.sublime-project",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-desktop-timecard/python/tk_desktop_timecard/testlogger.py",
+		"/D/FantasyBasketballHelper/js/popup.js",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/platform/qt/__init__.py",
+		"/Y/studio/dev/work/yi/timelog/activitywatch/jsonschema/schemas/draft4.json",
+		"/C/Users/testclient/Downloads/requests-requests-24092b1/setup.py",
+		"/C/Python27/Lib/socket.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-launchapp/v0.9.13/app_specific/nuke/startup/menu.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-launchapp/v0.9.13/resources/resources.qrc",
+		"/D/git/js/startActivePlayers.js",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/platform/bundle.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/sgtk/__init__.py",
+		"/Y/studio/dev/work/yi/LicenseWatcher/tk-multi-licensemonitor/resources/resources.qrc",
+		"/Y/studio/dev/work/yi/LicenseWatcher/tk-multi-licensemonitor/python/tk_multi_licensemonitor/ui/dialog.py",
+		"/Y/studio/dev/work/yi/LicenseWatcher/tk-multi-licensemonitor/python/tk_multi_licensemonitor/RLMReader.py",
+		"/C/Users/testclient/AppData/Roaming/Sublime Text 3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/Y/studio/dev/work/yi/LicenseWatcher/tk-multi-licensemonitor/python/tk_multi_licensemonitor/RLMreader.py",
+		"/C/Program Files/Shotgun/Python/Lib/site-packages/PySide/__init__.py",
+		"/C/Program Files/Shotgun/qt.conf",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke_dev/.git/config",
+		"/Y/studio/dev/work/yi/LicenseWatcher/tk-multi-licensemonitor/python/tk_multi_licensemonitor/ui/RLMreader.py",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke_dev/init.py",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke_dev/menu.py",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke_dev/DeadlineNukeClient.py",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke/.git/config",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke/autoCrop_MB.py",
+		"/C/Users/testclient/.nuke/menu.py",
+		"/Y/ENGINEERING/1_IT/7_Misc/Licensing/Thinkbox Deadline/Annual-Oct25-2017/Thinkbox_license_Ohio_Film_Group_003ee1c54a4c.lic",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-lightingsetup.git/v0.0.1/python/tk_maya_lightingsetup/__init__.py",
+		"/Y/ENGINEERING/1_IT/7_Misc/Licensing/MayaArnold2017/arnold_003ee1c54a4c_20180614.lic",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-lightingsetup.git/v0.0.1/python/tk_maya_lightingsetup/lightingsetup.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-lightingsetup.git/v0.0.1/app.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-playblast.git/v0.3.2/python/tk_maya_playblast/playblast_dialog.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-lightingsetup.git/v0.0.1/.gitignore",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-lightingsetup.git/v0.0.1/info.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/hooks/tk-multi-loader2/tk-maya_actions.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/python/tk_maya_lightingsetup/lightingsetup.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/app.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/python/tk_maya_lightingsetup/__init__.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/python/__init__.py",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/README.md",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/LICENSE.md",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-maya-lightingsteup/info.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/hooks/tk-multi-loader2/tk-maya_actions.py",
+		"/D/FantasyBasketballHelper/manifest.json",
+		"/D/FantasyBasketballHelper/popup.html",
+		"/Y/studio/dev/release/beta/Thinkbox/DeadlineRepository10/events/Shotgun/Shotgun.py",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke/gizmos/BokehBlur.gizmo",
+		"/Y/ENGINEERING/0_ENVVAR/include/nuke/gizmos/AlexaV3_LogC2R709.gizmo",
+		"/C/Users/testclient/.nuke/init.py",
+		"/C/Users/testclient/.nuke/Python/Startup/getPythonSelection.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/util/shotgun/publish_resolve.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/vim/SIX/install/app_store/tk-multi-loader2/v1.17.3/python/tk_multi_loader/model_latestpublish.py",
+		"/Y/ENGINEERING/1_IT/7_Misc/Licensing/MayaArnold2018/ofgsr-mpio1.local000f532e3c68.lic",
+		"/Y/ENGINEERING/1_IT/7_Misc/Licensing/Thinkbox Deadline/Annual-Oct25-2017/Thinkbox_license_Ohio_Film_Group.lic",
+		"/C/Users/testclient/Downloads/Thinkbox_license_Ohio_Film_Group_003ee1c54a4c.lic",
+		"/C/Users/testclient/Downloads/Thinkbox_license_Ohio_Film_Group_003ee1c54a4c (1).lic",
+		"/Y/Thinkbox_license_Ohio_Film_Group.lic",
+		"/C/Users/testclient/Downloads/Thinkbox_license_Ohio_Film_Group.lic",
+		"/Y/snapshots/comp_110_020.v014.2017-10-12-18-22-30.nk",
+		"/Y/snapshots/comp_110_020.v005.2017-10-10-11-03-09.nk",
+		"/Y/snapshots/comp_110_020.v000.tank_comments.yml",
+		"/Y/ENGINEERING/1_IT/5_Production Software/Linux/Thinkbox Deadline/License Server/ThinkboxLicenseServer-11.13.1.2.0-linux-x64-installer.run",
+		"/Y/studio/dev/work/yi/shotgun_app_dev/tk-multi-starterapp-master/info.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/env/shot_step.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/hooks/tk-multi-loader2/tk-maya_actions_shot.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/hooks/tk-multi-loader2/tk-maya_actions_asset.py",
+		"/C/Users/testclient/Documents/maya/2017/Maya.env",
+		"/C/Users/testclient/AppData/Local/Google/Chrome/User Data/Default/Extensions/agnifafbknpcmagdhongfcmbgdlckknn/1.0_0/js/startActivePlayers.js",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/env/includes/app_launchers.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/hooks/tk-multi-publish/alembic_secondary_publish_tk-maya.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/hooks/tk-multi-publish/alembic_secondary_pre_publish_tk-maya.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/hooks/tk-multi-publish/alembic_scan_scene_tk-maya.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/core/install_location.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/env/asset_step.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/env/project.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/template.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/vim/SIX/install/app_store/tk-houdini/v1.2.2/engine.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-launchapp/v0.9.10/hooks/before_app_launch.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-playblast.git/v0.1.0/hooks/post_playblast.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-playblast.git/v0.1.0/python/tk_maya_playblast/playblast.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-maya-playblast.git/v0.1.0/python/tk_maya_playblast/dialog.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/TEST/config/env/project.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-shotgun-copymedia.git/v0.0.1/python/tk_shotgun_copymedia/main.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/TEST/config/env/shotgun_playlist.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/vim/SIX/config/env/shotgun_version.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/git/tk-shotgun-copymedia.git/v0.0.1/python/tk_shotgun_copymedia/execute.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/TEST/config/env/shotgun_version.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-shotgun-copymedia/v0.4.4/info.yml",
+		"/D/FantasyBasketballHelper/js/startActivePlayers.js",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-launchapp/v0.9.10/app_specific/maya/startup/userSetup.py",
+		"/Y/studio/shows/osu/SCOR/sequences/010/010_010/anim/publish/maya/comet_rig_prop_comet/anim_comet_rig_prop_comet.v027.abc",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-loader2/v1.18.0/hooks/filter_publishes.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-publish/v0.10.7/hooks/secondary_publish_tk-maya.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/core/templates.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR_DEV/config/core/roots.yml",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/app_store/tk-multi-launchapp/v0.9.4/hooks/before_app_launch.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/hook.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/toolkit_core/install/core/python/tank/util/qt_importer.py",
+		"/C/Users/testclient/Documents/maya/mayaLog",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/core/schema/project/sequences/sequence/shot.yml",
+		"/Y/studio/dev/work/yi/test_scripts/InterpreterTest.py",
+		"/C/Users/testclient/AppData/Roaming/Shotgun/bundle_cache/app_store/tk-multi-launchapp/v0.9.4/app_specific/maya/startup/userSetup.py",
+		"/Y/studio/dev/release/beta/Shotgun_Tools/show_configs/osu/SCOR/config/env/includes/paths.yml",
+		"/Y/studio/dev/work/nasheet/for_reference/opp_scripts/scripts/Animation_Tools/__init__.py",
+		"/Y/studio/dev/work/nasheet/for_reference/opp_scripts/scripts/Pipeline_Tools/__init__.py",
+		"/C/Users/testclient/AppData/Roaming/Shotgun/ofg.shotgunstudio.com/authentication.yml"
+	],
+	"find":
+	{
+		"height": 49.0
+	},
+	"find_in_files":
+	{
+		"height": 135.0,
+		"where_history":
+		[
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.4.0\\python",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\AnimationSGConfig\\config\\env",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST\\config\\env",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-shotgun-copymedia.git\\v0.0.2\\python\\tk_shotgun_copymedia",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.4.0",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.4.0\\python\\tk_desktop",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-shotgun-copymedia.git\\v0.0.2\\python\\tk_shotgun_copymedia",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-shotgun-copymedia.git\\v0.0.2",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.4.0\\python\\tk_desktop",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-pythonconsole\\v1.1.1",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\core",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\core",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-publish\\v0.10.7",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-reviewsubmission",
+			"D:\\FantasyBasketballHelper",
+			"Y:\\studio\\dev\\work\\nasheet\\for_reference\\opp_scripts\\scripts",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python\\tk_multi_loader",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2\\v0.9.7\\python\\tk_multi_workfiles",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python\\tk_multi_loader",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\hooks",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python\\tk_multi_loader",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python\\tk_multi_loader",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-publish\\v0.10.7\\python\\tk_multi_publish",
+			"Y:\\studio\\dev\\work\\nasheet\\for_reference\\opp_scripts\\scripts",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.18.0\\python\\tk_multi_loader",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\osu\\SCOR_DEV\\config\\hooks\\tk-multi-publish",
+			"Y:\\studio\\dev\\work\\yi\\shotgun_app_dev\\tk-maya-lightingsteup",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.3.9",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\osu\\SCOR_DEV\\config\\hooks\\tk-multi-publish",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-launchapp",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-launchapp\\v0.9.10",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-maya\\v0.8.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-launchapp\\v0.9.10",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-maya\\v0.8.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-launchapp\\v0.9.10",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\osu\\SCOR_DEV\\config\\env",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\osu\\SCOR",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-photoshopcc\\v1.1.7",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2\\v0.9.7\\python",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2\\v0.9.7",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2\\v0.9.7\\python\\tk_multi_workfiles",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-publish\\v0.10.7",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\osu\\SCOR\\config\\env",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-publish\\v0.10.7",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-maya-playblast.git\\v0.1.0\\python\\tk_maya_playblast",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-maya-playblast.git",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\core",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3\\python\\tk_hiero_export",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3\\python\\tk_hiero_export",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-maya-playblast.git",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\git\\tk-maya-playblast.git\\v0.1.0\\python",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-desktop\\v2.3.9",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-maya\\v0.8.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-shotgun-copymedia",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-shotgun-launchpublish",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST\\config\\env\\includes",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-nuke-writenode",
+			"C:\\Program Files (x86)\\pfx\\qube",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-breakdown",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-nuke-quickdailies",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3\\python\\tk_hiero_export",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export\\v0.4.3\\python",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-publish\\v0.10.5",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2\\v0.9.6",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-workfiles2",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\vim\\SIX",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\vim\\SIX",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-hiero-export",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\TEST",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\show_configs\\vim\\SIX",
+			"C:\\DeadlineRepository9",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.17.3",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install\\app_store\\tk-multi-loader2\\v1.17.3\\hooks",
+			"Y:\\studio\\dev\\release\\beta\\Shotgun_Tools\\toolkit_core\\install",
+			"Y:\\studio\\dev\\release\\config\\ShotgunConfig\\sg_desktop_test\\Pipeline_Config\\install\\app_store",
+			"<open folders>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"my_task",
+			"MyTask",
+			"mytask",
+			"task",
+			"check_output",
+			"merge_chunks",
+			"filter",
+			"disk_location",
+			"environ",
+			"bundle",
+			"c",
+			"e",
+			"edit",
+			"afk",
+			"filter",
+			"certifi",
+			"requests",
+			"queue",
+			"config",
+			"deprecate",
+			"datetime",
+			"Event",
+			"json",
+			"timezone",
+			"event",
+			"_logger",
+			"git",
+			"gi",
+			"git",
+			"ofg-yi",
+			"re",
+			"new_message",
+			"logger",
+			"log",
+			"logger",
+			"looger",
+			"APPDATA",
+			"logger",
+			"self.new",
+			"self._logger",
+			"log",
+			"log manager",
+			"log",
+			"_socket",
+			"version",
+			"35",
+			"current_user",
+			"user",
+			"interpreter",
+			"python",
+			"Setup",
+			"import python",
+			"python",
+			"{Sequence}",
+			"setWindowIcon",
+			"icon",
+			"%V",
+			"_bundle",
+			"icon",
+			"tem",
+			"template",
+			"font",
+			"fpmt",
+			"exception",
+			"except",
+			"button",
+			"uic",
+			"rcc",
+			"app",
+			"Extract",
+			"lmstat",
+			"hello",
+			"scriptOpen",
+			"git",
+			"gi",
+			"git",
+			"lighting",
+			"colorspace",
+			"codec",
+			"LUT",
+			"lut",
+			"output_node",
+			"render_and_submit_version",
+			"send_to_scre",
+			"quicktime",
+			"navbar",
+			"key",
+			"log_",
+			"cmds.file",
+			"log",
+			"path",
+			"publish_name",
+			"name",
+			"template",
+			"shader",
+			"template",
+			"playblast",
+			"asset",
+			"summarize",
+			"name",
+			"sgLatest",
+			"latest",
+			";atest",
+			"sg.",
+			"filter = ",
+			"filter",
+			"name space",
+			"fil",
+			"filter",
+			"execute_hook_method",
+			"execute_hook",
+			"execute_action",
+			"Attempting to resolve publish path to local file on disk:",
+			"sg_data_list",
+			"sg_data",
+			"ui_area",
+			"hook",
+			"saving the scene",
+			"shaders",
+			"Failed",
+			"failed",
+			"secondary_task",
+			"primary_task",
+			"primary_task\\",
+			"_do_primary_publish",
+			"hook",
+			"cmds.currentUnit",
+			"action"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 42.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 445.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Anaconda Python Builder",
+	"project": "timecardProject.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 272.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

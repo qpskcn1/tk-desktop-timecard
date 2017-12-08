@@ -13,6 +13,23 @@
 # expected fields in the configuration file for this engine
 configuration:
 
+    my_tasks_filters:
+      type: list
+      description: List of filters to apply to the tasks in the My Tasks tab.
+      values:
+        type: shotgun_filter
+      allows_empty: True
+      default_value:
+        - [task_assignees, is, '{context.user}']
+
+    my_tasks_extra_display_fields:
+      type: list
+      description: List of additional fields to display with the task in the My Tasks list.
+      values:
+        type: str
+      allows_empty: True
+      default_value: []
+
 # this app works in all engines - it does not contain 
 # any host application specific commands
 supported_engines: 
@@ -21,8 +38,8 @@ supported_engines:
 requires_shotgun_fields:
         
 # More verbose description of this item 
-display_name: "OFG License Monitor"
-description: "Monitor license usage inside OFG"
+display_name: "OFG Timecard"
+description: "Timecard App for Ohio Film Group"
 
 # Required minimum versions for this item to run
 requires_shotgun_version:
@@ -32,4 +49,4 @@ requires_engine_version:
 # the frameworks required to run this app
 frameworks:
     - {"name": "tk-framework-shotgunutils", "version": "v5.x.x"}
-    - {"name": "tk-framework-qtwidgets", "version": "v2.x.x"}
+    - {"name": "tk-framework-qtwidgets", "version": "v2.x.x"}    

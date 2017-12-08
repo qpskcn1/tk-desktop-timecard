@@ -1,0 +1,21 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"C:\\Program Files\\Shotgun\\Python\\python.exe\" -u \"$file\""
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "Y:\\studio\\dev\\work\\yi\\shotgun_app_dev\\tk-desktop-timecard"
+		}
+	],
+	"settings":
+	{
+		"python_interpreter": "C:\\Program Files\\Shotgun\\Python\\python.exe"
+	}
+}
