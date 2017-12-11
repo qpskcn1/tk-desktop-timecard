@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
+    <width>723</width>
     <height>694</height>
    </rect>
   </property>
@@ -66,19 +66,6 @@ p, li { white-space: pre-wrap; }
      </item>
      <item>
       <widget class="QTabWidget" name="timeTabWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
        <property name="currentIndex">
         <number>-1</number>
        </property>
