@@ -99,8 +99,6 @@ class MyTaskItemDelegate(WidgetDelegate):
 
         sg_data = item.get_sg_data()    
         # set the thumbnail to the icon for the item:
-        logger.debug("item icon")
-        logger.debug(item.icon())
         widget.set_thumbnail(item.icon())
         
         # set entity info:        

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: Mon Dec 11 12:23:11 2017
+# Created: Tue Dec 12 18:01:11 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,9 +38,15 @@ class Ui_Dialog(object):
         font.setWeight(75)
         font.setBold(True)
         self.taskTabWidget.setFont(font)
+        self.taskTabWidget.setAcceptDrops(True)
         self.taskTabWidget.setObjectName("taskTabWidget")
         self.horizontalLayout.addWidget(self.taskTabWidget)
         self.timeTabWidget = QtGui.QTabWidget(Dialog)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setWeight(75)
+        font.setBold(True)
+        self.timeTabWidget.setFont(font)
         self.timeTabWidget.setObjectName("timeTabWidget")
         self.horizontalLayout.addWidget(self.timeTabWidget)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 4)

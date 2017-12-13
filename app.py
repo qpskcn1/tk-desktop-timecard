@@ -8,8 +8,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-
 import os
+import sys
 import sgtk
 import traceback
 
@@ -24,8 +24,11 @@ class Timecard(sgtk.platform.Application):
         Called as the application is being initialized
         """
         try:
+            sys.path.append(os.path.join(os.path.dirname(__file__),
+                                         "python",
+                                         "tk_desktop_timecard",
+                                         "lib"))
             tk_desktop_timecard = self.import_module("tk_desktop_timecard")
-
             # register command
             cb = lambda: tk_desktop_timecard.show_dialog(self)
             menu_caption = "Timecard"

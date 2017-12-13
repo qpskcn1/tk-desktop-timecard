@@ -62,10 +62,20 @@ p, li { white-space: pre-wrap; }
          <bold>true</bold>
         </font>
        </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QTabWidget" name="timeTabWidget">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="currentIndex">
         <number>-1</number>
        </property>

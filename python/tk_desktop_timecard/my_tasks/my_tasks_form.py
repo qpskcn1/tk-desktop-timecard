@@ -12,10 +12,15 @@
 Implementation of the my tasks list widget consisting of a list view displaying the contents
 of a Shotgun data model of my tasks, a text search and a filter control.
 """
+import pickle
 
+import sgtk
+from sgtk.platform.qt import QtCore, QtGui
 from .my_task_item_delegate import MyTaskItemDelegate
 from ..util import monitor_qobject_lifetime
 from ..entity_tree.entity_tree_form import EntityTreeForm
+
+logger = sgtk.platform.get_logger(__name__)
 
 
 class MyTasksForm(EntityTreeForm):
@@ -45,6 +50,7 @@ class MyTasksForm(EntityTreeForm):
             self._item_delegate = MyTaskItemDelegate(tasks_model.extra_display_fields, self._ui.entity_tree)
             monitor_qobject_lifetime(self._item_delegate)
             self._ui.entity_tree.setItemDelegate(self._item_delegate)
+        self.setAcceptDrops(True)
 
     def shut_down(self):
         """

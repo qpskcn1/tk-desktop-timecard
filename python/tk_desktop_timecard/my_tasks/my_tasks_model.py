@@ -11,7 +11,6 @@
 """
 Implementation of the 'My Tasks' data model
 """
-
 import sgtk
 from sgtk.platform.qt import QtGui
 

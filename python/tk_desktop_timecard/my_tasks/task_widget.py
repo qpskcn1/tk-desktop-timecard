@@ -11,12 +11,17 @@
 """
 
 """
+import pickle
 
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 
 from ..ui.task_widget import Ui_TaskWidget
 from ..util import set_widget_property
+from ..my_time.new_timelog_form import NewTimeLogForm
+
+logger = sgtk.platform.get_logger(__name__)
+
 
 class TaskWidget(QtGui.QWidget):
     """
@@ -30,11 +35,12 @@ class TaskWidget(QtGui.QWidget):
         # set up the UI
         self._ui = Ui_TaskWidget()
         self._ui.setupUi(self)
+        self.setAcceptDrops(True)
 
     def set_selected(self, selected=True):
         """
         """
-        set_widget_property(self._ui.background, "selected", selected, 
+        set_widget_property(self._ui.background, "selected", selected,
                             refresh_style=True, refresh_children=True)
 
     def set_thumbnail(self, thumb):
@@ -42,7 +48,7 @@ class TaskWidget(QtGui.QWidget):
         """
         geom = self._ui.thumbnail.geometry()
         self._set_label_image(self._ui.thumbnail, thumb, geom.width(), geom.height())
-            
+
     def set_entity(self, name, typ, icon):
         """
         """
@@ -52,7 +58,7 @@ class TaskWidget(QtGui.QWidget):
         else:
             self._ui.entity_icon.show()
             self._set_label_image(self._ui.entity_icon, icon, 20, 20)
-    
+
     def set_task(self, name, icon):
         """
         """
@@ -101,3 +107,27 @@ class TaskWidget(QtGui.QWidget):
 
         label.setPixmap(scaled_pm)
 
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasFormat("application/x-awevent"):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasFormat("application/x-awevent"):
+            event.setDropAction(QtCore.Qt.MoveAction)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragLeaveEvent(self, event):
+        pass
+
+    def dropEvent(self, event):
+        data = event.mimeData()
+        bstream = data.retrieveData("application/x-awevent", bytearray)
+        selected = pickle.loads(bstream)
+        logger.debug("Drop data: %s" % selected)
+        timelog_dl = NewTimeLogForm(selected)
+        timelog_dl.exec_()
+        event.accept()

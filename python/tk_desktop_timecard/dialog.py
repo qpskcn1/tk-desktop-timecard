@@ -20,6 +20,8 @@ import traceback
 
 from .my_tasks.my_tasks_form import MyTasksForm
 from .my_tasks.my_tasks_model import MyTasksModel
+from .my_time.my_time_form import MyTimeForm
+from .my_time.my_time_model import MyTimeModel
 from .util import monitor_qobject_lifetime
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
@@ -47,8 +49,9 @@ class AppDialog(QtGui.QWidget):
         """
         Constructor
         """
+        # get app bundle
         self._app = sgtk.platform.current_bundle()
-        # first, call the base class and let it do its thing.
+        # call the base class and let it do its thing.
         QtGui.QWidget.__init__(self)
 
         # Set up our own logger (other than shotgun looger) for storing timestamp
@@ -290,15 +293,10 @@ class AppDialog(QtGui.QWidget):
 
     def createTimeForm(self):
         try:
-            self._my_time_form = QtGui.QTreeView()
-            self._my_time_model = QtGui.QStandardItemModel()
-            self._my_time_model.setHorizontalHeaderLabels(['Application', 'Time'])
+            self._my_time_model = MyTimeModel()
+            self._my_time_form = MyTimeForm()
             self._my_time_form.setModel(self._my_time_model)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
-
-            test_item = QtGui.QStandardItem("test 1hr")
-            test_item.setDragEnabled(True)
-            self._my_time_model.appendRow(test_item)
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
