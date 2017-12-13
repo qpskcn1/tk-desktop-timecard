@@ -45,18 +45,58 @@ class simple_model(QtCore.QAbstractListModel):
         self.list = self.list[:position] + self.list[position+1:]
         self.reset()
 
-class dropZone(QtGui.QLabel):
+# class dropZone(QtGui.QLabel):
+#     def __init__(self, parent=None):
+#         super(dropZone, self).__init__(parent)
+#         self.setMinimumSize(200,200)
+#         self.set_bg()
+#         self.setText("Drop Here")
+#         self.setAlignment(QtCore.Qt.AlignCenter)
+#         self.setAcceptDrops(True)
+
+#     def dragEnterEvent(self, event):
+#         if event.mimeData().hasFormat("application/x-awevent"):
+#             self.set_bg(True)
+#             event.accept()
+#         else:
+#             event.ignore()
+
+#     def dragMoveEvent(self, event):
+#         if event.mimeData().hasFormat("application/x-awevent"):
+#             event.setDropAction(QtCore.Qt.MoveAction)
+#             event.accept()
+#         else:
+#             event.ignore()
+
+#     def dragLeaveEvent(self, event):
+#         self.set_bg()
+
+#     def dropEvent(self, event):
+#         data = event.mimeData()
+#         bstream = data.retrieveData("application/x-awevent", bytearray)
+#         selected = pickle.loads(bstream)
+#         self.setText(str(selected))
+#         self.set_bg()
+#         timelog_dl = newLogDialog(selected)
+#         timelog_dl.exec_()
+#         event.accept()
+
+#     def set_bg(self, active=False):
+#         if active:
+#             val = "background:yellow;"
+#         else:
+#             val = "background:green;"
+#         self.setStyleSheet(val)
+
+class dropZone(QtGui.QTreeView):
+
     def __init__(self, parent=None):
         super(dropZone, self).__init__(parent)
-        self.setMinimumSize(200,200)
-        self.set_bg()
-        self.setText("Drop Here")
-        self.setAlignment(QtCore.Qt.AlignCenter)
+        self.setMinimumSize(200, 200)
         self.setAcceptDrops(True)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/x-awevent"):
-            self.set_bg(True)
             event.accept()
         else:
             event.ignore()
@@ -69,24 +109,15 @@ class dropZone(QtGui.QLabel):
             event.ignore()
 
     def dragLeaveEvent(self, event):
-        self.set_bg()
+        pass
 
     def dropEvent(self, event):
         data = event.mimeData()
         bstream = data.retrieveData("application/x-awevent", bytearray)
         selected = pickle.loads(bstream)
-        self.setText(str(selected))
-        self.set_bg()
         timelog_dl = newLogDialog(selected)
         timelog_dl.exec_()
         event.accept()
-
-    def set_bg(self, active=False):
-        if active:
-            val = "background:yellow;"
-        else:
-            val = "background:green;"
-        self.setStyleSheet(val)
 
 
 class draggableList(QtGui.QListView):
