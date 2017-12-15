@@ -216,7 +216,7 @@ class AppDialog(QtGui.QWidget):
             self._my_tasks_form = MyTasksForm(self._my_tasks_model,
                                               allow_task_creation=False,
                                               parent=self)
-            self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
+            # self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
             self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
             # self.ui.taskTabWidget.addTab(None, "Others")
             # self._my_tasks_form.create_new_task.connect(self.create_new_task)
@@ -243,41 +243,6 @@ class AppDialog(QtGui.QWidget):
         model.async_refresh()
         logger.debug("Tasks Model Build Finished")
         return model
-
-    def _on_entity_selected(self, selection_details, breadcrumb_trail):
-        """
-        Called when something has been selected in an entity tree view.  From
-        this selection, a list of publishes and work files can then be found
-        which will be used to populate the main file grid/details view.
-        """
-        # ignore if the sender isn't the current tab:
-        if self.ui.taskTabWidget.currentWidget() != self.sender():
-            return
-        # selected_entity = self._on_selected_entity_changed(selection_details, breadcrumb_trail)
-        selected_entity = None
-        if selected_entity:
-            self._update_selected_entity(selected_entity["type"], selected_entity["id"])
-        else:
-            self._update_selected_entity(None, None)
-
-    def _update_selected_entity(self, entity_type, entity_id, skip_current=True):
-        """
-        Updates the selected entity in all entity views.
-
-        :param entity_type: Type of the entity selected.
-        :param entity_id: Id of the entity selected.
-        :param skip_current: Hint to not update the current view.
-        """
-        current_widget = self._ui.taskTabWidget.currentWidget()
-
-        # loop through all widgets and update the selection in each one:
-        for ti in range(self.ui.taskTabWidget.count()):
-            widget = self.ui.taskTabWidget.widget(ti)
-
-            if skip_current and widget == current_widget:
-                continue
-
-            widget.select_entity(entity_type, entity_id)
 
     def _on_refresh_triggered(self, checked=False):
         """

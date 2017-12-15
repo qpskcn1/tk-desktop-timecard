@@ -11,14 +11,11 @@
 """
 
 """
-import pickle
-
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 
 from ..ui.task_widget import Ui_TaskWidget
 from ..util import set_widget_property
-from ..my_time.new_timelog_form import NewTimeLogForm
 
 logger = sgtk.platform.get_logger(__name__)
 
@@ -106,28 +103,3 @@ class TaskWidget(QtGui.QWidget):
             scaled_pm = pm.scaled(w, h, QtCore.Qt.KeepAspectRatioByExpanding, QtCore.Qt.SmoothTransformation)
 
         label.setPixmap(scaled_pm)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
-            event.accept()
-        else:
-            event.ignore()
-
-    def dragMoveEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
-            event.setDropAction(QtCore.Qt.MoveAction)
-            event.accept()
-        else:
-            event.ignore()
-
-    def dragLeaveEvent(self, event):
-        pass
-
-    def dropEvent(self, event):
-        data = event.mimeData()
-        bstream = data.retrieveData("application/x-awevent", bytearray)
-        selected = pickle.loads(bstream)
-        logger.debug("Drop data: %s" % selected)
-        timelog_dl = NewTimeLogForm(selected)
-        timelog_dl.exec_()
-        event.accept()
