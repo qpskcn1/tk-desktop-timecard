@@ -26,7 +26,6 @@ class simple_model(QtCore.QAbstractListModel):
         ("Maya 2 hours", datetime.date(2017,5,3), datetime.timedelta(hours=2)),
         ("Nuke Studio 2.2 hours", datetime.date(2017,4,6), datetime.timedelta(hours=2.2))):
             self.list.append(awevent(name, timestamp, duration))
-        self.setSupportedDragActions(QtCore.Qt.MoveAction)
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.list)
@@ -87,6 +86,28 @@ class simple_model(QtCore.QAbstractListModel):
 #         else:
 #             val = "background:green;"
 #         self.setStyleSheet(val)
+class task_model(QtCore.QAbstractListModel):
+    def __init__(self, parent=None):
+        super(task_model, self).__init__(parent)
+        self.list = []
+        for name, timestamp, duration in (
+        ("task1", datetime.date(2017,12,9), datetime.timedelta(hours=1)),
+        ("task2", datetime.date(2017,5,3), datetime.timedelta(hours=2)),
+        ("task3", datetime.date(2017,4,6), datetime.timedelta(hours=2.2))):
+            self.list.append(awevent(name, timestamp, duration))
+
+    def rowCount(self, parent=QtCore.QModelIndex()):
+        return len(self.list)
+
+    def data(self, index, role = QtCore.Qt.UserRole):
+        if role == QtCore.Qt.DisplayRole: #show just the name
+            awevent = self.list[index.row()]
+            return awevent.name
+        elif role == QtCore.Qt.UserRole:  #return the whole python object
+            awevent = self.list[index.row()]
+            return awevent
+        else:
+            return
 
 class dropZone(QtGui.QTreeView):
 
@@ -103,6 +124,8 @@ class dropZone(QtGui.QTreeView):
 
     def dragMoveEvent(self, event):
         if event.mimeData().hasFormat("application/x-awevent"):
+            dropIndex = self.indexAt(event.pos())
+            self.selectionModel().select(dropIndex, QtGui.QItemSelectionModel.SelectCurrent)
             event.setDropAction(QtCore.Qt.MoveAction)
             event.accept()
         else:
@@ -112,10 +135,12 @@ class dropZone(QtGui.QTreeView):
         pass
 
     def dropEvent(self, event):
+        dropIndex = self.indexAt(event.pos())
+        droppedOn = self.model().data(dropIndex, QtCore.Qt.UserRole)
         data = event.mimeData()
         bstream = data.retrieveData("application/x-awevent", bytearray)
         selected = pickle.loads(bstream)
-        timelog_dl = newLogDialog(selected)
+        timelog_dl = newLogDialog(selected, droppedOn)
         timelog_dl.exec_()
         event.accept()
 
@@ -177,30 +202,36 @@ class testDialog(QtGui.QDialog):
         layout = QtGui.QGridLayout(self)
 
         label = QtGui.QLabel("Drag Time From This List")
+        taskLabel = QtGui.QLabel("Drag Time To Task")
 
         self.model = simple_model()
         self.listView = draggableList()
         self.listView.setModel(self.model)
+        self.task_model = task_model()
         self.dz = dropZone()
+        self.dz.setModel(self.task_model)
 
         layout.addWidget(label,0,0)
         layout.addWidget(self.listView,1,0)
-        layout.addWidget(self.dz,0,1,2,2)
+        layout.addWidget(taskLabel,0,1)
+        layout.addWidget(self.dz,1,1)
 
 class newLogDialog(QtGui.QDialog):
-    def __init__(self, data, parent=None):
+    def __init__(self, selected, droppedOn, parent=None):
         super(newLogDialog, self).__init__(parent)
         # load in the UI that was created in the UI designer
         self.updateFromSpinbox = False
-        self.hours = data.duration.total_seconds() / 3600
-        self.date = data.timestamp
+        self.hours = selected.duration.total_seconds() / 3600
+        self.date = selected.timestamp
+        self.task = droppedOn.name
         self.ui = Ui_NewTimeLogForm()
         self.ui.setupUi(self)
+        self.ui.comboBox.addItem("%s" % self.task, userData=self.task)
         self.ui.doubleSpinBox.setRange(0.00, self.hours)
         self.ui.doubleSpinBox.setValue(self.hours)
         self.ui.dateEdit.setDate(self.date)
-        self.ui.horizontalSlider.setRange(0, self.hours*100)
-        self.ui.horizontalSlider.setValue(self.hours*100)
+        self.ui.horizontalSlider.setRange(0, self.hours * 100)
+        self.ui.horizontalSlider.setValue(self.hours * 100)
 
         self.ui.horizontalSlider.valueChanged[int].connect(self.update_spinbox)
         self.ui.doubleSpinBox.editingFinished.connect(self.update_slider_position)
