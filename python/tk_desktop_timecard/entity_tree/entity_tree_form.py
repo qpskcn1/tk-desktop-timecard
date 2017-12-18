@@ -23,6 +23,7 @@ from ..util import get_model_str, map_to_source, get_source_model, monitor_qobje
 
 shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
 ShotgunEntityModel = shotgun_model.ShotgunEntityModel
+logger = sgtk.platform.get_logger(__name__)
 
 
 class EntityTreeForm(QtGui.QWidget):

@@ -17,6 +17,8 @@ class awevent(object):
     def __repr__(self):
         return "{name: %s, date: %s, duration: %s}"% (self.name, self.timestamp, self.duration)
 
+    def subtract_logged_time(self, logged_time):
+        self.duration = self.duration - self.logged_time
 
 class MyTimeModel(QtCore.QAbstractListModel):
 
@@ -29,9 +31,9 @@ class MyTimeModel(QtCore.QAbstractListModel):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
         for name, timestamp, duration in (
-        ("Nuke 1 Hour", datetime.date(2017,12,9), datetime.timedelta(hours=1)),
-        ("Maya 2 Hour", datetime.date(2017,5,3), datetime.timedelta(hours=2)),
-        ("Nuke Studio 2.2 Hour", datetime.date(2017,4,6), datetime.timedelta(hours=2.2))):
+        ("Nuke", datetime.date(2017,12,9), datetime.timedelta(hours=1)),
+        ("Maya", datetime.date(2017,5,3), datetime.timedelta(hours=2)),
+        ("Nuke Studio", datetime.date(2017,4,6), datetime.timedelta(hours=2.2))):
             self.list.append(awevent(name, timestamp, duration))
         self.setSupportedDragActions(QtCore.Qt.MoveAction)
 
@@ -41,7 +43,8 @@ class MyTimeModel(QtCore.QAbstractListModel):
     def data(self, index, role=QtCore.Qt.UserRole):
         if role == QtCore.Qt.DisplayRole:  # show just the name
             awevent = self.list[index.row()]
-            return awevent.name
+            duration = awevent.duration.total_seconds() / 3600
+            return "{} {}hrs".format(awevent.name, duration)
         elif role == QtCore.Qt.UserRole:  # return the whole python object
             awevent = self.list[index.row()]
             return awevent
@@ -49,8 +52,11 @@ class MyTimeModel(QtCore.QAbstractListModel):
             return
 
     def removeRow(self, position):
-        self.list = self.list[:position] + self.list[position + 1:]
-        self.reset()
+        event = self.data(position)
+        logger.debug("Time left: {}".format(event.duration))
+        if event.duration <= datetime.timedelta(0):
+            self.list = self.list[:position] + self.list[position + 1:]
+            self.reset()
 
     def getAWdata(self):
         # sampleEvent = Event(id=1,

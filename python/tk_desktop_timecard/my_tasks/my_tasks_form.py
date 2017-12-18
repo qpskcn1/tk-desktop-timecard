@@ -17,6 +17,7 @@ import pickle
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 from ..ui.my_tasks_form import Ui_MyTasksForm
+from ..ui.task_widget import task_widget
 from .my_task_item_delegate import MyTaskItemDelegate
 from ..util import monitor_qobject_lifetime, map_to_source, get_source_model, get_model_str
 from ..entity_proxy_model import EntityProxyModel
@@ -112,16 +113,32 @@ class MyTasksForm(QtGui.QWidget):
         pass
 
     def dropEvent(self, event):
-        data = event.mimeData()
-        bstream = data.retrieveData("application/x-awevent", bytearray)
-        selected = pickle.loads(bstream)
-        logger.debug("Drop data: %s%s" % (selected, event.pos()))
-        timelog_dl = NewTimeLogForm(selected)
-        timelog_dl.exec_()
-        event.accept()
+        try:
+            data = event.mimeData()
+            bstream = data.retrieveData("application/x-awevent", bytearray)
+            selected = pickle.loads(bstream)
+            task = self._get_selected_task()
+            if task:
+                logger.debug("drop to task %s" % task)
+                timelog_dl = NewTimeLogForm(selected, task)
+                timelog_dl.exec_()
+            event.accept()
+        except Exception as e:
+            logger.error("Exception: %s" % e)
 
     # ------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------
+
+    def _get_selected_task(self):
+        selected_indexes = self._ui.task_tree.selectionModel().selectedIndexes()
+        if len(selected_indexes) == 1:
+            item = self._item_from_index(selected_indexes[0])
+            tasks_model = get_source_model(selected_indexes[0].model())
+            if item and tasks_model:
+                entity = tasks_model.get_entity(item)
+                return entity
+        return None
+
 
     def _on_search_changed(self, search_text):
         """
