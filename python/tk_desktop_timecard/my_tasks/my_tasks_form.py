@@ -96,8 +96,10 @@ class MyTasksForm(QtGui.QWidget):
     def dragMoveEvent(self, event):
         try:
             if event.mimeData().hasFormat("application/x-awevent"):
-                hoverIndex = self._ui.task_tree.indexAt(event.pos())
-                logger.debug(hoverIndex)
+                # adjust y coordinate for task_widget
+                position = event.pos() - QtCore.QPoint(0, 70)
+                hoverIndex = self._ui.task_tree.indexAt(position)
+                logger.debug("hoverIndex %s" % hoverIndex.row())
                 self._ui.task_tree.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
                 event.setDropAction(QtCore.Qt.MoveAction)
                 event.accept()
