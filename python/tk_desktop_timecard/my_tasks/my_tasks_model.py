@@ -19,10 +19,11 @@ from ..util import resolve_filters
 shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
 ShotgunEntityModel = shotgun_model.ShotgunEntityModel
 
+
 class MyTasksModel(ShotgunEntityModel):
     """
     Specialisation of the Shotgun entity model that represents a single users tasks.  Note that we derive
-    from the Shotgun entity model so that we have access to the entity icons it provides.  These are used 
+    from the Shotgun entity model so that we have access to the entity icons it provides.  These are used
     later by the MyTaskItemDelegate when rending a widget for a task in the My Tasks view.
     """
     def __init__(self, project, user, extra_display_fields, my_tasks_filters, parent, bg_task_manager=None):
@@ -31,7 +32,7 @@ class MyTasksModel(ShotgunEntityModel):
 
         :param project:                 A Shotgun entity dictionary representing the project that my tasks should
                                         be loaded for.
-        :param user:                    A Shotgun entity dictionary representing the user whom tasks should be loaded 
+        :param user:                    A Shotgun entity dictionary representing the user whom tasks should be loaded
                                         for
         :param extra_display_fields:    List of additional fields that should be loaded for each task
         :param parent:                  The parent QObject for this model
@@ -47,8 +48,8 @@ class MyTasksModel(ShotgunEntityModel):
         fields.extend(self.extra_display_fields)
 
         ShotgunEntityModel.__init__(self, "Task", filters, ["content"], fields, parent,
-                                    download_thumbs=True, 
-                                    bg_load_thumbs = True,
+                                    download_thumbs=True,
+                                    bg_load_thumbs=True,
                                     bg_task_manager=bg_task_manager)
 
     def _populate_default_thumbnail(self, item):
@@ -72,7 +73,7 @@ class MyTasksModel(ShotgunEntityModel):
         """
         if field != "image":
             # there may be other thumbnails being loaded in as part of the data flow
-            # (in particular, created_by.HumanUser.image) - these ones we just want to 
+            # (in particular, created_by.HumanUser.image) - these ones we just want to
             # ignore and not display.
             return
 

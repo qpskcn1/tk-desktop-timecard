@@ -18,7 +18,7 @@ import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 from ..ui.my_tasks_form import Ui_MyTasksForm
 from .my_task_item_delegate import MyTaskItemDelegate
-from ..util import monitor_qobject_lifetime, map_to_source, get_source_model
+from ..util import monitor_qobject_lifetime, map_to_source, get_source_model, get_model_str
 from ..entity_proxy_model import EntityProxyModel
 
 from ..my_time.new_timelog_form import NewTimeLogForm
@@ -79,7 +79,7 @@ class MyTasksForm(QtGui.QWidget):
     #     try:
     #         EntityTreeForm.shut_down(self)
     #         # detach and clean up the item delegate:
-    #         self._ui.entity_tree.setItemDelegate(None)
+    #         self._ui.task_tree.setItemDelegate(None)
     #         if self._item_delegate:
     #             self._item_delegate.setParent(None)
     #             self._item_delegate.deleteLater()
@@ -94,13 +94,17 @@ class MyTasksForm(QtGui.QWidget):
             event.ignore()
 
     def dragMoveEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
-            hoverIndex = self.indexAt(event.pos())
-            self.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
-            event.setDropAction(QtCore.Qt.MoveAction)
-            event.accept()
-        else:
-            event.ignore()
+        try:
+            if event.mimeData().hasFormat("application/x-awevent"):
+                hoverIndex = self._ui.task_tree.indexAt(event.pos())
+                logger.debug(hoverIndex)
+                self._ui.task_tree.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
+                event.setDropAction(QtCore.Qt.MoveAction)
+                event.accept()
+            else:
+                event.ignore()
+        except Exception as e:
+            logger.error("Exception: %s" % e)
 
     def dragLeaveEvent(self, event):
         pass
@@ -114,6 +118,9 @@ class MyTasksForm(QtGui.QWidget):
         timelog_dl.exec_()
         event.accept()
 
+    # ------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------
+
     def _on_search_changed(self, search_text):
         """
         Slot triggered when the search text has been changed.
@@ -126,7 +133,7 @@ class MyTasksForm(QtGui.QWidget):
             # update the proxy filter search text:
             logger.debug("search %s in my tasks" % search_text)
             filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
-            self._ui.entity_tree.model().setFilterRegExp(filter_reg_exp)
+            self._ui.task_tree.model().setFilterRegExp(filter_reg_exp)
         finally:
             # and update the selection - this will restore the original selection if possible.
             self._update_selection(prev_selected_item)
@@ -140,7 +147,7 @@ class MyTasksForm(QtGui.QWidget):
         """
         prev_selected_item = self._get_selected_item()
         # reset the current selection without emitting any signals:
-        self._ui.entity_tree.selectionModel().reset()
+        self._ui.task_tree.selectionModel().reset()
         self._update_ui()
         return prev_selected_item
 
@@ -151,7 +158,7 @@ class MyTasksForm(QtGui.QWidget):
         :returns:   The currently selected model item if any
         """
         item = None
-        indexes = self._ui.entity_tree.selectionModel().selectedIndexes()
+        indexes = self._ui.task_tree.selectionModel().selectedIndexes()
 
         if len(indexes) == 1:
             item = self._item_from_index(indexes[0])
@@ -196,10 +203,10 @@ class MyTasksForm(QtGui.QWidget):
         to filtering.  This allows it to be tracked so that the selection state is correctly restored when
         it becomes visible again.
         """
-        tasks_model = get_source_model(self._ui.entity_tree.model())
+        tasks_model = get_source_model(self._ui.task_tree.model())
         if not tasks_model:
+            logger.debug("Can found tasks model")
             return
-
         # we want to make sure we don't emit any signals whilst we are
         # manipulating the selection:
         signals_blocked = self.blockSignals(True)
@@ -216,16 +223,16 @@ class MyTasksForm(QtGui.QWidget):
 
             if item:
                 idx = item.index()
-                if isinstance(self._ui.entity_tree.model(), QtGui.QAbstractProxyModel):
+                if isinstance(self._ui.task_tree.model(), QtGui.QAbstractProxyModel):
                     # map the index to the proxy model:
-                    idx = self._ui.entity_tree.model().mapFromSource(idx)
+                    idx = self._ui.task_tree.model().mapFromSource(idx)
 
                 if idx.isValid():
                     # make sure the item is expanded and visible in the tree:
-                    self._ui.entity_tree.scrollTo(idx)
+                    self._ui.task_tree.scrollTo(idx)
 
                     # select the item:
-                    self._ui.entity_tree.selectionModel().setCurrentIndex(idx, QtGui.QItemSelectionModel.SelectCurrent)
+                    self._ui.task_tree.selectionModel().setCurrentIndex(idx, QtGui.QItemSelectionModel.SelectCurrent)
 
         finally:
             self.blockSignals(signals_blocked)
