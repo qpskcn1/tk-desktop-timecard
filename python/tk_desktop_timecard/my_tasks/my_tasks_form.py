@@ -17,7 +17,6 @@ import pickle
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 from ..ui.my_tasks_form import Ui_MyTasksForm
-from ..ui.task_widget import task_widget
 from .my_task_item_delegate import MyTaskItemDelegate
 from ..util import monitor_qobject_lifetime, map_to_source, get_source_model, get_model_str
 from ..entity_proxy_model import EntityProxyModel
