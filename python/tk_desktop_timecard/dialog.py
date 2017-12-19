@@ -212,19 +212,24 @@ class AppDialog(QtGui.QWidget):
 
     def createTasksFrom(self):
         try:
-            self._my_tasks_model = self._build_my_tasks_model()
+            self._my_tasks_model = self._build_my_tasks_model(self._app.context.project)
             self._my_tasks_form = MyTasksForm(self._my_tasks_model,
                                               allow_task_creation=False,
                                               parent=self)
             # self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
             self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
-            # self.ui.taskTabWidget.addTab(None, "Others")
+            facility_project_ctx = {'type': 'Project', 'id': 143, 'name': 'Facility'}
+            self._facility_tasks_model = self._build_my_tasks_model(facility_project_ctx)
+            self._facility_tasks_form = MyTasksForm(self._facility_tasks_model,
+                                                    allow_task_creation=False,
+                                                    parent=self)
+            self.ui.taskTabWidget.addTab(self._facility_tasks_form, "Facility")
             # self._my_tasks_form.create_new_task.connect(self.create_new_task)
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
 
-    def _build_my_tasks_model(self):
+    def _build_my_tasks_model(self, project):
         if not self.user:
             # can't show my tasks if we don't know who 'my' is!
             logger.debug("There is no tasks because user is not defined")
@@ -233,7 +238,7 @@ class AppDialog(QtGui.QWidget):
         extra_display_fields = self._app.get_setting("my_tasks_extra_display_fields")
         # get the my task filters from the config.
         my_tasks_filters = self._app.get_setting("my_tasks_filters")
-        model = MyTasksModel(self._app.context.project,
+        model = MyTasksModel(project,
                              self.user,
                              extra_display_fields,
                              my_tasks_filters,
