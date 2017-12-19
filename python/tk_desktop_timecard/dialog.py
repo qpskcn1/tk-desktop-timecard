@@ -229,6 +229,15 @@ class AppDialog(QtGui.QWidget):
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
 
+    def createTimeForm(self):
+        try:
+            self._my_time_model = MyTimeModel()
+            self._my_time_form = MyTimeForm(self._my_time_model)
+            self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
+        except Exception as e:
+            logger.exception("Failed to Load my tasks, because %s \n %s"
+                             % (e, traceback.format_exc()))
+
     def _build_my_tasks_model(self, project):
         if not self.user:
             # can't show my tasks if we don't know who 'my' is!
@@ -260,12 +269,7 @@ class AppDialog(QtGui.QWidget):
         self._app.log_debug("Path cache up to date!")
         if self._my_tasks_model:
             self._my_tasks_model.async_refresh()
-
-    def createTimeForm(self):
-        try:
-            self._my_time_model = MyTimeModel()
-            self._my_time_form = MyTimeForm(self._my_time_model)
-            self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
-        except Exception as e:
-            logger.exception("Failed to Load my tasks, because %s \n %s"
-                             % (e, traceback.format_exc()))
+        if self._facility_tasks_model:
+            self._facility_tasks_model.async_refresh()
+        if self._my_time_model:
+            self._my_time_model.async_refresh()
