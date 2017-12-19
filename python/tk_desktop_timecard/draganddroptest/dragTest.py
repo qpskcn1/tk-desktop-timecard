@@ -232,6 +232,7 @@ class newLogDialog(QtGui.QDialog):
         self.ui.dateEdit.setDate(self.date)
         self.ui.horizontalSlider.setRange(0, self.hours * 100)
         self.ui.horizontalSlider.setValue(self.hours * 100)
+        self.ui.dateEdit.setCalendarPopup(True)
 
         self.ui.horizontalSlider.valueChanged[int].connect(self.update_spinbox)
         self.ui.doubleSpinBox.editingFinished.connect(self.update_slider_position)

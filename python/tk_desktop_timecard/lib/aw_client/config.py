@@ -1,6 +1,6 @@
 from ConfigParser import ConfigParser
 
-import aw_core.config
+from aw_core import config
 
 default_client_config = ConfigParser()
 default_client_config.add_section('server')
@@ -20,4 +20,4 @@ default_client_config.set("server-testing", "port", "5666")
 
 
 def load_config():
-    return aw_core.config.load_config("aw-client", default_client_config)
+    return config.load_config("aw-client", default_client_config)

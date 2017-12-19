@@ -1,3 +1,5 @@
+from math import ceil
+
 import sgtk
 from sgtk.platform.qt import QtGui
 from ..ui.new_timelog import Ui_NewTimeLogForm
@@ -14,18 +16,21 @@ class NewTimeLogForm(QtGui.QDialog):
         # load in the UI that was created in the UI designer
         self.updateFromSpinbox = False
         self.awname = data.name
-        self.hours = data.duration.total_seconds() / 3600
+        # ceil to first decimal place
+        self.hours = ceil(data.duration.total_seconds() / 360) / 10
         self.date = data.timestamp
         self.ui = Ui_NewTimeLogForm()
         self.ui.setupUi(self)
         self.ui.comboBox.addItem("%s %s, %s" %
                                  (task['entity']['type'], task['entity']['name'], task['content']),
                                  userData=task)
-        self.ui.doubleSpinBox.setRange(0.00, self.hours)
+        self.ui.doubleSpinBox.setDecimals(1)
+        self.ui.doubleSpinBox.setRange(0.0, self.hours)
         self.ui.doubleSpinBox.setValue(self.hours)
         self.ui.dateEdit.setDate(self.date)
-        self.ui.horizontalSlider.setRange(0, self.hours * 100)
-        self.ui.horizontalSlider.setValue(self.hours * 100)
+        self.ui.dateEdit.setCalendarPopup(True)
+        self.ui.horizontalSlider.setRange(0, self.hours * 10)
+        self.ui.horizontalSlider.setValue(self.hours * 10)
 
         self.ui.horizontalSlider.valueChanged[int].connect(self.update_spinbox)
         self.ui.doubleSpinBox.editingFinished.connect(self.update_slider_position)
@@ -34,11 +39,11 @@ class NewTimeLogForm(QtGui.QDialog):
 
     def update_spinbox(self, value):
         if not self.updateFromSpinbox:
-            self.ui.doubleSpinBox.setValue(float(value) / 100)
+            self.ui.doubleSpinBox.setValue(float(value) / 10)
 
     def update_slider_position(self):
         self.updateFromSpinbox = True
-        self.ui.horizontalSlider.setSliderPosition(self.ui.doubleSpinBox.value() * 100)
+        self.ui.horizontalSlider.setSliderPosition(self.ui.doubleSpinBox.value() * 10)
         self.updateFromSpinbox = False
 
     def submitTimeLog(self):

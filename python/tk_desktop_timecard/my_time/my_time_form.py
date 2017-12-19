@@ -24,7 +24,6 @@ class MyTimeTree(QtGui.QListView):
             event.ignore()
 
     def startDrag(self, event):
-        logger.debug("Start drag")
         index = self.indexAt(event.pos())
         if not index.isValid():
             return

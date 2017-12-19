@@ -48,7 +48,6 @@ class MyTasksTree(QtGui.QTreeView):
                 # adjust y coordinate for task_widget
                 # position = event.pos() - QtCore.QPoint(0, 70)
                 hoverIndex = self.indexAt(event.pos())
-                logger.debug("hoverIndex %s" % hoverIndex.row())
                 self.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
                 event.setDropAction(QtCore.Qt.MoveAction)
                 event.accept()
