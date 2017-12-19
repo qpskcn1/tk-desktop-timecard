@@ -88,8 +88,8 @@ class TaskWidget(QtGui.QWidget):
         """
         if not image:
             # make sure it's cleared
-            label.setPixmap(QtGui.QPixmap())
-            return
+            image = QtGui.QPixmap(":/res/thumb_empty.png")
+            #return
 
         pm = image
         if isinstance(pm, QtGui.QIcon):
