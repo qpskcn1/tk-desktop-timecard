@@ -264,8 +264,7 @@ class AppDialog(QtGui.QWidget):
     def createTimeForm(self):
         try:
             self._my_time_model = MyTimeModel()
-            self._my_time_form = MyTimeForm()
-            self._my_time_form.setModel(self._my_time_model)
+            self._my_time_form = MyTimeForm(self._my_time_model)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"

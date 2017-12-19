@@ -13,17 +13,66 @@ Implementation of the my tasks list widget consisting of a list view displaying 
 of a Shotgun data model of my tasks, a text search and a filter control.
 """
 import pickle
+import traceback
 
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 from ..ui.my_tasks_form import Ui_MyTasksForm
 from .my_task_item_delegate import MyTaskItemDelegate
-from ..util import monitor_qobject_lifetime, map_to_source, get_source_model, get_model_str
+from ..util import monitor_qobject_lifetime, map_to_source, get_source_model
 from ..entity_proxy_model import EntityProxyModel
 
 from ..my_time.new_timelog_form import NewTimeLogForm
 
 logger = sgtk.platform.get_logger(__name__)
+
+
+class MyTasksTree(QtGui.QTreeView):
+    '''
+    a treeView whose items allow drops
+    '''
+    def __init__(self, parent=None):
+        QtGui.QTreeView.__init__(self, parent)
+        self.setAcceptDrops(True)
+        self.parent = parent
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasFormat("application/x-awevent"):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        try:
+            if event.mimeData().hasFormat("application/x-awevent"):
+                # adjust y coordinate for task_widget
+                # position = event.pos() - QtCore.QPoint(0, 70)
+                hoverIndex = self.indexAt(event.pos())
+                logger.debug("hoverIndex %s" % hoverIndex.row())
+                self.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
+                event.setDropAction(QtCore.Qt.MoveAction)
+                event.accept()
+            else:
+                event.ignore()
+        except Exception as e:
+            logger.error("dragMoveEvent Exception: %s" % e)
+
+    def dragLeaveEvent(self, event):
+        pass
+
+    def dropEvent(self, event):
+        try:
+            data = event.mimeData()
+            bstream = data.retrieveData("application/x-awevent", bytearray)
+            selected = pickle.loads(bstream)
+            task = self.parent._get_selected_task()
+            if task:
+                logger.debug("drop to task %s" % task)
+                timelog_dl = NewTimeLogForm(selected, task)
+                timelog_dl.exec_()
+            event.accept()
+        except Exception as e:
+            logger.error("dropEvent Exception: %s %s" % (e, traceback.format_exc()))
 
 
 class MyTasksForm(QtGui.QWidget):
@@ -47,7 +96,9 @@ class MyTasksForm(QtGui.QWidget):
         search_label = "My Tasks"
         self._ui.search_ctrl.set_placeholder_text("Search %s" % search_label)
         self._ui.search_ctrl.setToolTip("Press enter to complete the search")
-
+        self.task_tree = MyTasksTree(self)
+        self.task_tree.setObjectName("task_tree")
+        self.task_tree.header().setVisible(False)
         # enable/hide the new task button if we have tasks and task creation is allowed:
         have_tasks = (tasks_model and tasks_model.get_entity_type() == "Task")
         if have_tasks and allow_task_creation:
@@ -59,77 +110,50 @@ class MyTasksForm(QtGui.QWidget):
         if True:
             # create the item delegate - make sure we keep a reference to the delegate otherwise
             # things may crash later on!
-            self._item_delegate = MyTaskItemDelegate(tasks_model.extra_display_fields, self._ui.task_tree)
+            self._item_delegate = MyTaskItemDelegate(tasks_model.extra_display_fields, self.task_tree)
             monitor_qobject_lifetime(self._item_delegate)
-            self._ui.task_tree.setItemDelegate(self._item_delegate)
+            self.task_tree.setItemDelegate(self._item_delegate)
         filter_model = EntityProxyModel(self, ["content", {"entity": "name"}, "time_logs_sum"] + tasks_model.extra_display_fields)
         monitor_qobject_lifetime(filter_model, "%s entity filter model" % search_label)
         filter_model.setSourceModel(tasks_model)
-        self._ui.task_tree.setModel(filter_model)
+        # self._ui.task_tree.setModel(filter_model)
+        self.task_tree.setModel(filter_model)
+        self._ui.verticalLayout.addWidget(self.task_tree)
         # connect up the filter controls:
         self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
-        self.setAcceptDrops(True)
 
-    # def shut_down(self):
-    #     """
-    #     Clean up as much as we can to help the gc once the widget is finished with.
-    #     """
-    #     signals_blocked = self.blockSignals(True)
-    #     try:
-    #         EntityTreeForm.shut_down(self)
-    #         # detach and clean up the item delegate:
-    #         self._ui.task_tree.setItemDelegate(None)
-    #         if self._item_delegate:
-    #             self._item_delegate.setParent(None)
-    #             self._item_delegate.deleteLater()
-    #             self._item_delegate = None
-    #     finally:
-    #         self.blockSignals(signals_blocked)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
-            event.accept()
-        else:
-            event.ignore()
-
-    def dragMoveEvent(self, event):
+    def shut_down(self):
+        """
+        Clean up as much as we can to help the gc once the widget is finished with.
+        """
+        signals_blocked = self.blockSignals(True)
         try:
-            if event.mimeData().hasFormat("application/x-awevent"):
-                # adjust y coordinate for task_widget
-                position = event.pos() - QtCore.QPoint(0, 70)
-                hoverIndex = self._ui.task_tree.indexAt(position)
-                logger.debug("hoverIndex %s" % hoverIndex.row())
-                self._ui.task_tree.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
-                event.setDropAction(QtCore.Qt.MoveAction)
-                event.accept()
-            else:
-                event.ignore()
-        except Exception as e:
-            logger.error("Exception: %s" % e)
+            # detach and clean up the item delegate:
+            self.task_tree.setItemDelegate(None)
+            if self._item_delegate:
+                self._item_delegate.setParent(None)
+                self._item_delegate.deleteLater()
+                self._item_delegate = None
 
-    def dragLeaveEvent(self, event):
-        pass
+            # clear the selection:
+            if self.task_tree.selectionModel():
+                self.task_tree.selectionModel().clear()
 
-    def dropEvent(self, event):
-        try:
-            data = event.mimeData()
-            bstream = data.retrieveData("application/x-awevent", bytearray)
-            selected = pickle.loads(bstream)
-            task = self._get_selected_task()
-            if task:
-                logger.debug("drop to task %s" % task)
-                timelog_dl = NewTimeLogForm(selected, task)
-                timelog_dl.exec_()
-            event.accept()
-        except Exception as e:
-            logger.error("Exception: %s" % e)
+            # detach the filter model from the view:
+            view_model = self.task_tree.model()
+            if view_model:
+                self.task_tree.setModel(None)
+                if isinstance(view_model, EntityProxyModel):
+                    view_model.setSourceModel(None)
+        finally:
+            self.blockSignals(signals_blocked)
 
     # ------------------------------------------------------------------------------------------
     # ------------------------------------------------------------------------------------------
 
     def _get_selected_task(self):
-        selected_indexes = self._ui.task_tree.selectionModel().selectedIndexes()
+        selected_indexes = self.task_tree.selectionModel().selectedIndexes()
         if len(selected_indexes) == 1:
             item = self._item_from_index(selected_indexes[0])
             tasks_model = get_source_model(selected_indexes[0].model())
@@ -151,7 +175,7 @@ class MyTasksForm(QtGui.QWidget):
             # update the proxy filter search text:
             logger.debug("search %s in my tasks" % search_text)
             filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
-            self._ui.task_tree.model().setFilterRegExp(filter_reg_exp)
+            self.task_tree.model().setFilterRegExp(filter_reg_exp)
         finally:
             # and update the selection - this will restore the original selection if possible.
             self._update_selection(prev_selected_item)
@@ -165,7 +189,7 @@ class MyTasksForm(QtGui.QWidget):
         """
         prev_selected_item = self._get_selected_item()
         # reset the current selection without emitting any signals:
-        self._ui.task_tree.selectionModel().reset()
+        self.task_tree.selectionModel().reset()
         self._update_ui()
         return prev_selected_item
 
@@ -176,7 +200,7 @@ class MyTasksForm(QtGui.QWidget):
         :returns:   The currently selected model item if any
         """
         item = None
-        indexes = self._ui.task_tree.selectionModel().selectedIndexes()
+        indexes = self.task_tree.selectionModel().selectedIndexes()
 
         if len(indexes) == 1:
             item = self._item_from_index(indexes[0])
@@ -199,7 +223,7 @@ class MyTasksForm(QtGui.QWidget):
         """
         enable_new_tasks = False
 
-        selected_indexes = self._ui.task_tree.selectionModel().selectedIndexes()
+        selected_indexes = self.task_tree.selectionModel().selectedIndexes()
         if len(selected_indexes) == 1:
             item = self._item_from_index(selected_indexes[0])
             tasks_model = get_source_model(selected_indexes[0].model())
@@ -221,7 +245,7 @@ class MyTasksForm(QtGui.QWidget):
         to filtering.  This allows it to be tracked so that the selection state is correctly restored when
         it becomes visible again.
         """
-        tasks_model = get_source_model(self._ui.task_tree.model())
+        tasks_model = get_source_model(self.task_tree.model())
         if not tasks_model:
             logger.debug("Can found tasks model")
             return
@@ -241,16 +265,16 @@ class MyTasksForm(QtGui.QWidget):
 
             if item:
                 idx = item.index()
-                if isinstance(self._ui.task_tree.model(), QtGui.QAbstractProxyModel):
+                if isinstance(self.task_tree.model(), QtGui.QAbstractProxyModel):
                     # map the index to the proxy model:
-                    idx = self._ui.task_tree.model().mapFromSource(idx)
+                    idx = self.task_tree.model().mapFromSource(idx)
 
                 if idx.isValid():
                     # make sure the item is expanded and visible in the tree:
-                    self._ui.task_tree.scrollTo(idx)
+                    self.task_tree.scrollTo(idx)
 
                     # select the item:
-                    self._ui.task_tree.selectionModel().setCurrentIndex(idx, QtGui.QItemSelectionModel.SelectCurrent)
+                    self.task_tree.selectionModel().setCurrentIndex(idx, QtGui.QItemSelectionModel.SelectCurrent)
 
         finally:
             self.blockSignals(signals_blocked)
