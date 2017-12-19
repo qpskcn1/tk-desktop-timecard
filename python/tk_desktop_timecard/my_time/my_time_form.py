@@ -3,15 +3,17 @@ from sgtk.platform.qt import QtCore, QtGui
 
 import cPickle
 
+from ..ui.my_time_form import Ui_MyTimeForm
+
 logger = sgtk.platform.get_logger(__name__)
 
 
-class MyTimeForm(QtGui.QListView):
+class MyTimeTree(QtGui.QListView):
     '''
-    a listView of my time which can be moved
+    a listView whose items can be moved
     '''
     def __init__(self, parent=None):
-        super(MyTimeForm, self).__init__(parent)
+        QtGui.QListView.__init__(self, parent)
         self.setDragEnabled(True)
 
     def dragEnterEvent(self, event):
@@ -22,6 +24,7 @@ class MyTimeForm(QtGui.QListView):
             event.ignore()
 
     def startDrag(self, event):
+        logger.debug("Start drag")
         index = self.indexAt(event.pos())
         if not index.isValid():
             return
@@ -50,3 +53,27 @@ class MyTimeForm(QtGui.QListView):
 
     def mouseMoveEvent(self, event):
         self.startDrag(event)
+
+
+class MyTimeForm(QtGui.QWidget):
+    '''
+    a listView of my time which can be moved
+    '''
+    def __init__(self, time_model, parent=None):
+        """
+        Construction
+
+        :param model:   The Shotgun Model this widget should connect to
+        :param parent:  The parent QWidget for this control
+        """
+        QtGui.QWidget.__init__(self, parent)
+        # set up the UI
+        self._ui = Ui_MyTimeForm()
+        self._ui.setupUi(self)
+
+        search_label = "My Time"
+        self._ui.search_ctrl.set_placeholder_text("Search %s" % search_label)
+        self._ui.search_ctrl.setToolTip("Press enter to complete the search")
+        self.time_tree = MyTimeTree(self)
+        self.time_tree.setModel(time_model)
+        self._ui.verticalLayout.addWidget(self.time_tree)
