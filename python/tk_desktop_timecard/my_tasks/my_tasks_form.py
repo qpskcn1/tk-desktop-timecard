@@ -121,7 +121,6 @@ class MyTasksForm(QtGui.QWidget):
         # connect up the filter controls:
         self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
-
     def shut_down(self):
         """
         Clean up as much as we can to help the gc once the widget is finished with.
@@ -160,7 +159,6 @@ class MyTasksForm(QtGui.QWidget):
                 entity = tasks_model.get_entity(item)
                 return entity
         return None
-
 
     def _on_search_changed(self, search_text):
         """

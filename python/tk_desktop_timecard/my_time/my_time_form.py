@@ -80,9 +80,10 @@ class MyTimeForm(QtGui.QWidget):
         self._ui.search_ctrl.set_placeholder_text("Search %s" % search_label)
         self._ui.search_ctrl.setToolTip("Press enter to complete the search")
         self.time_tree = MyTimeTree(self)
-        filter_model = QtGui.QSortFilterProxyModel()
-        filter_model.setSourceModel(time_model)
-        self.time_tree.setModel(filter_model)
+        # filter_model = QtGui.QSortFilterProxyModel()
+        # filter_model.setSourceModel(time_model)
+        # filter_model.setDynamicSortFilter(True)
+        self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
         if not checkedin:
             self._ui.new_time_btn.setEnabled(False)
@@ -90,7 +91,7 @@ class MyTimeForm(QtGui.QWidget):
             self._ui.new_time_btn.setEnabled(True)
         self._ui.new_time_btn.clicked.connect(self._on_new_time)
         # connect up the filter controls:
-        self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
+        # self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
     def update_ui(self, checkedin):
         view_model = self.time_tree.model()
