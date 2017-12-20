@@ -56,7 +56,8 @@ class AppDialog(QtGui.QWidget):
 
         # Set up our own logger (other than shotgun looger) for storing timestamp
         self.set_logger(logging.INFO)
-
+        procs = self.checkAWProcess("aw-*")
+        self.checkedin = len(procs) > 0
         # now load in the UI that was created in the UI designer
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -98,14 +99,15 @@ class AppDialog(QtGui.QWidget):
         otherwise, report to console
         """
         try:
-            procs = self.checkAWProcess("aw-*")
-            if len(procs) > 0:
+            if self.checkedin:
                 self.ui.textBrowser.setText("You've already checked in before!")
             else:
                 for app in AWPROCESS[1:]:
                     appPath = os.path.join("Y:\\studio\\dev\\work\\yi\\timelog\\activitywatch", app)
                     subprocess.Popen(app, executable=appPath)
                 QtGui.QApplication.processEvents()
+                self.checkedin = True
+                self._my_time_form.update_ui(self.checkedin)
                 self.ui.textBrowser.setText("You have successfully checked in!")
                 self._logger.info("%s checked in! UTC%s"
                                   % (self.user['firstname'], datetime.utcnow()))
@@ -117,6 +119,8 @@ class AppDialog(QtGui.QWidget):
     def checkOut(self):
         try:
             self.killAllAW()
+            self.checkedin = False
+            self._my_time_form.update_ui(self.checkedin)
         except Exception as e:
             self.ui.textBrowser.setText("Failed to Check Out, because %s" % e)
             logger.exception("Failed to Check Out, because %s" % e)
@@ -125,8 +129,8 @@ class AppDialog(QtGui.QWidget):
         """
         Kill all processes related to active watch in Windows
         """
-        procs = self.checkAWProcess("aw-*")
-        if len(procs) > 0:
+        if self.checkedin:
+            procs = self.checkAWProcess("aw-*")
             for proc in procs:
                 # make sure to kill the correct proc
                 if proc['name'] in AWPROCESS:
@@ -231,8 +235,8 @@ class AppDialog(QtGui.QWidget):
 
     def createTimeForm(self):
         try:
-            self._my_time_model = MyTimeModel()
-            self._my_time_form = MyTimeForm(self._my_time_model)
+            self._my_time_model = MyTimeModel(self.checkedin)
+            self._my_time_form = MyTimeForm(self._my_time_model, self.checkedin)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
@@ -271,5 +275,5 @@ class AppDialog(QtGui.QWidget):
             self._my_tasks_model.async_refresh()
         if self._facility_tasks_model:
             self._facility_tasks_model.async_refresh()
-        if self._my_time_model:
+        if self._my_time_model and self.checkedin:
             self._my_time_model.async_refresh()

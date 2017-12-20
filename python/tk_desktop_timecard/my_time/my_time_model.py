@@ -24,21 +24,19 @@ class awevent(object):
     def subtract_logged_time(self, logged_time):
         self.duration = self.duration - self.logged_time
 
+
 class MyTimeModel(QtCore.QAbstractListModel):
 
-    # def __init__(self, parent=None):
-    #     super(MyTimeModel, self).__init__(parent)
-    #     self.list = []
-    #     self.getAWdata()
-    #     self.setSupportedDragActions(QtCore.Qt.MoveAction)
-    def __init__(self, parent=None):
+    def __init__(self, checkedin, parent=None):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
-        awdata = self._getAWdata()
-        filtered_data = self.eventFilter(awdata)
-        for name in filtered_data:
-            duration = filtered_data[name]
-            self.list.append(awevent(name, date.today(), duration))
+        if checkedin:
+            awdata = self._getAWdata()
+            if awdata:
+                filtered_data = self._eventFilter(awdata)
+                for name in filtered_data:
+                    duration = filtered_data[name]
+                    self.list.append(awevent(name, date.today(), duration))
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.list)
@@ -47,12 +45,18 @@ class MyTimeModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.DisplayRole:  # show just the name
             awevent = self.list[index.row()]
             duration = ceil(awevent.duration.total_seconds() / 360) / 10
-            return "{0} {1:.1f}hrs".format(awevent.name, duration)
+            if duration < 0:
+                duration = "any "
+            return "{0} {1}hrs".format(awevent.name, duration)
         elif role == QtCore.Qt.UserRole:  # return the whole python object
             awevent = self.list[index.row()]
             return awevent
         else:
             return
+
+    def addCustomTime(self):
+        self.list.append(awevent("Custom Time", date.today(), timedelta(-1)))
+        self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
 
     def removeRow(self, position):
         event = self.data(position)
@@ -60,6 +64,20 @@ class MyTimeModel(QtCore.QAbstractListModel):
         if event.duration <= timedelta(0):
             self.list = self.list[:position] + self.list[position + 1:]
             self.reset()
+
+    def async_refresh(self):
+        self.list = []
+        awdata = self._getAWdata()
+        if awdata:
+            filtered_data = self._eventFilter(awdata)
+            for name in filtered_data:
+                duration = filtered_data[name]
+                self.list.append(awevent(name, date.today(), duration))
+        QtGui.QApplication.processEvents()
+        try:
+            self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
+        except Exception as e:
+            logger.error(e)
 
     def _getAWdata(self):
         try:
@@ -77,7 +95,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
             logger.error(e)
             return None
 
-    def eventFilter(self, data):
+    def _eventFilter(self, data):
         filtered_event = {"other": timedelta(0)}
         for event in data:
             duration = data[event]['duration']

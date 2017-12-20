@@ -14,6 +14,8 @@ class MyTimeTree(QtGui.QListView):
     '''
     def __init__(self, parent=None):
         QtGui.QListView.__init__(self, parent)
+        self.setSpacing(1)
+        self.setGridSize(QtCore.QSize(10, 20))
         self.setDragEnabled(True)
 
     def dragEnterEvent(self, event):
@@ -46,6 +48,10 @@ class MyTimeTree(QtGui.QListView):
 
         drag.setHotSpot(QtCore.QPoint(pixmap.width() / 2, pixmap.height() / 2))
         drag.setPixmap(pixmap)
+        # pixmap = QtGui.QPixmap(100, self.height()/2)
+        # pixmap.fill(QtGui.QColor("orange"))
+        # drag.setPixmap(pixmap)
+
         result = drag.start(QtCore.Qt.MoveAction)
         if result:  # == QtCore.Qt.MoveAction:
             self.model().removeRow(index.row())
@@ -58,7 +64,7 @@ class MyTimeForm(QtGui.QWidget):
     '''
     a listView of my time which can be moved
     '''
-    def __init__(self, time_model, parent=None):
+    def __init__(self, time_model, checkedin=False, parent=None):
         """
         Construction
 
@@ -76,3 +82,26 @@ class MyTimeForm(QtGui.QWidget):
         self.time_tree = MyTimeTree(self)
         self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
+        if not checkedin:
+            self._ui.new_time_btn.setEnabled(False)
+        else:
+            self._ui.new_time_btn.setEnabled(True)
+        self._ui.new_time_btn.clicked.connect(self._on_new_time)
+
+    def update_ui(self, checkedin):
+        view_model = self.time_tree.model()
+        if not checkedin:
+            # detach the filter model from the view:
+            if view_model:
+                self.prev_model = view_model
+                self.time_tree.setModel(None)
+            self._ui.new_time_btn.setEnabled(False)
+        else:
+            if view_model:
+                self.time_tree.model().async_refresh()
+            else:
+                self.time_tree.setModel(self.prev_model)
+            self._ui.new_time_btn.setEnabled(True)
+
+    def _on_new_time(self):
+        self.time_tree.model().addCustomTime()
