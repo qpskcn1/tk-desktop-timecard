@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, date
 from sgtk.platform.qt import QtCore, QtGui
 
 import aw_client
-from aw_core.transforms import full_chunk, filter_keyvals
+from aw_core.transforms import full_chunk
 
 logger = sgtk.platform.get_logger(__name__)
 
@@ -18,8 +18,9 @@ class awevent(object):
         self.name = name
         self.timestamp = timestamp
         self.duration = duration
+
     def __repr__(self):
-        return "{name: %s, date: %s, duration: %s}"% (self.name, self.timestamp, self.duration)
+        return "{name: %s, date: %s, duration: %s}" % (self.name, self.timestamp, self.duration)
 
     def subtract_logged_time(self, logged_time):
         self.duration = self.duration - self.logged_time

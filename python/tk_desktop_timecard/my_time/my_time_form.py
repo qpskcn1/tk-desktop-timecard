@@ -15,7 +15,7 @@ class MyTimeTree(QtGui.QListView):
     def __init__(self, parent=None):
         QtGui.QListView.__init__(self, parent)
         self.setSpacing(1)
-        self.setGridSize(QtCore.QSize(10, 20))
+        self.setStyleSheet("font-size: 12pt;")
         self.setDragEnabled(True)
 
     def dragEnterEvent(self, event):
@@ -80,13 +80,17 @@ class MyTimeForm(QtGui.QWidget):
         self._ui.search_ctrl.set_placeholder_text("Search %s" % search_label)
         self._ui.search_ctrl.setToolTip("Press enter to complete the search")
         self.time_tree = MyTimeTree(self)
-        self.time_tree.setModel(time_model)
+        filter_model = QtGui.QSortFilterProxyModel()
+        filter_model.setSourceModel(time_model)
+        self.time_tree.setModel(filter_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
         if not checkedin:
             self._ui.new_time_btn.setEnabled(False)
         else:
             self._ui.new_time_btn.setEnabled(True)
         self._ui.new_time_btn.clicked.connect(self._on_new_time)
+        # connect up the filter controls:
+        self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
     def update_ui(self, checkedin):
         view_model = self.time_tree.model()
@@ -105,3 +109,10 @@ class MyTimeForm(QtGui.QWidget):
 
     def _on_new_time(self):
         self.time_tree.model().addCustomTime()
+
+    def _on_search_changed(self, search_text):
+        try:
+            filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
+            self.time_tree.model().setFilterRegExp(filter_reg_exp)
+        except Exception as e:
+            logger.error(e)

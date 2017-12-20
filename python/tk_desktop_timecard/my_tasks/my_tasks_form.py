@@ -172,7 +172,6 @@ class MyTasksForm(QtGui.QWidget):
         prev_selected_item = self._reset_selection()
         try:
             # update the proxy filter search text:
-            logger.debug("search %s in my tasks" % search_text)
             filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
             self.task_tree.model().setFilterRegExp(filter_reg_exp)
         finally:
