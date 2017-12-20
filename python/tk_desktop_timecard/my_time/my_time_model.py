@@ -1,3 +1,4 @@
+import os
 from math import ceil
 
 import sgtk
@@ -86,7 +87,8 @@ class MyTimeModel(QtCore.QAbstractListModel):
             logger.debug("ActivityWatchClient Connected")
             starttime = datetime.now().replace(hour=0, minute=0)
             endtime = starttime.replace(hour=23, minute=59)
-            windowevents = client.get_events("aw-watcher-window_OFG-TESTBENCH",
+            hostname = os.environ.get("COMPUTERNAME", "unknown")
+            windowevents = client.get_events("aw-watcher-window_%s" % hostname,
                                              start=starttime,
                                              end=endtime,
                                              limit=-1)
