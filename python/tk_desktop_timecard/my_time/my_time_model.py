@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, date
 from sgtk.platform.qt import QtCore, QtGui
 
 import aw_client
-from aw_core.transforms import full_chunk
+from aw_core.transforms import filter_period_intersect, filter_keyvals, full_chunk
 
 from .aw_event import AWEvent
 
@@ -78,7 +78,13 @@ class MyTimeModel(QtCore.QAbstractListModel):
                                              start=starttime,
                                              end=endtime,
                                              limit=-1)
-            chunk_result = full_chunk(windowevents, "app", False)
+            afkevents = client.get_events("aw-watcher-afk_%s" % hostname,
+                                          start=starttime,
+                                          end=endtime,
+                                          limit=-1)
+            afkevents_filtered = filter_keyvals(afkevents, "status", ["not-afk"])
+            events_filtered = filter_period_intersect(windowevents, afkevents_filtered)
+            chunk_result = full_chunk(events_filtered, "app", False)
             return chunk_result.chunks
         except Exception as e:
             logger.error(e)
