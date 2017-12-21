@@ -8,23 +8,9 @@ from sgtk.platform.qt import QtCore, QtGui
 import aw_client
 from aw_core.transforms import full_chunk
 
+from .aw_event import AWEvent
+
 logger = sgtk.platform.get_logger(__name__)
-
-
-class awevent(object):
-    '''
-    a custom data structure for AW data
-    '''
-    def __init__(self, name, timestamp, duration):
-        self.name = name
-        self.timestamp = timestamp
-        self.duration = duration
-
-    def __repr__(self):
-        return "{name: %s, date: %s, duration: %s}" % (self.name, self.timestamp, self.duration)
-
-    def subtract_logged_time(self, logged_time):
-        self.duration = self.duration - self.logged_time
 
 
 class MyTimeModel(QtCore.QAbstractListModel):
@@ -38,7 +24,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
                 filtered_data = self._eventFilter(awdata)
                 for name in filtered_data:
                     duration = filtered_data[name]
-                    self.list.append(awevent(name, date.today(), duration))
+                    self.list.append(AWEvent(name, date.today(), duration))
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.list)
@@ -57,7 +43,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
             return
 
     def addCustomTime(self):
-        self.list.append(awevent("Custom Time", date.today(), timedelta(-1)))
+        self.list.append(AWEvent("Custom Time", date.today(), timedelta(-1)))
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
 
     def removeRow(self, position):
@@ -74,7 +60,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
             filtered_data = self._eventFilter(awdata)
             for name in filtered_data:
                 duration = filtered_data[name]
-                self.list.append(awevent(name, date.today(), duration))
+                self.list.append(AWEvent(name, date.today(), duration))
         QtGui.QApplication.processEvents()
         try:
             self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())

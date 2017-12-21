@@ -14,6 +14,7 @@ of a Shotgun data model of my tasks, a text search and a filter control.
 """
 import pickle
 import traceback
+from datetime import date, timedelta
 
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
@@ -21,6 +22,7 @@ from ..ui.my_tasks_form import Ui_MyTasksForm
 from .my_task_item_delegate import MyTaskItemDelegate
 from ..util import monitor_qobject_lifetime, map_to_source, get_source_model
 from ..entity_proxy_model import EntityProxyModel
+from ..my_time.aw_event import AWEvent
 
 from ..my_time.new_timelog_form import NewTimeLogForm
 
@@ -112,7 +114,7 @@ class MyTasksForm(QtGui.QWidget):
             self._item_delegate = MyTaskItemDelegate(tasks_model.extra_display_fields, self.task_tree)
             monitor_qobject_lifetime(self._item_delegate)
             self.task_tree.setItemDelegate(self._item_delegate)
-        filter_model = EntityProxyModel(self, ["content", {"entity": "name"}, "time_logs_sum"] + tasks_model.extra_display_fields)
+        filter_model = EntityProxyModel(self, ["content", {"project": "name"}, {"entity": "name"}] + tasks_model.extra_display_fields)
         monitor_qobject_lifetime(filter_model, "%s entity filter model" % search_label)
         filter_model.setSourceModel(tasks_model)
         # self._ui.task_tree.setModel(filter_model)
@@ -120,6 +122,21 @@ class MyTasksForm(QtGui.QWidget):
         self._ui.verticalLayout.addWidget(self.task_tree)
         # connect up the filter controls:
         self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
+        # connect context menu
+        self.task_tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.task_tree.customContextMenuRequested.connect(self.open_menu)
+
+    def open_menu(self, position):
+        menu = QtGui.QMenu()
+        addTimeAction = menu.addAction("Add Time Log To This Task")
+        action = menu.exec_(self.task_tree.viewport().mapToGlobal(position))
+        if action == addTimeAction:
+            task = self._get_selected_task()
+            time = AWEvent("Custom Time", date.today(), timedelta(-1))
+            if task:
+                logger.debug(time)
+                timelog_dl = NewTimeLogForm(time, task)
+                timelog_dl.exec_()
 
     def shut_down(self):
         """
