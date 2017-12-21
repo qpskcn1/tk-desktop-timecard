@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>383</width>
-    <height>90</height>
+    <height>107</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -92,7 +92,7 @@ background-color: rgb(32,32, 32);
        </widget>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0,0,1">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0,0,0,1">
         <property name="spacing">
          <number>2</number>
         </property>
@@ -103,11 +103,32 @@ background-color: rgb(32,32, 32);
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>6</width>
+            <width>3</width>
             <height>0</height>
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_1" stretch="0,1">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="project_icon">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="project_label">
+            <property name="text">
+             <string>Project</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
@@ -186,7 +207,7 @@ background-color: rgb(32,32, 32);
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>6</width>
+            <width>3</width>
             <height>0</height>
            </size>
           </property>

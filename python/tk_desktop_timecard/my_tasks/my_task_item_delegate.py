@@ -88,20 +88,26 @@ class MyTaskItemDelegate(WidgetDelegate):
         src_index = map_to_source(model_index)
         if not src_index or not src_index.isValid():
             return
-        
+
         model = src_index.model()
         if not model:
             return
-        
+
         item = model.itemFromIndex(src_index)
         if not item:
             return
 
-        sg_data = item.get_sg_data()    
+        sg_data = item.get_sg_data()
         # set the thumbnail to the icon for the item:
         widget.set_thumbnail(item.icon())
-        
-        # set entity info:        
+
+        # set project info:
+        project = sg_data.get("project")
+        project_name = project.get("name")
+        project_type_icon = model.get_entity_icon("Project")
+        widget.set_project(project_name, project_type_icon)
+
+        # set entity info:
         entity = sg_data.get("entity")
         entity_name = entity.get("name")
         entity_type = entity.get("type")

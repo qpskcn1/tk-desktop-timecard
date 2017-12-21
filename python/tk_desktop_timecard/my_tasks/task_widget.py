@@ -77,6 +77,16 @@ class TaskWidget(QtGui.QWidget):
             self._ui.timelog_icon.show()
             self._set_label_image(self._ui.timelog_icon, icon, 20, 20)
 
+    def set_project(self, name, icon):
+        """
+        """
+        self._ui.project_label.setText(name)
+        if not icon:
+            self._ui.project_icon.hide()
+        else:
+            self._ui.project_icon.show()
+            self._set_label_image(self._ui.project_icon, icon, 20, 20)
+
     def set_other(self, text):
         """
         """

@@ -41,10 +41,16 @@ class MyTasksModel(ShotgunEntityModel):
         """
         self.extra_display_fields = extra_display_fields or []
 
-        filters = [["project", "is", project]]
+        filters = []
+        # facility task
+        if project['name'] == "Facility":
+            filters = [["project", "is", project]]
+        # non facility task
+        else:
+            filters = [["project.Project.name", "is_not", "Facility"]]
         filters.extend(resolve_filters(my_tasks_filters))
 
-        fields = ["image", "entity", "content", "time_logs_sum"]
+        fields = ["image", "project", "entity", "content", "time_logs_sum"]
         fields.extend(self.extra_display_fields)
 
         ShotgunEntityModel.__init__(self, "Task", filters, ["content"], fields, parent,

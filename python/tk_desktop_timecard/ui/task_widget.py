@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'task_widget.ui'
 #
-# Created: Mon Dec 11 12:23:12 2017
+# Created: Wed Dec 20 18:14:10 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from tank.platform.qt import QtCore, QtGui
 class Ui_TaskWidget(object):
     def setupUi(self, TaskWidget):
         TaskWidget.setObjectName("TaskWidget")
-        TaskWidget.resize(383, 90)
+        TaskWidget.resize(383, 107)
         self.horizontalLayout = QtGui.QHBoxLayout(TaskWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -61,8 +61,20 @@ class Ui_TaskWidget(object):
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setObjectName("verticalLayout")
-        spacerItem = QtGui.QSpacerItem(6, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(3, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout_1 = QtGui.QHBoxLayout()
+        self.horizontalLayout_1.setSpacing(6)
+        self.horizontalLayout_1.setObjectName("horizontalLayout_1")
+        self.project_icon = QtGui.QLabel(self.background)
+        self.project_icon.setText("")
+        self.project_icon.setObjectName("project_icon")
+        self.horizontalLayout_1.addWidget(self.project_icon)
+        self.project_label = QtGui.QLabel(self.background)
+        self.project_label.setObjectName("project_label")
+        self.horizontalLayout_1.addWidget(self.project_label)
+        self.horizontalLayout_1.setStretch(1, 1)
+        self.verticalLayout.addLayout(self.horizontalLayout_1)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setSpacing(6)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -102,10 +114,10 @@ class Ui_TaskWidget(object):
         self.other_label = QtGui.QLabel(self.background)
         self.other_label.setObjectName("other_label")
         self.verticalLayout.addWidget(self.other_label)
-        spacerItem1 = QtGui.QSpacerItem(6, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem1 = QtGui.QSpacerItem(3, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.verticalLayout.setStretch(0, 1)
-        self.verticalLayout.setStretch(5, 1)
+        self.verticalLayout.setStretch(6, 1)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.horizontalLayout_2.setStretch(1, 1)
         self.horizontalLayout.addWidget(self.background)
@@ -115,6 +127,7 @@ class Ui_TaskWidget(object):
 
     def retranslateUi(self, TaskWidget):
         TaskWidget.setWindowTitle(QtGui.QApplication.translate("TaskWidget", "Form", None, QtGui.QApplication.UnicodeUTF8))
+        self.project_label.setText(QtGui.QApplication.translate("TaskWidget", "Project", None, QtGui.QApplication.UnicodeUTF8))
         self.entity_label.setText(QtGui.QApplication.translate("TaskWidget", "Entity", None, QtGui.QApplication.UnicodeUTF8))
         self.task_label.setText(QtGui.QApplication.translate("TaskWidget", "Task", None, QtGui.QApplication.UnicodeUTF8))
         self.timelog_label.setText(QtGui.QApplication.translate("TaskWidget", "TimeLog", None, QtGui.QApplication.UnicodeUTF8))
