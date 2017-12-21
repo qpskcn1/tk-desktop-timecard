@@ -68,7 +68,7 @@ class MyTasksTree(QtGui.QTreeView):
             selected = pickle.loads(bstream)
             task = self.parent._get_selected_task()
             if task:
-                logger.debug("drop to task %s" % task)
+                logger.debug("Drop to task %s" % task)
                 timelog_dl = NewTimeLogForm(selected, task)
                 timelog_dl.exec_()
             event.accept()
@@ -106,6 +106,8 @@ class MyTasksForm(QtGui.QWidget):
             # enable and connect the new task button
             self._ui.new_task_btn.clicked.connect(self._on_new_task)
             self._ui.new_task_btn.setEnabled(False)
+        else:
+            self._ui.new_task_btn.hide()
         # Sets an item delete to show a list of tiles for tasks instead of nodes in a tree.
         self._item_delegate = None
         if True:
@@ -128,13 +130,12 @@ class MyTasksForm(QtGui.QWidget):
 
     def open_menu(self, position):
         menu = QtGui.QMenu()
-        addTimeAction = menu.addAction("Add Time Log To This Task")
+        addTimeAction = menu.addAction("New Time Log")
         action = menu.exec_(self.task_tree.viewport().mapToGlobal(position))
         if action == addTimeAction:
             task = self._get_selected_task()
             time = AWEvent("Custom Time", date.today(), timedelta(-1))
             if task:
-                logger.debug(time)
                 timelog_dl = NewTimeLogForm(time, task)
                 timelog_dl.exec_()
 

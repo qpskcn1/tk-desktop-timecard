@@ -25,9 +25,10 @@ class NewTimeLogForm(QtGui.QDialog):
         self.date = data.timestamp
         self.ui = Ui_NewTimeLogForm()
         self.ui.setupUi(self)
-        self.ui.comboBox.addItem("%s %s, %s" %
-                                 (task['entity']['type'], task['entity']['name'], task['content']),
-                                 userData=task)
+        self.ui.project_cbBox.addItem("%s" % (task['project']['name']))
+        self.ui.task_cbBox.addItem("%s %s, %s" %
+                                   (task['entity']['type'], task['entity']['name'], task['content']),
+                                   userData=task)
         self.ui.dateEdit.setDate(self.date)
         self.ui.dateEdit.setCalendarPopup(True)
         self.ui.doubleSpinBox.setDecimals(1)
@@ -56,7 +57,7 @@ class NewTimeLogForm(QtGui.QDialog):
 
     def submitTimeLog(self):
         try:
-            task = self.ui.comboBox.itemData(self.ui.comboBox.currentIndex())
+            task = self.ui.task_cbBox.itemData(self.ui.task_cbBox.currentIndex())
             # duration value is expressed in minutes
             duration = float(self.ui.doubleSpinBox.value()) * 60
             description = self.ui.textEdit.toPlainText()

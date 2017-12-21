@@ -96,7 +96,6 @@ class MyTaskItemDelegate(WidgetDelegate):
         item = model.itemFromIndex(src_index)
         if not item:
             return
-
         sg_data = item.get_sg_data()
         # set the thumbnail to the icon for the item:
         widget.set_thumbnail(item.icon())

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'my_time_form.ui'
 #
-# Created: Tue Dec 19 15:43:38 2017
+# Created: Thu Dec 21 15:32:16 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,9 +25,9 @@ class Ui_MyTimeForm(object):
         self.horizontalLayout.addWidget(self.random_cb)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.new_time_btn = QtGui.QPushButton(MyTimeForm)
-        self.new_time_btn.setObjectName("new_time_btn")
-        self.horizontalLayout.addWidget(self.new_time_btn)
+        self.refresh_btn = QtGui.QPushButton(MyTimeForm)
+        self.refresh_btn.setObjectName("refresh_btn")
+        self.horizontalLayout.addWidget(self.refresh_btn)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(1, -1, 1, -1)
@@ -47,7 +47,8 @@ class Ui_MyTimeForm(object):
     def retranslateUi(self, MyTimeForm):
         MyTimeForm.setWindowTitle(QtGui.QApplication.translate("MyTimeForm", "Form", None, QtGui.QApplication.UnicodeUTF8))
         self.random_cb.setText(QtGui.QApplication.translate("MyTimeForm", "Some Filter", None, QtGui.QApplication.UnicodeUTF8))
-        self.new_time_btn.setText(QtGui.QApplication.translate("MyTimeForm", "+ New Time", None, QtGui.QApplication.UnicodeUTF8))
+        self.refresh_btn.setToolTip(QtGui.QApplication.translate("MyTimeForm", "<html><head/><body><p>Refresh (F5)</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.refresh_btn.setText(QtGui.QApplication.translate("MyTimeForm", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
 
 from ..framework_qtwidgets import SearchWidget
 from . import resources_rc

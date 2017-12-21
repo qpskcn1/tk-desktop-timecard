@@ -86,10 +86,10 @@ class MyTimeForm(QtGui.QWidget):
         self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
         if not checkedin:
-            self._ui.new_time_btn.setEnabled(False)
+            self._ui.refresh_btn.setEnabled(False)
         else:
-            self._ui.new_time_btn.setEnabled(True)
-        self._ui.new_time_btn.clicked.connect(self._on_new_time)
+            self._ui.refresh_btn.setEnabled(True)
+        self._ui.refresh_btn.clicked.connect(self._on_refresh)
         # connect up the filter controls:
         # self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
@@ -100,16 +100,16 @@ class MyTimeForm(QtGui.QWidget):
             if view_model:
                 self.prev_model = view_model
                 self.time_tree.setModel(None)
-            self._ui.new_time_btn.setEnabled(False)
+            self._ui.refresh_btn.setEnabled(False)
         else:
             if view_model:
                 self.time_tree.model().async_refresh()
             else:
                 self.time_tree.setModel(self.prev_model)
-            self._ui.new_time_btn.setEnabled(True)
+            self._ui.refresh_btn.setEnabled(True)
 
-    def _on_new_time(self):
-        self.time_tree.model().addCustomTime()
+    def _on_refresh(self):
+        self.time_tree.model().async_refresh()
 
     def _on_search_changed(self, search_text):
         try:
