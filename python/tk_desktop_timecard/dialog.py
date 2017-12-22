@@ -181,6 +181,10 @@ class AppDialog(QtGui.QWidget):
         try:
             if self._my_tasks_model:
                 self._my_tasks_model.destroy()
+            if self._facility_tasks_model:
+                self._facility_tasks_model.destroy()
+            if self._my_time_model:
+                self._my_time_model.destroy()
             # shut down main threadpool
             self._task_manager.shut_down()
         except Exception as e:
