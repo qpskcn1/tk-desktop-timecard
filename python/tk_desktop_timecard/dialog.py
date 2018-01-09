@@ -54,7 +54,7 @@ class AppDialog(QtGui.QWidget):
         # call the base class and let it do its thing.
         QtGui.QWidget.__init__(self)
 
-        # Set up our own logger (other than shotgun looger) for storing timestamp
+        # Set up our own logger (other than shotgun logger) for storing timestamp
         self.set_logger(logging.INFO)
         procs = self.checkAWProcess("aw-*")
         self.checkedin = len(procs) > 0
@@ -95,7 +95,7 @@ class AppDialog(QtGui.QWidget):
     def checkIn(self):
         """
         Callback when 'Check In' button is clicked
-        Open aw-qt, aw-server, aw-watcher if 'aw-qt.exe' is not existed
+        Open aw-qt, aw-server, aw-watcher, and update UI to display my time
         otherwise, report to console
         """
         try:
@@ -117,6 +117,10 @@ class AppDialog(QtGui.QWidget):
                              % (e, traceback.format_exc()))
 
     def checkOut(self):
+        """
+        Callback when 'Check Out' button is clicked
+        kill aw-qt, aw-server, aw-watcher and clear my time model
+        """
         try:
             self.killAllAW()
             self.checkedin = False
@@ -153,6 +157,7 @@ class AppDialog(QtGui.QWidget):
          {'pid': 10002, 'name': 'aw-server.exe'},
          ...
         ]
+        :param processname: name of the process to kill
         """
         tlcall = 'TASKLIST', '/FI', 'imagename eq %s' % processname
         # shell=True hides the shell window, stdout to PIPE enables
@@ -219,6 +224,9 @@ class AppDialog(QtGui.QWidget):
         pass
 
     def createTasksFrom(self):
+        """
+        Create my task form and facility task form icluding model and view.
+        """
         try:
             self._my_tasks_model = self._build_my_tasks_model(self._app.context.project)
             self._my_tasks_form = MyTasksForm(self._my_tasks_model,
@@ -238,6 +246,9 @@ class AppDialog(QtGui.QWidget):
                              % (e, traceback.format_exc()))
 
     def createTimeForm(self):
+        """
+        Create my time form icluding model and view.
+        """
         try:
             self._my_time_model = MyTimeModel(self.checkedin)
             self._my_time_form = MyTimeForm(self._my_time_model, self.checkedin)
@@ -247,6 +258,12 @@ class AppDialog(QtGui.QWidget):
                              % (e, traceback.format_exc()))
 
     def _build_my_tasks_model(self, project):
+        """
+        Get settings from config file and append those settings default
+        Then create task model
+        :param project: dict
+                        sg project context
+        """
         if not self.user:
             # can't show my tasks if we don't know who 'my' is!
             logger.debug("There is no tasks because user is not defined")
