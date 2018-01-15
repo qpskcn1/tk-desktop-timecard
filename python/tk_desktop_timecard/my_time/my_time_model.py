@@ -19,8 +19,9 @@ class MyTimeModel(QtCore.QAbstractListModel):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
         if checkedin:
-            awdata = self._getAWdata()
-            if awdata:
+            chunk_result = self._getAWdata()
+            if chunk_result:
+                awdata = chunk_result.chunks
                 filtered_data = self._eventFilter(awdata)
                 for name in filtered_data:
                     duration = filtered_data[name]
@@ -55,8 +56,9 @@ class MyTimeModel(QtCore.QAbstractListModel):
 
     def async_refresh(self):
         self.list = []
-        awdata = self._getAWdata()
-        if awdata:
+        chunk_result = self._getAWdata()
+        if chunk_result:
+            awdata = chunk_result.chunks
             filtered_data = self._eventFilter(awdata)
             for name in filtered_data:
                 duration = filtered_data[name]
@@ -66,6 +68,9 @@ class MyTimeModel(QtCore.QAbstractListModel):
             self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
         except Exception as e:
             logger.error(e)
+
+    def destroy(self):
+        pass
 
     def _getAWdata(self):
         try:
@@ -85,7 +90,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
             afkevents_filtered = filter_keyvals(afkevents, "status", ["not-afk"])
             events_filtered = filter_period_intersect(windowevents, afkevents_filtered)
             chunk_result = full_chunk(events_filtered, "app", False)
-            return chunk_result.chunks
+            return chunk_result
         except Exception as e:
             logger.error(e)
             return None
