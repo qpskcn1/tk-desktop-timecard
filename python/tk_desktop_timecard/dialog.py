@@ -22,6 +22,7 @@ from .my_tasks.my_tasks_form import MyTasksForm
 from .my_tasks.my_tasks_model import MyTasksModel
 from .my_time.my_time_form import MyTimeForm
 from .my_time.my_time_model import MyTimeModel
+from .my_time.my_time_bar import MyTimeBar
 from .util import monitor_qobject_lifetime
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
@@ -79,6 +80,7 @@ class AppDialog(QtGui.QWidget):
         # create my tasks form and my time form:
         self.createTasksFrom()
         self.createTimeForm()
+        self.createTimeBar()
 
         # add refresh action with appropriate keyboard shortcut:
         refresh_action = QtGui.QAction("Refresh", self)
@@ -256,6 +258,12 @@ class AppDialog(QtGui.QWidget):
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
+
+    def createTimeBar(self):
+        my_time_bar = MyTimeBar()
+        my_time_bar.setMaximumSize(QtCore.QSize(16777215, 50))
+        my_time_bar.setObjectName("MyTimeBar")
+        self.ui.gridLayout.addWidget(my_time_bar, 4, 0, 1, 4)
 
     def _build_my_tasks_model(self, project):
         """
