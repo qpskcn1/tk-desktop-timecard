@@ -36,3 +36,7 @@ nosetests.xml
 
 # Windows thumbnail cache files
 Thumbs.db
+
+# test script
+test.py
+test*.py
