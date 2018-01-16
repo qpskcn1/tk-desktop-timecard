@@ -33,6 +33,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.sublime-project
+.sublime-workspace
 
 # Windows thumbnail cache files
 Thumbs.db
