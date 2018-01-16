@@ -11,7 +11,7 @@ class MyTimeBar(QtGui.QWidget):
 
     def __init__(self):
         super(MyTimeBar, self).__init__()
-        self.start = start = datetime.now().replace(hour=0, minute=0)
+        self.start = datetime.now().replace(hour=0, minute=0)
         self.checkedIn, self.checkedOut = self.getTimeInfo()
 
     def paintEvent(self, e):
@@ -24,6 +24,9 @@ class MyTimeBar(QtGui.QWidget):
         qp.end()
 
     def drawScale(self, qp, width, height):
+        """
+        Draw a timeline including scale and text
+        """
         unit = width / 24
         color = QtGui.QColor(255, 255, 255)
         qp.setPen(color)
@@ -41,6 +44,10 @@ class MyTimeBar(QtGui.QWidget):
                         "{}:00".format(i))
 
     def drawRectangles(self, qp, width, height):
+        """
+        Draw rectangles to the timeline to display
+        Checked In and Checked Out time
+        """
         unit = width / 3600 / 24
         color = QtGui.QColor(0, 0, 0)
         color.setNamedColor('#BEF781')
@@ -79,8 +86,12 @@ class MyTimeBar(QtGui.QWidget):
         logger.debug("in %s" % checkedIn)
         logger.debug("out %s" % checkedOut)
         # add "now" as last checked out time
-        checkedOut.append(datetime.now())
+        if len(checkedIn) > len(checkedOut):
+            checkedOut.append(datetime.now())
         if len(checkedIn) == len(checkedOut):
             return checkedIn, checkedOut
         else:
-            return None, None
+            return [], []
+
+    def update_ui(self):
+        self.checkedIn, self.checkedOut = self.getTimeInfo()

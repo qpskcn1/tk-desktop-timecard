@@ -127,6 +127,7 @@ class AppDialog(QtGui.QWidget):
             self.killAllAW()
             self.checkedin = False
             self._my_time_form.update_ui(self.checkedin)
+            self._my_time_bar.update_ui()
         except Exception as e:
             self.ui.textBrowser.setText("Failed to Check Out, because %s" % e)
             logger.exception("Failed to Check Out, because %s" % e)
@@ -260,10 +261,10 @@ class AppDialog(QtGui.QWidget):
                              % (e, traceback.format_exc()))
 
     def createTimeBar(self):
-        my_time_bar = MyTimeBar()
-        my_time_bar.setMaximumSize(QtCore.QSize(16777215, 50))
-        my_time_bar.setObjectName("MyTimeBar")
-        self.ui.gridLayout.addWidget(my_time_bar, 4, 0, 1, 4)
+        self._my_time_bar = MyTimeBar()
+        self._my_time_bar.setMaximumSize(QtCore.QSize(16777215, 50))
+        self._my_time_bar.setObjectName("MyTimeBar")
+        self.ui.gridLayout.addWidget(self._my_time_bar, 4, 0, 1, 4)
 
     def _build_my_tasks_model(self, project):
         """
