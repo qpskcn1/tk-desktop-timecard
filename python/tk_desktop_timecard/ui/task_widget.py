@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'task_widget.ui'
 #
-# Created: Wed Dec 20 18:14:10 2017
+# Created: Mon Jun 04 17:49:40 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
