@@ -22,8 +22,8 @@ from ..ui.my_tasks_form import Ui_MyTasksForm
 from .my_task_item_delegate import MyTaskItemDelegate
 from ..util import monitor_qobject_lifetime, map_to_source, get_source_model
 from ..entity_proxy_model import EntityProxyModel
-from ..my_time.aw_event import AWEvent
 
+from ..my_time.my_time_model import timelogEvent
 from ..my_time.new_timelog_form import NewTimeLogForm
 
 logger = sgtk.platform.get_logger(__name__)
@@ -39,14 +39,14 @@ class MyTasksTree(QtGui.QTreeView):
         self.parent = parent
 
     def dragEnterEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
+        if event.mimeData().hasFormat("application/x-timelogevent"):
             event.accept()
         else:
             event.ignore()
 
     def dragMoveEvent(self, event):
         try:
-            if event.mimeData().hasFormat("application/x-awevent"):
+            if event.mimeData().hasFormat("application/x-timelogevent"):
                 # adjust y coordinate for task_widget
                 # position = event.pos() - QtCore.QPoint(0, 70)
                 hoverIndex = self.indexAt(event.pos())
@@ -64,12 +64,12 @@ class MyTasksTree(QtGui.QTreeView):
     def dropEvent(self, event):
         try:
             data = event.mimeData()
-            bstream = data.retrieveData("application/x-awevent", bytearray)
+            bstream = data.retrieveData("application/x-timelogevent", bytearray)
             selected = pickle.loads(bstream)
             task = self.parent._get_selected_task()
             if task:
                 logger.debug("Drop to task %s" % task)
-                timelog_dl = NewTimeLogForm(selected, task)
+                timelog_dl = NewTimeLogForm(selected, task, preset=True)
                 timelog_dl.exec_()
             event.accept()
         except Exception as e:
@@ -134,7 +134,7 @@ class MyTasksForm(QtGui.QWidget):
         action = menu.exec_(self.task_tree.viewport().mapToGlobal(position))
         if action == addTimeAction:
             task = self._get_selected_task()
-            time = AWEvent("Custom Time", date.today(), timedelta(-1))
+            time = timelogEvent("Custom Time", date.today(), timedelta(-1))
             if task:
                 timelog_dl = NewTimeLogForm(time, task)
                 timelog_dl.exec_()

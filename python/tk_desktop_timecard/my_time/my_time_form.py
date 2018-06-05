@@ -19,7 +19,7 @@ class MyTimeTree(QtGui.QListView):
         self.setDragEnabled(True)
 
     def dragEnterEvent(self, event):
-        if event.mimeData().hasFormat("application/x-awevent"):
+        if event.mimeData().hasFormat("application/x-timelogevent"):
             event.setDropAction(QtCore.Qt.QMoveAction)
             event.accept()
         else:
@@ -36,7 +36,7 @@ class MyTimeTree(QtGui.QListView):
         # convert to a bytestream
         bstream = cPickle.dumps(selected)
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/x-awevent", bstream)
+        mimeData.setData("application/x-timelogevent", bstream)
 
         drag = QtGui.QDrag(self)
         drag.setMimeData(mimeData)

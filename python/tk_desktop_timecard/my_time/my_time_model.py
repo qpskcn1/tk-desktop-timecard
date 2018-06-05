@@ -1,50 +1,61 @@
 import os
+import csv
 from math import ceil
 
 import sgtk
 from datetime import datetime, timedelta, date
 from sgtk.platform.qt import QtCore, QtGui
 
-import aw_client
-from aw_core.transforms import filter_period_intersect, filter_keyvals, full_chunk
-
-from .aw_event import AWEvent
 
 logger = sgtk.platform.get_logger(__name__)
 
 
+class timelogEvent(object):
+    '''
+    a custom data structure for shotgun time log
+    '''
+    def __init__(self, name, timestamp, duration):
+        self.name = name
+        self.timestamp = timestamp
+        self.duration = duration
+
+    def __repr__(self):
+        return "{name: %s, date: %s, duration: %s}" % (self.name, self.timestamp, self.duration)
+
+    def subtract_logged_time(self, logged_time):
+        self.duration = self.duration - self.logged_time
+
+
 class MyTimeModel(QtCore.QAbstractListModel):
 
-    def __init__(self, checkedin, parent=None):
+    def __init__(self, parent=None):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
-        if checkedin:
-            chunk_result = self._getAWdata()
-            if chunk_result:
-                awdata = chunk_result.chunks
-                filtered_data = self._eventFilter(awdata)
-                for name in filtered_data:
-                    duration = filtered_data[name]
-                    self.list.append(AWEvent(name, date.today(), duration))
+        preset_path = os.path.join(os.path.dirname(__file__), "preset.csv")
+        with open(preset_path, 'rb') as preset:
+            presets = csv.reader(preset, delimiter=',')
+            for row in presets:
+                row[1] = timedelta(seconds=int(row[1]))
+                self.addRow(*row)
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.list)
 
     def data(self, index, role=QtCore.Qt.UserRole):
         if role == QtCore.Qt.DisplayRole:  # show just the name
-            awevent = self.list[index.row()]
-            duration = ceil(awevent.duration.total_seconds() / 360) / 10
+            timelogevent = self.list[index.row()]
+            duration = ceil(timelogevent.duration.total_seconds() / 36) / 100
             if duration < 0:
                 duration = "any "
-            return "{0} {1}hrs".format(awevent.name, duration)
+            return "{0} ({1}hrs)".format(timelogevent.name, duration)
         elif role == QtCore.Qt.UserRole:  # return the whole python object
-            awevent = self.list[index.row()]
-            return awevent
+            timelogevent = self.list[index.row()]
+            return timelogevent
         else:
             return
 
-    def addCustomTime(self):
-        self.list.append(AWEvent("Custom Time", date.today(), timedelta(-1)))
+    def addRow(self, name, duration):
+        self.list.append(timelogEvent(name, date.today(), duration))
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
 
     def removeRow(self, position):
@@ -55,14 +66,6 @@ class MyTimeModel(QtCore.QAbstractListModel):
             self.reset()
 
     def async_refresh(self):
-        self.list = []
-        chunk_result = self._getAWdata()
-        if chunk_result:
-            awdata = chunk_result.chunks
-            filtered_data = self._eventFilter(awdata)
-            for name in filtered_data:
-                duration = filtered_data[name]
-                self.list.append(AWEvent(name, date.today(), duration))
         QtGui.QApplication.processEvents()
         try:
             self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
@@ -71,40 +74,3 @@ class MyTimeModel(QtCore.QAbstractListModel):
 
     def destroy(self):
         pass
-
-    def _getAWdata(self):
-        try:
-            client = aw_client.ActivityWatchClient()
-            logger.debug("ActivityWatchClient Connected")
-            starttime = datetime.now().replace(hour=0, minute=0)
-            endtime = starttime.replace(hour=23, minute=59)
-            hostname = os.environ.get("COMPUTERNAME", "unknown")
-            windowevents = client.get_events("aw-watcher-window_%s" % hostname,
-                                             start=starttime,
-                                             end=endtime,
-                                             limit=-1)
-            afkevents = client.get_events("aw-watcher-afk_%s" % hostname,
-                                          start=starttime,
-                                          end=endtime,
-                                          limit=-1)
-            afkevents_filtered = filter_keyvals(afkevents, "status", ["not-afk"])
-            events_filtered = filter_period_intersect(windowevents, afkevents_filtered)
-            chunk_result = full_chunk(events_filtered, "app", False)
-            return chunk_result
-        except Exception as e:
-            logger.error(e)
-            return None
-
-    def _eventFilter(self, data):
-        filtered_event = {"other": timedelta(0)}
-        for event in data:
-            duration = data[event]['duration']
-            if duration < timedelta(0, 360, 0):
-                filtered_event["other"] += duration
-            else:
-                name = event
-                if ".exe" in event:
-                    name = event.replace(".exe", "")
-                filtered_event[name] = duration
-
-        return filtered_event

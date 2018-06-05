@@ -9,16 +9,16 @@ logger = sgtk.platform.get_logger(__name__)
 
 class NewTimeLogForm(QtGui.QDialog):
 
-    def __init__(self, data, task, parent=None):
+    def __init__(self, data, task, preset=False, parent=None):
         super(NewTimeLogForm, self).__init__(parent)
 
         self._app = sgtk.platform.current_bundle()
         # load in the UI that was created in the UI designer
         self.updateFromSpinbox = False
-        self.custom = False
-        self.awname = data.name
-        # ceil to first decimal place
-        self.hours = ceil(data.duration.total_seconds() / 360) / 10
+        self.preset = preset
+        self.name = data.name
+        # ceil to second decimal place
+        self.hours = ceil(data.duration.total_seconds() / 36) / 100
         if self.hours < 0:
             self.custom = True
             self.hours = 8.0
@@ -31,18 +31,18 @@ class NewTimeLogForm(QtGui.QDialog):
                                    userData=task)
         self.ui.dateEdit.setDate(self.date)
         self.ui.dateEdit.setCalendarPopup(True)
-        self.ui.doubleSpinBox.setDecimals(1)
-        self.ui.doubleSpinBox.setRange(0.0, self.hours)
+        self.ui.doubleSpinBox.setDecimals(2)
+        self.ui.doubleSpinBox.setRange(0.00, self.hours)
         self.ui.horizontalSlider.setRange(0, self.hours * 10)
-        if self.custom:
-            self.ui.doubleSpinBox.setValue(1.0)
-            self.ui.horizontalSlider.setValue(10)
-        else:
-            self.ui.doubleSpinBox.setValue(self.hours)
-            self.ui.horizontalSlider.setValue(self.hours * 10)
+        self.ui.doubleSpinBox.setValue(self.hours)
+        self.ui.horizontalSlider.setValue(self.hours * 10)
 
         self.ui.horizontalSlider.valueChanged[int].connect(self.update_spinbox)
         self.ui.doubleSpinBox.editingFinished.connect(self.update_slider_position)
+
+        if self.preset:
+            self.ui.doubleSpinBox.setMinimum(self.hours)
+            self.ui.horizontalSlider.setMinimum(self.hours * 10)
 
         self.ui.buttonBox.accepted.connect(self.submitTimeLog)
 
@@ -61,7 +61,7 @@ class NewTimeLogForm(QtGui.QDialog):
             # duration value is expressed in minutes
             duration = float(self.ui.doubleSpinBox.value()) * 60
             description = self.ui.textEdit.toPlainText()
-            extra_description = "\n{}, logged by Timecard".format(self.awname)
+            extra_description = "\n{}, logged by Timecard".format(self.name)
             if description:
                 extra_description = "," + extra_description
             sg = self._app.context.tank.shotgun

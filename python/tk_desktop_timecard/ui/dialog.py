@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'dialog.ui'
 #
-# Created: Mon Jun 04 17:50:14 2018
+# Created: Tue Jun 05 09:51:33 2018
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,6 +40,15 @@ class Ui_Dialog(object):
         self.timeTabWidget.setObjectName("timeTabWidget")
         self.horizontalLayout.addWidget(self.timeTabWidget)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 2)
+        self.textBrowser = QtGui.QTextBrowser(Dialog)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
+        self.textBrowser.setSizePolicy(sizePolicy)
+        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.textBrowser.setObjectName("textBrowser")
+        self.gridLayout.addWidget(self.textBrowser, 1, 0, 1, 2)
 
         self.retranslateUi(Dialog)
         self.timeTabWidget.setCurrentIndex(-1)
