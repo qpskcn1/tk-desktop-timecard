@@ -44,6 +44,10 @@ class NewTimeLogForm(QtGui.QDialog):
             self.ui.doubleSpinBox.setMinimum(self.hours)
             self.ui.horizontalSlider.setMinimum(self.hours * 10)
 
+        # set time field to be focused by default
+        self.ui.doubleSpinBox.selectAll()
+        self.ui.doubleSpinBox.setFocus()
+
         self.ui.buttonBox.accepted.connect(self.submitTimeLog)
 
     def update_spinbox(self, value):
@@ -71,7 +75,7 @@ class NewTimeLogForm(QtGui.QDialog):
                                            "entity": task,
                                            "description": description + extra_description})
             logger.debug("create result: {}".format(result))
-            # then subtract logged time from model
+            # refresh the task model
 
         except Exception as e:
             logger.error(e)

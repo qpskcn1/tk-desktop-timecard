@@ -64,7 +64,7 @@ class MyTimeForm(QtGui.QWidget):
     '''
     a listView of my time which can be moved
     '''
-    def __init__(self, time_model, checkedin=False, parent=None):
+    def __init__(self, time_model, parent=None):
         """
         Construction
 
@@ -76,22 +76,14 @@ class MyTimeForm(QtGui.QWidget):
         self._ui = Ui_MyTimeForm()
         self._ui.setupUi(self)
 
-        search_label = "My Time"
-        self._ui.search_ctrl.set_placeholder_text("Search %s" % search_label)
-        self._ui.search_ctrl.setToolTip("Press enter to complete the search")
         self.time_tree = MyTimeTree(self)
         # filter_model = QtGui.QSortFilterProxyModel()
         # filter_model.setSourceModel(time_model)
         # filter_model.setDynamicSortFilter(True)
         self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
-        if not checkedin:
-            self._ui.refresh_btn.setEnabled(False)
-        else:
-            self._ui.refresh_btn.setEnabled(True)
-        self._ui.refresh_btn.clicked.connect(self._on_refresh)
+        self._ui.addnew_btn.clicked.connect(self._on_addnew)
         # connect up the filter controls:
-        # self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
 
     def update_ui(self, checkedin):
         view_model = self.time_tree.model()
@@ -108,12 +100,5 @@ class MyTimeForm(QtGui.QWidget):
                 self.time_tree.setModel(self.prev_model)
             self._ui.refresh_btn.setEnabled(True)
 
-    def _on_refresh(self):
-        self.time_tree.model().async_refresh()
-
-    def _on_search_changed(self, search_text):
-        try:
-            filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
-            self.time_tree.model().setFilterRegExp(filter_reg_exp)
-        except Exception as e:
-            logger.error(e)
+    def _on_addnew(self):
+        pass

@@ -190,11 +190,9 @@ class AppDialog(QtGui.QWidget):
         logger.debug("Tasks Model Build Finished")
         return model
 
-    def _on_refresh_triggered(self, checked=False):
+    def _on_refresh_triggered(self):
         """
         Slot triggered when a refresh is requested via the refresh keyboard shortcut
-
-        :param checked:    True if the refresh action is checked - ignored
         """
         self._app.log_debug("Synchronizing remote path cache...")
         self._app.sgtk.synchronize_filesystem_structure()
@@ -203,5 +201,5 @@ class AppDialog(QtGui.QWidget):
             self._my_tasks_model.async_refresh()
         if self._facility_tasks_model:
             self._facility_tasks_model.async_refresh()
-        if self._my_time_model and self.checkedin:
+        if self._my_time_model:
             self._my_time_model.async_refresh()

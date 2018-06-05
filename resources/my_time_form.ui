@@ -41,13 +41,6 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QCheckBox" name="random_cb">
-       <property name="text">
-        <string>Some Filter</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -61,12 +54,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="refresh_btn">
+      <widget class="QPushButton" name="addnew_btn">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh (F5)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Refresh</string>
+        <string>Add New Preset</string>
        </property>
       </widget>
      </item>
@@ -80,33 +73,10 @@
      <property name="rightMargin">
       <number>1</number>
      </property>
-     <item>
-      <widget class="SearchWidget" name="search_ctrl" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#search_ctrl {
-background-color: rgb(255, 128, 0);
-}</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>SearchWidget</class>
-   <extends>QWidget</extends>
-   <header>..framework_qtwidgets</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
