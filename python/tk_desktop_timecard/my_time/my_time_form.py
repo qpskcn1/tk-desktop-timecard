@@ -85,20 +85,8 @@ class MyTimeForm(QtGui.QWidget):
         self._ui.addnew_btn.clicked.connect(self._on_addnew)
         # connect up the filter controls:
 
-    def update_ui(self, checkedin):
+    def update_ui(self):
         view_model = self.time_tree.model()
-        if not checkedin:
-            # detach the filter model from the view:
-            if view_model:
-                self.prev_model = view_model
-                self.time_tree.setModel(None)
-            self._ui.refresh_btn.setEnabled(False)
-        else:
-            if view_model:
-                self.time_tree.model().async_refresh()
-            else:
-                self.time_tree.setModel(self.prev_model)
-            self._ui.refresh_btn.setEnabled(True)
 
     def _on_addnew(self):
         pass

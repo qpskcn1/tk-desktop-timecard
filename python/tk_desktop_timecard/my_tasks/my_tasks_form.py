@@ -138,6 +138,9 @@ class MyTasksForm(QtGui.QWidget):
             if task:
                 timelog_dl = NewTimeLogForm(time, task)
                 timelog_dl.exec_()
+                logger.debug("New timelog submitted to Shotgun")
+                if self.task_tree.model():
+                    self.task_tree.model().async_refresh()
 
     def shut_down(self):
         """

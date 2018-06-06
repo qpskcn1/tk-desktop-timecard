@@ -1,11 +1,11 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 """
@@ -70,7 +70,7 @@ class TaskWidget(QtGui.QWidget):
         """
         """
         # self._ui.timelog_label.setText("%.1f hrs" % (time / 60.0))
-        self._ui.timelog_label.setText("%.1f hrs" % (time / 60.0))
+        self._ui.timelog_label.setText("%.2f hrs" % (time / 60.0))
         if not icon:
             self._ui.timelog_icon.hide()
         else:
@@ -111,5 +111,4 @@ class TaskWidget(QtGui.QWidget):
         scaled_pm = pm
         if pm.width() > w or pm.height() > h:
             scaled_pm = pm.scaled(w, h, QtCore.Qt.KeepAspectRatioByExpanding, QtCore.Qt.SmoothTransformation)
-
         label.setPixmap(scaled_pm)
