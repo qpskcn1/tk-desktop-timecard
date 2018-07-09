@@ -1,11 +1,11 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 """
@@ -81,7 +81,7 @@ def value_to_str(value):
         return value
     elif hasattr(QtCore, "QString") and isinstance(value, QtCore.QString):
         # running PyQt!
-        # QtCore.QString inherits from str but supports 
+        # QtCore.QString inherits from str but supports
         # unicode, go figure!  Lets play safe and return
         # a utf-8 string
         return str(value.toUtf8())
@@ -106,12 +106,12 @@ def get_model_data(item_or_index, role=QtCore.Qt.DisplayRole):
 
 def get_model_str(item_or_index, role=QtCore.Qt.DisplayRole):
     """
-    Safely get the Qt model data as a Python string for the specified item or index.  This 
+    Safely get the Qt model data as a Python string for the specified item or index.  This
     handles QVariant types returned when using PyQt instead of PySide.
 
     :param item_or_index:   The QStandardModelItem or QModelIndex to retrieve a string for
     :param role:            The Qt data role to return as a string
-    :returns:               A Python string representing the data for the specified item 
+    :returns:               A Python string representing the data for the specified item
                             or index.
     """
     data = get_model_data(item_or_index, role)
@@ -124,7 +124,7 @@ def map_to_source(idx, recursive=True):
 
     :param idx:         The index to map from
     :param recursive:   If true then the function will recurse up the model chain until it
-                        finds an index belonging to a model that doesn't derive from 
+                        finds an index belonging to a model that doesn't derive from
                         QAbstractProxyModel.  If false then it will just return the index
                         from the imediate parent model.
     :returns:           QModelIndex in the source model or the first model in the chain that
@@ -157,7 +157,7 @@ def get_source_model(model, recursive=True):
 
 def set_widget_property(widget, property_name, property_value, refresh_style=True, refresh_children=False):
     """
-    Set a Qt property on a widget and if requested, also ensure that the style 
+    Set a Qt property on a widget and if requested, also ensure that the style
     sheet is refreshed
 
     :param widget:              The widget to set the property on
@@ -180,7 +180,7 @@ def refresh_widget_style_r(widget, refresh_children=False):
     by unpolishing and repolishing the widgets style.
 
     :param widget:              The widget to refresh the style of
-    :param refresh_children:    If True then the style of any child widgets will also 
+    :param refresh_children:    If True then the style of any child widgets will also
                                 be refreshed
     """
     widget.style().unpolish(widget)
@@ -230,7 +230,7 @@ def _on_qobject_destroyed(name, uid):
 def report_non_destroyed_qobjects(clear_list = True):
     """
     Report any monitored QObjects that have not yet been destroyed.  Care should be taken to
-    account for QObjects that are pending destruction via deleteLater signals that may be 
+    account for QObjects that are pending destruction via deleteLater signals that may be
     pending.
 
     :param clear_list:  If true then the list of monitored QObjects will be cleared after
@@ -265,13 +265,13 @@ def get_template_user_keys(template):
 
 def resolve_filters(filters):
     """
-    
+
     When passed a list of filters, it will resolve strings found in the filters using the context
-    example: '{context.user}' could get resolved to {'type': 'HumanUser', 'id': 86, 'name': 'Philip Scadding'} 
-    
+    example: '{context.user}' could get resolved to {'type': 'HumanUser', 'id': 86, 'name': 'Philip Scadding'}
+
     :param filters: a list of filters as found in the info.yml config
     should be in the format: [[task_assignees, is, '{context.user}'],[sg_status_list, not_in, [fin,omt]]]
-    
+
     :return: A List of filters for use with the shotgun api
     """
     app = sgtk.platform.current_bundle()
@@ -293,6 +293,8 @@ def resolve_filters(filters):
                     field = app.context.task
                 elif field == "{context.user}":
                     field = app.context.user
+                elif field =="{context.project}":
+                    field = app.context.project
                 resolved_filter.append(field)
         resolved_filters.append(resolved_filter)
     return resolved_filters

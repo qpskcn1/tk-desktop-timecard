@@ -33,7 +33,7 @@ class NewTimeLogForm(QtGui.QDialog):
         self.ui.dateEdit.setCalendarPopup(True)
         self.ui.doubleSpinBox.setDecimals(2)
         self.ui.doubleSpinBox.setRange(0.00, self.hours * 2)
-        self.ui.horizontalSlider.setRange(0, self.hours * 2 *10)
+        self.ui.horizontalSlider.setRange(0, self.hours * 2 * 10)
         self.ui.doubleSpinBox.setValue(self.hours)
         self.ui.horizontalSlider.setValue(self.hours * 10)
 

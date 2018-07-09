@@ -1,11 +1,11 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 """
@@ -26,7 +26,8 @@ class MyTasksModel(ShotgunEntityModel):
     from the Shotgun entity model so that we have access to the entity icons it provides.  These are used
     later by the MyTaskItemDelegate when rending a widget for a task in the My Tasks view.
     """
-    def __init__(self, project, user, extra_display_fields, my_tasks_filters, parent, bg_task_manager=None):
+    def __init__(self, project, user, extra_display_fields, my_tasks_filters,
+                 UI_filters, parent, bg_task_manager=None):
         """
         Construction
 
@@ -42,13 +43,8 @@ class MyTasksModel(ShotgunEntityModel):
         self.extra_display_fields = extra_display_fields or []
 
         filters = []
-        # facility task
-        if project['name'] == "Facility":
-            filters = [["project", "is", project]]
-        # non facility task
-        else:
-            filters = [["project.Project.name", "is_not", "Facility"]]
         filters.extend(resolve_filters(my_tasks_filters))
+        filters.extend(resolve_filters(UI_filters))
 
         fields = ["image", "project", "entity", "content", "time_logs_sum"]
         fields.extend(self.extra_display_fields)

@@ -64,7 +64,7 @@ class AppDialog(QtGui.QWidget):
         self.user = sgtk.util.get_current_user(self._app.sgtk)
         self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
         # create my tasks form and my time form:
-        self.createTasksFrom()
+        self.createTasksForm()
         self.createTimeForm()
 
         # add refresh action with appropriate keyboard shortcut:
@@ -93,8 +93,8 @@ class AppDialog(QtGui.QWidget):
         try:
             if self._my_tasks_model:
                 self._my_tasks_model.destroy()
-            if self._facility_tasks_model:
-                self._facility_tasks_model.destroy()
+            # if self._facility_tasks_model:
+            #     self._facility_tasks_model.destroy()
             if self._my_time_model:
                 self._my_time_model.destroy()
             # shut down main threadpool
@@ -130,23 +130,29 @@ class AppDialog(QtGui.QWidget):
         # This is required for the logger
         pass
 
-    def createTasksFrom(self):
+    def createTasksForm(self, UI_filters_action=None):
         """
         Create my task form and facility task form icluding model and view.
+        :param UI_filter_action: QAction contains shotgun filter selected in UI
         """
         try:
-            self._my_tasks_model = self._build_my_tasks_model(self._app.context.project)
+            self._my_tasks_model = self._build_my_tasks_model(
+                self._app.context.project, UI_filters_action)
             self._my_tasks_form = MyTasksForm(self._my_tasks_model,
+                                              UI_filters_action,
                                               allow_task_creation=False,
                                               parent=self)
             # self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
+            # refresh tab
+            if UI_filters_action is not None:
+                self.ui.taskTabWidget.clear()
             self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
-            facility_project_ctx = {'type': 'Project', 'id': 143, 'name': 'Facility'}
-            self._facility_tasks_model = self._build_my_tasks_model(facility_project_ctx)
-            self._facility_tasks_form = MyTasksForm(self._facility_tasks_model,
-                                                    allow_task_creation=False,
-                                                    parent=self)
-            self.ui.taskTabWidget.addTab(self._facility_tasks_form, "Facility")
+            # facility_project_ctx = {'type': 'Project', 'id': 143, 'name': 'Facility'}
+            # self._facility_tasks_model = self._build_my_tasks_model(facility_project_ctx)
+            # self._facility_tasks_form = MyTasksForm(self._facility_tasks_model,
+            #                                         allow_task_creation=False,
+            #                                         parent=self)
+            # self.ui.taskTabWidget.addTab(self._facility_tasks_form, "Facility")
             # self._my_tasks_form.create_new_task.connect(self.create_new_task)
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
@@ -164,12 +170,13 @@ class AppDialog(QtGui.QWidget):
             logger.exception("Failed to Load my time, because %s \n %s"
                              % (e, traceback.format_exc()))
 
-    def _build_my_tasks_model(self, project):
+    def _build_my_tasks_model(self, project, UI_filters_action=None):
         """
         Get settings from config file and append those settings default
         Then create task model
         :param project: dict
                         sg project context
+        :UI_filter action: QAction contains shotgun filter selected in UI
         """
         if not self.user:
             # can't show my tasks if we don't know who 'my' is!
@@ -178,11 +185,17 @@ class AppDialog(QtGui.QWidget):
         # get any extra display fields we'll need to retrieve:
         extra_display_fields = self._app.get_setting("my_tasks_extra_display_fields")
         # get the my task filters from the config.
+        UI_filters = []
+        if UI_filters_action is None:
+            UI_filters = [['project', 'is', '{context.project}']]
+        else:
+            UI_filters = UI_filters_action.data()
         my_tasks_filters = self._app.get_setting("my_tasks_filters")
         model = MyTasksModel(project,
                              self.user,
                              extra_display_fields,
                              my_tasks_filters,
+                             UI_filters,
                              parent=self,
                              bg_task_manager=self._task_manager)
         monitor_qobject_lifetime(model, "My Tasks Model")
@@ -199,7 +212,7 @@ class AppDialog(QtGui.QWidget):
         self._app.log_debug("Path cache up to date!")
         if self._my_tasks_model:
             self._my_tasks_model.async_refresh()
-        if self._facility_tasks_model:
-            self._facility_tasks_model.async_refresh()
+        # if self._facility_tasks_model:
+        #     self._facility_tasks_model.async_refresh()
         if self._my_time_model:
             self._my_time_model.async_refresh()

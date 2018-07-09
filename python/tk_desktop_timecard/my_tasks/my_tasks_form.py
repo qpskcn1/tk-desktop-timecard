@@ -81,7 +81,7 @@ class MyTasksForm(QtGui.QWidget):
     My Tasks widget class
     """
 
-    def __init__(self, tasks_model, allow_task_creation, parent):
+    def __init__(self, tasks_model, UI_filters_action, allow_task_creation, parent):
         """
         Construction
 
@@ -89,6 +89,7 @@ class MyTasksForm(QtGui.QWidget):
         :param parent:  The parent QWidget for this control
         """
         QtGui.QWidget.__init__(self, parent)
+        self.parent = parent
 
         # set up the UI
         self._ui = Ui_MyTasksForm()
@@ -119,11 +120,11 @@ class MyTasksForm(QtGui.QWidget):
         filter_model = EntityProxyModel(self, ["content", {"project": "name"}, {"entity": "name"}] + tasks_model.extra_display_fields)
         monitor_qobject_lifetime(filter_model, "%s entity filter model" % search_label)
         filter_model.setSourceModel(tasks_model)
-        # self._ui.task_tree.setModel(filter_model)
         self.task_tree.setModel(filter_model)
         self._ui.verticalLayout.addWidget(self.task_tree)
         # connect up the filter controls:
         self._ui.search_ctrl.search_changed.connect(self._on_search_changed)
+        self._show_filters(UI_filters_action)
         # connect context menu
         self.task_tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.task_tree.customContextMenuRequested.connect(self.open_menu)
@@ -180,6 +181,54 @@ class MyTasksForm(QtGui.QWidget):
                 entity = tasks_model.get_entity(item)
                 return entity
         return None
+
+    def _show_filters(self, UI_filters_action):
+        filters_menu = QtGui.QMenu()
+        filters_group = QtGui.QActionGroup(self)
+        project_filter = QtGui.QAction('Current Project Tasks', filters_menu,
+                                       checkable=True)
+        project_filter.setData([['project', 'is', '{context.project}']])
+        filters_group.addAction(project_filter)
+        filters_menu.addAction(project_filter)
+        all_filter = QtGui.QAction('All Tasks', filters_menu,
+                                   checkable=True)
+        all_filter.setData([])
+        filters_group.addAction(all_filter)
+        filters_menu.addAction(all_filter)
+        facility_filter = QtGui.QAction('Facility Tasks', filters_menu,
+                                        checkable=True)
+        facility_filter.setData([['project.Project.name', 'is', 'Facility']])
+        filters_group.addAction(facility_filter)
+        filters_menu.addAction(facility_filter)
+        if UI_filters_action:
+            for filter_action in filters_menu.findChildren(QtGui.QAction):
+                if filter_action.text() == UI_filters_action.text():
+                    filter_action.setChecked(True)
+        else:
+            project_filter.setChecked(True)
+        self._ui.filter_btn.setMenu(filters_menu)
+        filters_group.triggered.connect(self._on_filter_changed)
+
+    def _on_filter_changed(self, filter_action):
+        """
+        Slot triggered when the filter menu has been changed.
+        """
+        try:
+            logger.debug("filter changed to {}".format(filter_action.text()))
+            logger.debug("filter: {}".format(filter_action.data()))
+            self.parent.createTasksForm(filter_action)
+        except Exception as e:
+            logger.error(e)
+        # reset the current selection without emitting any signals:
+        # prev_selected_item = self._reset_selection()
+        # try:
+
+        #     # update the proxy filter search text:
+        #     filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
+        #     self.task_tree.model().setFilterRegExp(filter_reg_exp)
+        # finally:
+        #     # and update the selection - this will restore the original selection if possible.
+        #     self._update_selection(prev_selected_item)
 
     def _on_search_changed(self, search_text):
         """
