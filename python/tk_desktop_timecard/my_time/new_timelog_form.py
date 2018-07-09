@@ -32,8 +32,8 @@ class NewTimeLogForm(QtGui.QDialog):
         self.ui.dateEdit.setDate(self.date)
         self.ui.dateEdit.setCalendarPopup(True)
         self.ui.doubleSpinBox.setDecimals(2)
-        self.ui.doubleSpinBox.setRange(0.00, self.hours)
-        self.ui.horizontalSlider.setRange(0, self.hours * 10)
+        self.ui.doubleSpinBox.setRange(0.00, self.hours * 2)
+        self.ui.horizontalSlider.setRange(0, self.hours * 2 *10)
         self.ui.doubleSpinBox.setValue(self.hours)
         self.ui.horizontalSlider.setValue(self.hours * 10)
 
@@ -41,8 +41,8 @@ class NewTimeLogForm(QtGui.QDialog):
         self.ui.doubleSpinBox.editingFinished.connect(self.update_slider_position)
 
         if self.preset:
-            self.ui.doubleSpinBox.setMinimum(self.hours)
-            self.ui.horizontalSlider.setMinimum(self.hours * 10)
+            self.ui.doubleSpinBox.setValue(self.hours)
+            self.ui.horizontalSlider.setValue(self.hours * 10)
 
         # set time field to be focused by default
         self.ui.doubleSpinBox.selectAll()
