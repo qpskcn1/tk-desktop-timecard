@@ -50,6 +50,8 @@ class TaskWidget(QtGui.QWidget):
         """
         """
         self._ui.entity_label.setText(name)
+        if name is None or typ is None:
+            self._ui.entity_label.setText("<font color=red>undefined</font>")
         if not icon:
             self._ui.entity_icon.hide()
         else:

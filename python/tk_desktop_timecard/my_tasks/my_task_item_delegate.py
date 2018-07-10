@@ -1,11 +1,11 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 """
@@ -61,7 +61,7 @@ class MyTaskItemDelegate(WidgetDelegate):
         widget = TaskWidget(parent)
 
         # setup the widget to operate on this item:
-        style_options.state = style_options.state | QtGui.QStyle.State_Selected 
+        style_options.state = style_options.state | QtGui.QStyle.State_Selected
         self._setup_widget(widget, model_index, style_options)
 
         return widget
@@ -80,7 +80,7 @@ class MyTaskItemDelegate(WidgetDelegate):
     def _on_before_paint(self, widget, model_index, style_options):
         """
         """
-        self._setup_widget(widget, model_index, style_options) 
+        self._setup_widget(widget, model_index, style_options)
 
     def _setup_widget(self, widget, model_index, style_options):
         """
@@ -108,12 +108,11 @@ class MyTaskItemDelegate(WidgetDelegate):
 
         # set entity info:
         entity = sg_data.get("entity")
-        entity_name = entity.get("name")
-        entity_type = entity.get("type")
+        entity_name = entity.get("name") if entity else None
+        entity_type = entity.get("type") if entity else None
         entity_type_icon = model.get_entity_icon(entity_type) if entity_type else None
         widget.set_entity(entity_name, entity_type, entity_type_icon)
-
-        # set task info:
+    # set task info:
         task_name = sg_data.get("content")
         task_type_icon = model.get_entity_icon("Task")
         widget.set_task(task_name, task_type_icon)
@@ -129,4 +128,4 @@ class MyTaskItemDelegate(WidgetDelegate):
         widget.set_other(other_text)
 
         # finally, update the selected state of the widget:
-        widget.set_selected((style_options.state & QtGui.QStyle.State_Selected) == QtGui.QStyle.State_Selected) 
+        widget.set_selected((style_options.state & QtGui.QStyle.State_Selected) == QtGui.QStyle.State_Selected)
