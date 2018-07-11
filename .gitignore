@@ -29,12 +29,8 @@ nosetests.xml
 # Translations
 *.mo
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-.sublime-project
-.sublime-workspace
+# vscode
+.vscode
 
 # Windows thumbnail cache files
 Thumbs.db

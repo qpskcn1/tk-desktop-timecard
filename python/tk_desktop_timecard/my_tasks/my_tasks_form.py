@@ -50,7 +50,8 @@ class MyTasksTree(QtGui.QTreeView):
                 # adjust y coordinate for task_widget
                 # position = event.pos() - QtCore.QPoint(0, 70)
                 hoverIndex = self.indexAt(event.pos())
-                self.selectionModel().select(hoverIndex, QtGui.QItemSelectionModel.SelectCurrent)
+                self.selectionModel().select(hoverIndex,
+                                             QtGui.QItemSelectionModel.SelectCurrent)
                 event.setDropAction(QtCore.Qt.MoveAction)
                 event.accept()
             else:
@@ -87,6 +88,7 @@ class MyTasksForm(QtGui.QWidget):
         Construction
 
         :param model:   The Shotgun Model this widget should connect to
+        :param UI_filters_action: previous selected filter
         :param parent:  The parent QWidget for this control
         """
         QtGui.QWidget.__init__(self, parent)
@@ -102,7 +104,8 @@ class MyTasksForm(QtGui.QWidget):
         self.task_tree = MyTasksTree(self)
         self.task_tree.setObjectName("task_tree")
         self.task_tree.header().setVisible(False)
-        # enable/hide the new task button if we have tasks and task creation is allowed:
+        # enable/hide the new task button if we have tasks and task creation
+        # is allowed:
         have_tasks = (tasks_model and tasks_model.get_entity_type() == "Task")
         if have_tasks and allow_task_creation:
             # enable and connect the new task button
@@ -110,16 +113,21 @@ class MyTasksForm(QtGui.QWidget):
             self._ui.new_task_btn.setEnabled(False)
         else:
             self._ui.new_task_btn.hide()
-        # Sets an item delete to show a list of tiles for tasks instead of nodes in a tree.
+        # Sets an item delete to show a list of tiles for tasks instead of
+        # nodes in a tree.
         self._item_delegate = None
         if True:
-            # create the item delegate - make sure we keep a reference to the delegate otherwise
-            # things may crash later on!
-            self._item_delegate = MyTaskItemDelegate(tasks_model.extra_display_fields, self.task_tree)
+            # create the item delegate - make sure we keep a reference to the
+            # delegate otherwise things may crash later on!
+            self._item_delegate = MyTaskItemDelegate(
+                tasks_model.extra_display_fields, self.task_tree)
             monitor_qobject_lifetime(self._item_delegate)
             self.task_tree.setItemDelegate(self._item_delegate)
-        filter_model = EntityProxyModel(self, ["content", {"project": "name"}, {"entity": "name"}] + tasks_model.extra_display_fields)
-        monitor_qobject_lifetime(filter_model, "%s entity filter model" % search_label)
+        filter_model = EntityProxyModel(self, ["content", {"project": "name"},
+                                        {"entity": "name"}] +
+                                        tasks_model.extra_display_fields)
+        monitor_qobject_lifetime(filter_model, "%s entity filter model"
+                                 % search_label)
         filter_model.setSourceModel(tasks_model)
         self.task_tree.setModel(filter_model)
         self._ui.verticalLayout.addWidget(self.task_tree)
@@ -131,6 +139,11 @@ class MyTasksForm(QtGui.QWidget):
         self.task_tree.customContextMenuRequested.connect(self.open_menu)
 
     def open_menu(self, position):
+        """
+        Context menu in my task tree
+
+        :param position: where the time event is dropped
+        """
         menu = QtGui.QMenu()
         addTimeAction = menu.addAction("New Time Log")
         action = menu.exec_(self.task_tree.viewport().mapToGlobal(position))
@@ -146,7 +159,8 @@ class MyTasksForm(QtGui.QWidget):
 
     def shut_down(self):
         """
-        Clean up as much as we can to help the gc once the widget is finished with.
+        Clean up as much as we can to help the gc once the widget is
+        finished with.
         """
         signals_blocked = self.blockSignals(True)
         try:
@@ -174,6 +188,11 @@ class MyTasksForm(QtGui.QWidget):
     # ------------------------------------------------------------------------------------------
 
     def _get_selected_task(self):
+        """
+        Get information of currently selected item
+
+        :returns:   The selected task entity
+        """
         selected_indexes = self.task_tree.selectionModel().selectedIndexes()
         if len(selected_indexes) == 1:
             item = self._item_from_index(selected_indexes[0])
@@ -184,6 +203,11 @@ class MyTasksForm(QtGui.QWidget):
         return None
 
     def _show_filters(self, UI_filters_action):
+        """
+        Initialized filter menu and selected default action or previous action
+
+        :param UI_filters_action: previous selected filter
+        """
         filters_menu = QtGui.QMenu()
         filters_group = QtGui.QActionGroup(self)
         project_filter = QtGui.QAction('Current Project Tasks', filters_menu,
@@ -213,6 +237,8 @@ class MyTasksForm(QtGui.QWidget):
     def _on_filter_changed(self, filter_action):
         """
         Slot triggered when the filter menu has been changed.
+
+        :param UI_filters_action: previous selected filter
         """
         try:
             logger.debug("filter changed to {}".format(filter_action.text()))
@@ -220,16 +246,6 @@ class MyTasksForm(QtGui.QWidget):
             self.parent.createTasksForm(filter_action)
         except Exception as e:
             logger.error(e)
-        # reset the current selection without emitting any signals:
-        # prev_selected_item = self._reset_selection()
-        # try:
-
-        #     # update the proxy filter search text:
-        #     filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
-        #     self.task_tree.model().setFilterRegExp(filter_reg_exp)
-        # finally:
-        #     # and update the selection - this will restore the original selection if possible.
-        #     self._update_selection(prev_selected_item)
 
     def _on_search_changed(self, search_text):
         """
@@ -241,16 +257,20 @@ class MyTasksForm(QtGui.QWidget):
         prev_selected_item = self._reset_selection()
         try:
             # update the proxy filter search text:
-            filter_reg_exp = QtCore.QRegExp(search_text, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.FixedString)
+            filter_reg_exp = QtCore.QRegExp(search_text,
+                                            QtCore.Qt.CaseInsensitive,
+                                            QtCore.QRegExp.FixedString)
             self.task_tree.model().setFilterRegExp(filter_reg_exp)
         finally:
-            # and update the selection - this will restore the original selection if possible.
+            # and update the selection - this will restore the original
+            # selection if possible.
             self._update_selection(prev_selected_item)
 
     def _reset_selection(self):
         """
-        Reset the current selection, returning the currently selected item if any.  This
-        doesn't result in any signals being emitted by the current selection model.
+        Reset the current selection, returning the currently selected item
+        if any.  Thisdoesn't result in any signals being emitted by the
+        current selection model.
 
         :returns:   The selected item before the selection was reset if any
         """
@@ -275,8 +295,8 @@ class MyTasksForm(QtGui.QWidget):
 
     def _item_from_index(self, idx):
         """
-        Find the corresponding model item from the specified index.  This handles
-        the indirection introduced by the filter model.
+        Find the corresponding model item from the specified index.  This
+        handles the indirection introduced by the filter model.
 
         :param idx: The model index to find the item for
         :returns:   The item in the model represented by the index
@@ -307,10 +327,11 @@ class MyTasksForm(QtGui.QWidget):
 
     def _update_selection(self, prev_selected_item):
         """
-        Update the selection to either the to-be-selected entity if set or the current item if known.  The
-        current item is the item that was last selected but which may no longer be visible in the view due
-        to filtering.  This allows it to be tracked so that the selection state is correctly restored when
-        it becomes visible again.
+        Update the selection to either the to-be-selected entity if set or
+        the current item if known.  The current item is the item that was
+        last selected but which may no longer be visible in the view due
+        to filtering.  This allows it to be tracked so that the selection
+        state is correctly restored when it becomes visible again.
         """
         tasks_model = get_source_model(self.task_tree.model())
         if not tasks_model:
@@ -325,7 +346,9 @@ class MyTasksForm(QtGui.QWidget):
             if self._entity_to_select:
                 # we know about an entity we should try to select:
                 if tasks_model.get_entity_type() == self._entity_to_select["type"]:
-                    item = tasks_model.item_from_entity(self._entity_to_select["type"], self._entity_to_select["id"])
+                    item = tasks_model.item_from_entity(
+                        self._entity_to_select["type"],
+                        self._entity_to_select["id"])
             elif self._current_item_ref:
                 # no item to select but we do know about a current item:
                 item = self._current_item_ref()

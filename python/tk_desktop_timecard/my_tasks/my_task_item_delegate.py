@@ -112,7 +112,8 @@ class MyTaskItemDelegate(WidgetDelegate):
         entity_type = entity.get("type") if entity else None
         entity_type_icon = model.get_entity_icon(entity_type) if entity_type else None
         widget.set_entity(entity_name, entity_type, entity_type_icon)
-    # set task info:
+
+        # set task info:
         task_name = sg_data.get("content")
         task_type_icon = model.get_entity_icon("Task")
         widget.set_task(task_name, task_type_icon)

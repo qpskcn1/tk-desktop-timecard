@@ -10,7 +10,6 @@
 
 import sgtk
 import sys
-from datetime import datetime
 import traceback
 
 from .my_tasks.my_tasks_form import MyTasksForm
