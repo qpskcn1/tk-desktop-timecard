@@ -70,10 +70,11 @@ class MyTasksTree(QtGui.QTreeView):
             task = self.parent._get_selected_task()
             if task:
                 logger.debug("Drop to task %s" % task)
-                timelog_dl = NewTimeLogForm(selected, task, preset=True)
+                timelog_dl = NewTimeLogForm(selected,
+                                            task,
+                                            preset=True,
+                                            parent=self.parent.parent)
                 timelog_dl.exec_()
-                # refresh model and ui
-                self.parent.parent._on_refresh_triggered()
             event.accept()
         except Exception as e:
             logger.error("dropEvent Exception: %s %s" % (e, traceback.format_exc()))
@@ -152,10 +153,9 @@ class MyTasksForm(QtGui.QWidget):
             task = self._get_selected_task()
             time = timelogEvent("Custom Time", date.today(), timedelta(-1))
             if task:
-                timelog_dl = NewTimeLogForm(time, task)
+                timelog_dl = NewTimeLogForm(time, task, parent=self.parent)
                 timelog_dl.exec_()
                 logger.debug("New timelog submitted to Shotgun")
-                self.parent._on_refresh_triggered()
 
     def shut_down(self):
         """

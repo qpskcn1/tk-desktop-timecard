@@ -13,6 +13,7 @@ class NewTimeLogForm(QtGui.QDialog):
         super(NewTimeLogForm, self).__init__(parent)
 
         self._app = sgtk.platform.current_bundle()
+        self.parent = parent
         # load in the UI that was created in the UI designer
         self.updateFromSpinbox = False
         self.preset = preset
@@ -72,12 +73,19 @@ class NewTimeLogForm(QtGui.QDialog):
             sg = self._app.context.tank.shotgun
             logger.debug("submit task {}, duration {}".format(task, duration))
             result = sg.create("TimeLog", {"duration": duration,
-                                           "project": self._app.context.project,
                                            "entity": task,
+                                           "project": task['project'],
                                            "date": date,
                                            "description": description + extra_description})
             logger.debug("create result: {}".format(result))
             # refresh the task model
-
+            self.parent._on_refresh_triggered()
+            self.parent.ui.textBrowser.append("{duration} hrs has been logged to {project} {entity} {task}"
+                                              .format(
+                                                  duration=duration / 60.0,
+                                                  project=task['project']['name'],
+                                                  entity=task['entity']['name'],
+                                                  task=task['content']
+                                              ))
         except Exception as e:
             logger.error(e)
