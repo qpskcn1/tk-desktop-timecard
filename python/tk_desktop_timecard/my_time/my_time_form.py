@@ -2,6 +2,7 @@ import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 
 import cPickle
+import datetime
 
 from ..ui.my_time_form import Ui_MyTimeForm
 
@@ -64,7 +65,7 @@ class MyTimeForm(QtGui.QWidget):
     '''
     a listView of my time which can be moved
     '''
-    def __init__(self, time_model, parent=None):
+    def __init__(self, time_model, user, parent=None):
         """
         Construction
 
@@ -75,18 +76,33 @@ class MyTimeForm(QtGui.QWidget):
         # set up the UI
         self._ui = Ui_MyTimeForm()
         self._ui.setupUi(self)
-
+        self._app = sgtk.platform.current_bundle()
+        self.user = user
         self.time_tree = MyTimeTree(self)
-        # filter_model = QtGui.QSortFilterProxyModel()
-        # filter_model.setSourceModel(time_model)
-        # filter_model.setDynamicSortFilter(True)
         self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
         self._ui.addnew_btn.clicked.connect(self._on_addnew)
-        # connect up the filter controls:
+        self.get_time_sum()
 
     def update_ui(self):
-        view_model = self.time_tree.model()
+        self.get_time_sum()
 
     def _on_addnew(self):
         pass
+
+    def get_time_sum(self):
+        sg = self._app.context.tank.shotgun
+        filters = [
+            ["user", "is", self.user],
+            ["date", "is", datetime.datetime.today().strftime("%Y-%m-%d")],
+        ]
+        result = sg.find("TimeLog", filters, ["duration"])
+        timelog_sum = 0
+        for timelog in result:
+            timelog_sum += timelog.get("duration", 0)
+        timelog_sum_hr = timelog_sum / 60.0
+        unit = "hrs"
+        if timelog_sum_hr == 1:
+            unit = "hr"
+        self._ui.result_label.setText("<b>{} {}</b> today"
+                                      .format(timelog_sum_hr, unit))

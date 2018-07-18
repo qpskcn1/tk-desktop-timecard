@@ -81,5 +81,3 @@ class MyTasksModel(ShotgunEntityModel):
 
         thumb = QtGui.QPixmap.fromImage(image)
         item.setIcon(QtGui.QIcon(thumb))
-
-

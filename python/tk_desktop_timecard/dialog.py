@@ -64,7 +64,7 @@ class AppDialog(QtGui.QWidget):
         self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
         # create my tasks form and my time form:
         self.createTasksForm()
-        self.createTimeForm()
+        self.createTimeForm(self.user)
 
         # add refresh action with appropriate keyboard shortcut:
         refresh_action = QtGui.QAction("Refresh", self)
@@ -157,13 +157,13 @@ class AppDialog(QtGui.QWidget):
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
 
-    def createTimeForm(self):
+    def createTimeForm(self, user):
         """
         Create my time form icluding model and view.
         """
         try:
             self._my_time_model = MyTimeModel()
-            self._my_time_form = MyTimeForm(self._my_time_model)
+            self._my_time_form = MyTimeForm(self._my_time_model, user)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
         except Exception as e:
             logger.exception("Failed to Load my time, because %s \n %s"
@@ -213,5 +213,7 @@ class AppDialog(QtGui.QWidget):
             self._my_tasks_model.async_refresh()
         # if self._facility_tasks_model:
         #     self._facility_tasks_model.async_refresh()
+        if self._my_time_form:
+            self._my_time_form.update_ui()
         if self._my_time_model:
             self._my_time_model.async_refresh()

@@ -72,6 +72,7 @@ class MyTasksTree(QtGui.QTreeView):
                 logger.debug("Drop to task %s" % task)
                 timelog_dl = NewTimeLogForm(selected, task, preset=True)
                 timelog_dl.exec_()
+                # refresh model and ui
                 self.parent.parent._on_refresh_triggered()
             event.accept()
         except Exception as e:

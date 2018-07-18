@@ -13,13 +13,13 @@
 import weakref
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
-
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
-ShotgunEntityModel = shotgun_model.ShotgunEntityModel
-
 from .task_widget import TaskWidget
 from ..framework_qtwidgets import WidgetDelegate
 from ..util import map_to_source
+
+
+shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
+ShotgunEntityModel = shotgun_model.ShotgunEntityModel
 
 logger = sgtk.platform.get_logger(__name__)
 
