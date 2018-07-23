@@ -3,7 +3,7 @@ import csv
 from math import ceil
 
 import sgtk
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 from sgtk.platform.qt import QtCore, QtGui
 
 
@@ -27,7 +27,9 @@ class timelogEvent(object):
 
 
 class MyTimeModel(QtCore.QAbstractListModel):
-
+    """
+    Time Model used to display autotracked time or preset
+    """
     def __init__(self, parent=None):
         super(MyTimeModel, self).__init__(parent)
         self.list = []

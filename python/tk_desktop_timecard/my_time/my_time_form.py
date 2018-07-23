@@ -85,12 +85,19 @@ class MyTimeForm(QtGui.QWidget):
         self.get_time_sum()
 
     def update_ui(self):
+        """
+        Update the UI to reflect logged in time, etc.
+        """
         self.get_time_sum()
 
     def _on_addnew(self):
         pass
 
     def get_time_sum(self):
+        """
+        Get today's timelog for current user and return the sum of
+        all queried timelog
+        """
         sg = self._app.context.tank.shotgun
         filters = [
             ["user", "is", self.user],

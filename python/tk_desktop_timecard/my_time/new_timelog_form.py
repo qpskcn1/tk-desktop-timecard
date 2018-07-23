@@ -61,6 +61,10 @@ class NewTimeLogForm(QtGui.QDialog):
         self.updateFromSpinbox = False
 
     def submitTimeLog(self):
+        """
+        Use shotgun api to submit timelog to shotgun.
+        After submission, refresh task model and UI to get latest time info
+        """
         try:
             task = self.ui.task_cbBox.itemData(self.ui.task_cbBox.currentIndex())
             # duration value is expressed in minutes
