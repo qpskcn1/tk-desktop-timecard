@@ -293,7 +293,13 @@ def resolve_filters(filters):
                     field = app.context.task
                 elif field == "{context.user}":
                     field = app.context.user
-                elif field =="{context.project}":
+                elif field == "{context.user.group}":
+                    field = app.shotgun.find_one(
+                        "HumanUser",
+                        [["id", "is", app.context.user["id"]]],
+                        ["groups"]
+                    )["groups"]
+                elif field == "{context.project}":
                     field = app.context.project
                 resolved_filter.append(field)
         resolved_filters.append(resolved_filter)
