@@ -11,6 +11,7 @@
 import sgtk
 import sys
 import traceback
+import datetime
 
 from .my_tasks.my_tasks_form import MyTasksForm
 from .my_tasks.my_tasks_model import MyTasksModel
@@ -65,6 +66,9 @@ class AppDialog(QtGui.QWidget):
         # create my tasks form and my time form:
         self.createTasksForm()
         self.createTimeForm(self.user)
+        # time summary labels
+        self._get_time_sum()
+        self.ui.time_sum_label.setFont(QtGui.QFont("Arial", 80))
 
         # add refresh action with appropriate keyboard shortcut:
         refresh_action = QtGui.QAction("Refresh", self)
@@ -202,6 +206,70 @@ class AppDialog(QtGui.QWidget):
         logger.debug("Tasks Model Build Finished")
         return model
 
+    def _get_time_sum(self):
+        """
+        Get today's timelog for current user and return the sum of
+        all queried timelog
+        """
+        sg = self._app.context.tank.shotgun
+        today = datetime.datetime.today()
+        this_week = self.__get_week(today)
+        filters = [
+            ["user", "is", self.user],
+            ["date", "in", this_week],
+        ]
+        result = sg.find("TimeLog", filters, ["date", "duration"])
+        timelog_sum_today = 0
+        timelog_sum_week = 0
+        for timelog in result:
+            if timelog.get("date", 0) == today.strftime("%Y-%m-%d"):
+                timelog_sum_today += timelog.get("duration", 0)
+            timelog_sum_week += timelog.get("duration", 0)
+        self._display_hours(timelog_sum_today, "today")
+        self._display_hours(timelog_sum_week, "this week")
+
+    def __get_week(self, today):
+        week = []
+        for i in range(0 - today.weekday(), 7 - today.weekday()):
+            week.append(
+                (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+            )
+        return week
+
+    def _display_hours(self, timelog_sum, day_or_week):
+        timelog_sum_hr = timelog_sum / 60.0
+        unit = "hours"
+        if timelog_sum_hr == 1 or timelog_sum_hr == 0:
+            unit = "hour"
+        label_ui = self.ui.time_sum_today_label
+        text_color = "LightGray"
+        if day_or_week == "today":
+            label_ui = self.ui.time_sum_today_label
+            if timelog_sum_hr < 2:
+                text_color = "Tomato"
+            elif timelog_sum_hr < 6:
+                text_color = "Orange"
+            else:
+                text_color = "MediumSeaGreen"
+        else:
+            label_ui = self.ui.time_sum_week_label
+            if timelog_sum_hr < 10:
+                text_color = "Tomato"
+            elif timelog_sum_hr < 30:
+                text_color = "Orange"
+            else:
+                text_color = "MediumSeaGreen"
+        text = """
+        <b style=\"color:{color};\">{hours} {unit}</b>
+        {day_or_week}
+        """.format(
+            color=text_color,
+            hours=timelog_sum_hr,
+            unit=unit,
+            day_or_week=day_or_week
+        )
+        label_ui.setText(text)
+
     def _on_refresh_triggered(self):
         """
         Slot triggered when a refresh is requested via the refresh keyboard shortcut
@@ -209,6 +277,7 @@ class AppDialog(QtGui.QWidget):
         self._app.log_debug("Synchronizing remote path cache...")
         self._app.sgtk.synchronize_filesystem_structure()
         self._app.log_debug("Path cache up to date!")
+        self._get_time_sum()
         if self._my_tasks_model:
             self._my_tasks_model.async_refresh()
         # if self._facility_tasks_model:

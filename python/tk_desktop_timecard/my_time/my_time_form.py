@@ -2,7 +2,6 @@ import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 
 import cPickle
-import datetime
 
 from ..ui.my_time_form import Ui_MyTimeForm
 
@@ -82,34 +81,12 @@ class MyTimeForm(QtGui.QWidget):
         self.time_tree.setModel(time_model)
         self._ui.verticalLayout.addWidget(self.time_tree)
         self._ui.addnew_btn.clicked.connect(self._on_addnew)
-        self.get_time_sum()
 
     def update_ui(self):
         """
         Update the UI to reflect logged in time, etc.
         """
-        self.get_time_sum()
+        pass
 
     def _on_addnew(self):
         pass
-
-    def get_time_sum(self):
-        """
-        Get today's timelog for current user and return the sum of
-        all queried timelog
-        """
-        sg = self._app.context.tank.shotgun
-        filters = [
-            ["user", "is", self.user],
-            ["date", "is", datetime.datetime.today().strftime("%Y-%m-%d")],
-        ]
-        result = sg.find("TimeLog", filters, ["duration"])
-        timelog_sum = 0
-        for timelog in result:
-            timelog_sum += timelog.get("duration", 0)
-        timelog_sum_hr = timelog_sum / 60.0
-        unit = "hrs"
-        if timelog_sum_hr == 1:
-            unit = "hr"
-        self._ui.result_label.setText("<b>{} {}</b> today"
-                                      .format(timelog_sum_hr, unit))
