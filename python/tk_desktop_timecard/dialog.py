@@ -17,6 +17,7 @@ from .my_tasks.my_tasks_form import MyTasksForm
 from .my_tasks.my_tasks_model import MyTasksModel
 from .my_time.my_time_form import MyTimeForm
 from .my_time.my_time_model import MyTimeModel
+from .my_timelog.my_timelog_table import MyTimelogTable
 from .util import monitor_qobject_lifetime
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
@@ -55,17 +56,18 @@ class AppDialog(QtGui.QWidget):
         self._task_manager = task_manager.BackgroundTaskManager(
             self,
             start_processing=True,
-            max_threads=1
+            max_threads=3
         )
         monitor_qobject_lifetime(self._task_manager, "Main task manager")
         self._task_manager.start_processing()
 
         # lastly, set up our very basic UI
         self.user = sgtk.util.get_current_user(self._app.sgtk)
-        self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
+        # self.ui.textBrowser.setText("Hello, %s!" % self.user['firstname'])
         # create my tasks form and my time form:
         self.createTasksForm()
-        self.createTimeForm(self.user)
+        self.createTimeForm()
+        self.createTimelogTable()
         # time summary labels
         self._get_time_sum()
         self.ui.time_sum_label.setFont(QtGui.QFont("Arial", 80))
@@ -128,6 +130,7 @@ class AppDialog(QtGui.QWidget):
     #     self._logger.addHandler(handler)
     #     self._logger.setLevel(level)
 
+
     @QtCore.Slot(int, str)
     def new_message(self, level, message):
         # This is required for the logger
@@ -145,32 +148,36 @@ class AppDialog(QtGui.QWidget):
                                               UI_filters_action,
                                               allow_task_creation=False,
                                               parent=self)
-            # self._my_tasks_form.entity_selected.connect(self._on_entity_selected)
             # refresh tab
             if UI_filters_action is not None:
                 self.ui.taskTabWidget.clear()
             self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
-            # facility_project_ctx = {'type': 'Project', 'id': 143, 'name': 'Facility'}
-            # self._facility_tasks_model = self._build_my_tasks_model(facility_project_ctx)
-            # self._facility_tasks_form = MyTasksForm(self._facility_tasks_model,
-            #                                         allow_task_creation=False,
-            #                                         parent=self)
-            # self.ui.taskTabWidget.addTab(self._facility_tasks_form, "Facility")
-            # self._my_tasks_form.create_new_task.connect(self.create_new_task)
         except Exception as e:
             logger.exception("Failed to Load my tasks, because %s \n %s"
                              % (e, traceback.format_exc()))
 
-    def createTimeForm(self, user):
+    def createTimeForm(self):
         """
         Create my time form icluding model and view.
         """
         try:
             self._my_time_model = MyTimeModel()
-            self._my_time_form = MyTimeForm(self._my_time_model, user)
+            self._my_time_form = MyTimeForm(self._my_time_model, self.user)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
         except Exception as e:
             logger.exception("Failed to Load my time, because %s \n %s"
+                             % (e, traceback.format_exc()))
+
+    def createTimelogTable(self):
+        """
+        create a table for timelog activities
+        """
+        try:
+            self.my_timelog_table = MyTimelogTable(self, self._task_manager)
+            self.my_timelog_table.setMaximumHeight(200)
+            self.ui.tableLayout.addWidget(self.my_timelog_table)
+        except Exception as e:
+            logger.exception("Failed to Load timelog because %s \n %s"
                              % (e, traceback.format_exc()))
 
     def _build_my_tasks_model(self, project, UI_filters_action=None):
