@@ -63,15 +63,14 @@ class MyTimelogTable(QtGui.QWidget):
         ]
         # the fields to query
         fields = [
+            "id",
             "project",
             "entity",
             "date",
             "duration",
-            "updated_at",
-            "created_at",
             "description",
         ]
-        order = [{'column': 'created_at', 'direction': 'desc'}]
+        order = [{'column': 'id', 'direction': 'desc'}]
         columns = [
             "project",
             "entity",
@@ -84,7 +83,7 @@ class MyTimelogTable(QtGui.QWidget):
             "TimeLog",
             filters=filters,
             fields=fields,
-            hierarchy=["date"],
+            hierarchy=["id"],
             order=order,
             limit=10,
             columns=columns,
