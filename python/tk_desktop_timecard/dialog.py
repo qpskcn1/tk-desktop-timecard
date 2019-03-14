@@ -56,7 +56,7 @@ class AppDialog(QtGui.QWidget):
         self._task_manager = task_manager.BackgroundTaskManager(
             self,
             start_processing=True,
-            max_threads=3
+            max_threads=4
         )
         monitor_qobject_lifetime(self._task_manager, "Main task manager")
         self._task_manager.start_processing()
