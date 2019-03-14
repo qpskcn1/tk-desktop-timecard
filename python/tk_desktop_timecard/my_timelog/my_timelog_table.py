@@ -13,6 +13,7 @@ import datetime
 from sgtk.platform.qt import QtCore, QtGui
 from ..framework_qtwidgets import shotgun_fields, shotgun_globals
 from ..framework_qtwidgets import shotgun_model, task_manager, views
+from .my_timelog_model import MyTimelogModel
 
 logger = sgtk.platform.get_logger(__name__)
 
@@ -40,7 +41,9 @@ class MyTimelogTable(QtGui.QWidget):
         # needs time to initialize itself. once that's done, the widgets can
         # begin to be populated.
         self._fields_manager = shotgun_fields.ShotgunFieldManager(
-            self, bg_task_manager=self._bg_task_manager)
+            parent=self,
+            bg_task_manager=self._bg_task_manager
+        )
         self._fields_manager.initialized.connect(self._populate_ui)
         self._fields_manager.initialize()
 
@@ -48,8 +51,7 @@ class MyTimelogTable(QtGui.QWidget):
         """Populate the ui after the fields manager has been initialized."""
 
         # create a SG model to retrieve our data
-        self._model = shotgun_model.SimpleShotgunModel(
-            self, self._bg_task_manager)
+        self._model = MyTimelogModel(self.parent, self._bg_task_manager)
 
         # and a table view to display our SG model
         table_view = views.ShotgunTableView(self._fields_manager, self)
@@ -66,9 +68,10 @@ class MyTimelogTable(QtGui.QWidget):
             "date",
             "duration",
             "updated_at",
+            "created_at",
             "description",
         ]
-        order = [{'column': 'updated_at', 'direction': 'desc'}]
+        order = [{'column': 'created_at', 'direction': 'desc'}]
         columns = [
             "project",
             "entity",
@@ -77,16 +80,17 @@ class MyTimelogTable(QtGui.QWidget):
             "description",
         ]
         # load the data into the model
-        self._model.load_data(
+        self._model._load_data(
             "TimeLog",
             filters=filters,
             fields=fields,
+            hierarchy=["date"],
             order=order,
             limit=10,
             columns=columns,
             editable_columns=["date", "duration", "description"]
         )
-
+        self._model._refresh_data()
         # now apply the model to the table view
         table_view.setModel(self._model)
         table_view.hideColumn(0)
@@ -109,11 +113,3 @@ class MyTimelogTable(QtGui.QWidget):
         """
         self._bg_task_manager.shut_down()
         shotgun_globals.unregister_bg_task_manager(self._bg_task_manager)
-
-    def __get_week(self, today):
-        week = []
-        for i in range(0 - today.weekday(), 7 - today.weekday()):
-            week.append(
-                (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
-            )
-        return week

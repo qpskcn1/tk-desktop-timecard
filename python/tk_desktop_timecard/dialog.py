@@ -293,3 +293,5 @@ class AppDialog(QtGui.QWidget):
             self._my_time_form.update_ui()
         if self._my_time_model:
             self._my_time_model.async_refresh()
+        if self.my_timelog_table._model:
+            self.my_timelog_table._model._refresh_data()

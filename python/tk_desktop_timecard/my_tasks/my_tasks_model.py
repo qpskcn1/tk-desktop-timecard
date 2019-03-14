@@ -15,8 +15,8 @@ import sgtk
 from sgtk.platform.qt import QtGui
 
 from ..util import resolve_filters
+from ..framework_qtwidgets import shotgun_model
 
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
 ShotgunEntityModel = shotgun_model.ShotgunEntityModel
 
 
