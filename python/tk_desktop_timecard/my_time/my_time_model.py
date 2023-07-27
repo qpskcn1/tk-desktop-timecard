@@ -61,7 +61,8 @@ class MyTimeModel(QtCore.QAbstractListModel):
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
 
     def removeRow(self, position):
-        event = self.data(position)
+        index = self.index(position)
+        event = self.data(index)
         logger.debug("Time left: {}".format(event.duration))
         if event.duration <= timedelta(0):
             self.list = self.list[:position] + self.list[position + 1:]

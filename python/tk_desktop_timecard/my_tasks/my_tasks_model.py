@@ -48,11 +48,17 @@ class MyTasksModel(ShotgunEntityModel):
 
         fields = ["image", "project", "entity", "content", "time_logs_sum"]
         fields.extend(self.extra_display_fields)
-
-        ShotgunEntityModel.__init__(self, "Task", filters, ["content"], fields, parent,
-                                    download_thumbs=True,
-                                    bg_load_thumbs=True,
-                                    bg_task_manager=bg_task_manager)
+        
+        super().__init__(
+            "Task",
+            filters,
+            ["content"],
+            fields,
+            parent,
+            download_thumbs=True,
+            bg_load_thumbs=True,
+            bg_task_manager=bg_task_manager,
+        )
 
     def _populate_default_thumbnail(self, item):
         """
