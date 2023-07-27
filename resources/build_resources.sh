@@ -1,46 +1,53 @@
-#!/usr/bin/env bash
-#
-# Copyright (c) 2013 Shotgun Software Inc.
-#
-# CONFIDENTIAL AND PROPRIETARY
-#
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
-# Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
-# not expressly granted therein are reserved by Shotgun Software Inc.
-
-# The path to output all built .py files to:
-PYTHON_BASE="/Applications/Shotgun.app/Contents/Resources/Python"
-PYTHON_LIB="${PYTHON_BASE}/lib/python2.7"
-
-# The path to output all built .py files to:
 UI_PYTHON_PATH=../python/tk_desktop_timecard/ui
 
-function build_qt {
-    echo " > Building " $2
+# if the pyside-uic and pyside-rcc commands are not on the path then print an error and exit
+if ! which pyside2-uic > /dev/null 2>&1; then
+    echo "ERROR: pyside-uic command was not found. Please ensure that the pyside package is installed."
+    exit 1
+fi
 
-    # compile ui to python
-    $1 $2 > $UI_PYTHON_PATH/$3.py
+if ! which pyside2-rcc > /dev/null 2>&1; then
+    echo "ERROR: pyside-rcc command was not found. Please ensure that the pyside package is installed."
+    exit 1
+fi
 
-    # replace PySide imports with sgtk.platform.qt and remove line containing Created by date
-    sed -i "" -e "s/from PySide import/from sgtk.platform.qt import/g" -e "/# Created:/d" $UI_PYTHON_PATH/$3.py
-}
+echo 'Compiling UI files...'
+for ui_file in `ls *.ui`; do
+    echo " > Compiling $ui_file"
+    pyside2-uic --from-imports $ui_file > $UI_PYTHON_PATH/${ui_file%.*}.py
+done
 
-function build_ui {
-    build_qt "${PYTHON_BASE}/bin/python ${PYTHON_BASE}/bin/pyside-uic --from-imports" "$1.ui" "$1"
-}
+echo 'Compiling resource files...'
+pyside2-rcc resources.qrc > $UI_PYTHON_PATH/resources_rc.py
 
-function build_res {
-    build_qt "${PYTHON_BASE}/bin/pyside-rcc" "$1.qrc" "$1_rc"
-}
+echo 'Done!'
 
-# build UI's:
-echo "building user interfaces..."
-build_ui dialog
-# add any additional .ui files you want converted here!
-build_ui my_time_form
 
-# build resources
-echo "building resources..."
-build_res resources
+
+# function build_qt {
+#     echo " > Building " $2
+
+#     # compile ui to python
+#     $1 $2 > $UI_PYTHON_PATH/$3.py
+
+#     # replace PySide imports with sgtk.platform.qt and remove line containing Created by date
+#     sed -i "" -e "s/from PySide import/from sgtk.platform.qt import/g" -e "/# Created:/d" $UI_PYTHON_PATH/$3.py
+# }
+
+# function build_ui {
+#     build_qt "${PYTHON_BASE}/bin/python ${PYTHON_BASE}/bin/pyside-uic --from-imports" "$1.ui" "$1"
+# }
+
+# function build_res {
+#     build_qt "${PYTHON_BASE}/bin/pyside-rcc" "$1.qrc" "$1_rc"
+# }
+
+# # build UI's:
+# echo "building user interfaces..."
+# build_ui dialog
+# # add any additional .ui files you want converted here!
+# build_ui my_time_form
+
+# # build resources
+# echo "building resources..."
+# build_res resources

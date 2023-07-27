@@ -12,7 +12,6 @@
 
 # expected fields in the configuration file for this engine
 configuration:
-
     my_tasks_filters:
       type: list
       description: List of filters to apply to the tasks in the My Tasks tab.
@@ -33,6 +32,8 @@ configuration:
         type: str
       allows_empty: True
       default_value: []
+    
+
 
 # this app works in all engines - it does not contain
 # any host application specific commands

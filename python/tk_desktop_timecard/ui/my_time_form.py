@@ -1,41 +1,60 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'my_time_form.ui'
-#
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
-#
-# WARNING! All changes made in this file will be lost!
+################################################################################
+## Form generated from reading UI file 'my_time_form.ui'
+##
+## Created by: Qt User Interface Compiler version 5.15.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
-from sgtk.platform.qt import QtCore, QtGui
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
+from  . import resources_rc
 
 class Ui_MyTimeForm(object):
     def setupUi(self, MyTimeForm):
-        MyTimeForm.setObjectName("MyTimeForm")
+        if not MyTimeForm.objectName():
+            MyTimeForm.setObjectName("MyTimeForm")
         MyTimeForm.resize(349, 367)
-        self.verticalLayout = QtGui.QVBoxLayout(MyTimeForm)
+        self.verticalLayout = QVBoxLayout(MyTimeForm)
         self.verticalLayout.setSpacing(4)
-        self.verticalLayout.setContentsMargins(2, 6, 2, 2)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(2, -1, 2, 1)
+        self.verticalLayout.setContentsMargins(2, 6, 2, 2)
+        self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem)
-        self.addnew_btn = QtGui.QPushButton(MyTimeForm)
+        self.horizontalLayout.setContentsMargins(2, -1, 2, 1)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer)
+
+        self.addnew_btn = QPushButton(MyTimeForm)
         self.addnew_btn.setObjectName("addnew_btn")
+
         self.horizontalLayout.addWidget(self.addnew_btn)
+
+
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setContentsMargins(1, -1, 1, -1)
+
+        self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(1, -1, 1, -1)
+
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
+
         self.retranslateUi(MyTimeForm)
-        QtCore.QMetaObject.connectSlotsByName(MyTimeForm)
+
+        QMetaObject.connectSlotsByName(MyTimeForm)
+    # setupUi
 
     def retranslateUi(self, MyTimeForm):
-        MyTimeForm.setWindowTitle(QtGui.QApplication.translate("MyTimeForm", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.addnew_btn.setToolTip(QtGui.QApplication.translate("MyTimeForm", "<html><head/><body><p>Refresh (F5)</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.addnew_btn.setText(QtGui.QApplication.translate("MyTimeForm", "Add New Preset", None, QtGui.QApplication.UnicodeUTF8))
+        MyTimeForm.setWindowTitle(QCoreApplication.translate("MyTimeForm", "Form", None))
+#if QT_CONFIG(tooltip)
+        self.addnew_btn.setToolTip(QCoreApplication.translate("MyTimeForm", "<html><head/><body><p>Refresh (F5)</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.addnew_btn.setText(QCoreApplication.translate("MyTimeForm", "Add New Preset", None))
+    # retranslateUi
 
-from . import resources_rc

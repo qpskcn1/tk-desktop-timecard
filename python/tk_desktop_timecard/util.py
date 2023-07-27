@@ -73,7 +73,7 @@ def value_to_str(value):
     if hasattr(QtCore, "QVariant") and isinstance(value, QtCore.QVariant):
         value = value.toPyObject()
 
-    if isinstance(value, unicode):
+    if isinstance(value, str):
         # encode to str utf-8
         return value.encode("utf-8")
     elif isinstance(value, str):
@@ -239,7 +239,7 @@ def report_non_destroyed_qobjects(clear_list = True):
     app = sgtk.platform.current_bundle()
     global _g_monitored_qobjects
     app.log_debug("%d monitored QObjects have not been destroyed!" % len(_g_monitored_qobjects))
-    for msg in _g_monitored_qobjects.values():
+    for msg in list(_g_monitored_qobjects.values()):
         app.log_debug(" - %s" % msg)
     if clear_list:
         _g_monitored_qobjects = {}
@@ -257,7 +257,7 @@ def get_template_user_keys(template):
     user_keys = set()
     if "HumanUser" in template.keys:
         user_keys.add("HumanUser")
-    for key in template.keys.values():
+    for key in list(template.keys.values()):
         if key.shotgun_entity_type == "HumanUser":
             user_keys.add(key.name)
     return user_keys

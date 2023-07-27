@@ -34,7 +34,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
         preset_path = os.path.join(os.path.dirname(__file__), "preset.csv")
-        with open(preset_path, 'rb') as preset:
+        with open(preset_path) as preset:
             presets = csv.reader(preset, delimiter=',')
             for row in presets:
                 row[1] = timedelta(seconds=int(row[1]))

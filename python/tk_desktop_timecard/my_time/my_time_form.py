@@ -1,7 +1,7 @@
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 
-import cPickle
+import pickle
 
 from ..ui.my_time_form import Ui_MyTimeForm
 
@@ -34,7 +34,7 @@ class MyTimeTree(QtGui.QListView):
         selected = self.model().data(index, QtCore.Qt.UserRole)
         logger.debug("Drag data: %s" % selected)
         # convert to a bytestream
-        bstream = cPickle.dumps(selected)
+        bstream = pickle.dumps(selected)
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/x-timelogevent", bstream)
 
