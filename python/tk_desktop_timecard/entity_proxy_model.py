@@ -83,7 +83,7 @@ class EntityProxyModel(HierarchicalFilteringProxyModel):
             return False
 
         # test to see if the item 'text' matches:
-        if reg_exp.indexIn(get_model_str(src_idx)) != -1:
+        if reg_exp.indexIn(self.sourceModel().data(src_idx)) != -1:
             # found a match so early out!
             return True
 

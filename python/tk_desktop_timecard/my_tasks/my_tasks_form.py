@@ -261,10 +261,12 @@ class MyTasksForm(QtGui.QWidget):
                                             QtCore.Qt.CaseInsensitive,
                                             QtCore.QRegExp.FixedString)
             self.task_tree.model().setFilterRegExp(filter_reg_exp)
+            print(f"set search regex to: {search_text}")
         finally:
             # and update the selection - this will restore the original
             # selection if possible.
-            self._update_selection(prev_selected_item)
+            # self._update_selection(prev_selected_item)
+            pass
 
     def _reset_selection(self):
         """
