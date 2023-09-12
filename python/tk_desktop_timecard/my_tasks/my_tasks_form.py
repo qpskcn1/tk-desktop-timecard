@@ -254,47 +254,21 @@ class MyTasksForm(QtGui.QWidget):
         :param search_text: The new search text
         """
         # reset the current selection without emitting any signals:
-        prev_selected_item = self._reset_selection()
+        # prev_selected_item = self._reset_selection()
+        proxy_indexes = self.task_tree.selectionModel().selectedIndexes()
+        original_indexes = [self.task_tree.model().mapToSource(idx) for idx in proxy_indexes]
+
         try:
             # update the proxy filter search text:
             filter_reg_exp = QtCore.QRegExp(search_text,
                                             QtCore.Qt.CaseInsensitive,
                                             QtCore.QRegExp.FixedString)
             self.task_tree.model().setFilterRegExp(filter_reg_exp)
-            print(f"set search regex to: {search_text}")
         finally:
-            # and update the selection - this will restore the original
-            # selection if possible.
-            # self._update_selection(prev_selected_item)
-            pass
-
-    def _reset_selection(self):
-        """
-        Reset the current selection, returning the currently selected item
-        if any.  Thisdoesn't result in any signals being emitted by the
-        current selection model.
-
-        :returns:   The selected item before the selection was reset if any
-        """
-        prev_selected_item = self._get_selected_item()
-        # reset the current selection without emitting any signals:
-        self.task_tree.selectionModel().reset()
-        self._update_ui()
-        return prev_selected_item
-
-    def _get_selected_item(self):
-        """
-        Get the currently selected item.
-
-        :returns:   The currently selected model item if any
-        """
-        item = None
-        indexes = self.task_tree.selectionModel().selectedIndexes()
-
-        if len(indexes) == 1:
-            item = self._item_from_index(indexes[0])
-        return item
-
+            new_indexes = [self.task_tree.model().mapFromSource(idx) for idx in original_indexes]
+            for idx in new_indexes:
+                self.task_tree.selectionModel().select(idx, QtGui.QItemSelectionModel.SelectCurrent)
+ 
     def _item_from_index(self, idx):
         """
         Find the corresponding model item from the specified index.  This
