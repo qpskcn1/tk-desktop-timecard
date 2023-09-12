@@ -11,16 +11,21 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class timelogEvent(object):
-    '''
+    """
     a custom data structure for shotgun time log
-    '''
+    """
+
     def __init__(self, name, timestamp, duration):
         self.name = name
         self.timestamp = timestamp
         self.duration = duration
 
     def __repr__(self):
-        return "{name: %s, date: %s, duration: %s}" % (self.name, self.timestamp, self.duration)
+        return "{name: %s, date: %s, duration: %s}" % (
+            self.name,
+            self.timestamp,
+            self.duration,
+        )
 
     def subtract_logged_time(self, logged_time):
         self.duration = self.duration - self.logged_time
@@ -30,12 +35,13 @@ class MyTimeModel(QtCore.QAbstractListModel):
     """
     Time Model used to display autotracked time or preset
     """
+
     def __init__(self, parent=None):
         super(MyTimeModel, self).__init__(parent)
         self.list = []
         preset_path = os.path.join(os.path.dirname(__file__), "preset.csv")
         with open(preset_path) as preset:
-            presets = csv.reader(preset, delimiter=',')
+            presets = csv.reader(preset, delimiter=",")
             for row in presets:
                 row[1] = timedelta(seconds=int(row[1]))
                 self.addRow(*row)
@@ -65,7 +71,7 @@ class MyTimeModel(QtCore.QAbstractListModel):
         event = self.data(index)
         logger.debug("Time left: {}".format(event.duration))
         if event.duration <= timedelta(0):
-            self.list = self.list[:position] + self.list[position + 1:]
+            self.list = self.list[:position] + self.list[position + 1 :]
             self.reset()
 
     def async_refresh(self):

@@ -41,8 +41,7 @@ class MyTimelogTable(QtGui.QWidget):
         # needs time to initialize itself. once that's done, the widgets can
         # begin to be populated.
         self._fields_manager = shotgun_fields.ShotgunFieldManager(
-            parent=self,
-            bg_task_manager=self._bg_task_manager
+            parent=self, bg_task_manager=self._bg_task_manager
         )
         self._fields_manager.initialized.connect(self._populate_ui)
         self._fields_manager.initialize()
@@ -70,7 +69,7 @@ class MyTimelogTable(QtGui.QWidget):
             "duration",
             "description",
         ]
-        order = [{'column': 'id', 'direction': 'desc'}]
+        order = [{"column": "id", "direction": "desc"}]
         columns = [
             "project",
             "entity",
@@ -87,7 +86,7 @@ class MyTimelogTable(QtGui.QWidget):
             order=order,
             limit=10,
             columns=columns,
-            editable_columns=["date", "duration", "description"]
+            editable_columns=["date", "duration", "description"],
         )
         self._model._refresh_data()
         # now apply the model to the table view

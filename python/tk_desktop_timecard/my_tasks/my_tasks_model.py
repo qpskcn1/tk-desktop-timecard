@@ -26,8 +26,17 @@ class MyTasksModel(ShotgunEntityModel):
     from the Shotgun entity model so that we have access to the entity icons it provides.  These are used
     later by the MyTaskItemDelegate when rending a widget for a task in the My Tasks view.
     """
-    def __init__(self, project, user, extra_display_fields, my_tasks_filters,
-                 UI_filters, parent, bg_task_manager=None):
+
+    def __init__(
+        self,
+        project,
+        user,
+        extra_display_fields,
+        my_tasks_filters,
+        UI_filters,
+        parent,
+        bg_task_manager=None,
+    ):
         """
         Construction
 
@@ -48,7 +57,7 @@ class MyTasksModel(ShotgunEntityModel):
 
         fields = ["image", "project", "entity", "content", "time_logs_sum"]
         fields.extend(self.extra_display_fields)
-        
+
         super().__init__(
             "Task",
             filters,

@@ -29,7 +29,9 @@ open(os.path.join(output_directory, "__init__.py"), "w").close()
 
 for ui_file in glob.glob(os.path.join(resources_directory, "*.ui")):
     print(f"Building UI file: {os.path.basename(ui_file)}")
-    output_file = os.path.join(output_directory, os.path.basename(ui_file).replace(".ui", ".py"))
+    output_file = os.path.join(
+        output_directory, os.path.basename(ui_file).replace(".ui", ".py")
+    )
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     subprocess.check_call([uic_bin, ui_file, "--from-imports", "-o", output_file])
 
@@ -39,8 +41,3 @@ print(f"Building resources file: {os.path.basename(source_resources_file)}")
 subprocess.check_call([rcc_bin, source_resources_file, "-o", target_resources_file])
 
 print("Done")
-
-
-
-
-

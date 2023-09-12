@@ -17,24 +17,24 @@ import sgtk
 
 # search widget:
 search_widget = sgtk.platform.import_framework(
-    "tk-framework-qtwidgets", "search_widget")
+    "tk-framework-qtwidgets", "search_widget"
+)
 SearchWidget = search_widget.SearchWidget
 
 # elided text label:
-elided_label = sgtk.platform.import_framework(
-    "tk-framework-qtwidgets", "elided_label")
+elided_label = sgtk.platform.import_framework("tk-framework-qtwidgets", "elided_label")
 ElidedLabel = elided_label.ElidedLabel
 
 # navigation and breadcrumb controls:
-navigation = sgtk.platform.import_framework(
-    "tk-framework-qtwidgets", "navigation")
+navigation = sgtk.platform.import_framework("tk-framework-qtwidgets", "navigation")
 NavigationWidget = navigation.NavigationWidget
 BreadcrumbWidget = navigation.BreadcrumbWidget
 Breadcrumb = navigation.Breadcrumb
 
 # Spinner/busy widget:
 spinner_widget = sgtk.platform.import_framework(
-    "tk-framework-qtwidgets", "spinner_widget")
+    "tk-framework-qtwidgets", "spinner_widget"
+)
 SpinnerWidget = spinner_widget.SpinnerWidget
 
 # Grouped list view, widget base class and delegates:
@@ -50,16 +50,20 @@ HierarchicalFilteringProxyModel = models.HierarchicalFilteringProxyModel
 
 # import the shotgun_fields module from the qtwidgets framework
 shotgun_fields = sgtk.platform.import_framework(
-    "tk-framework-qtwidgets", "shotgun_fields")
+    "tk-framework-qtwidgets", "shotgun_fields"
+)
 
 # import the shotgun_globals module from the qtwidgets framework
 shotgun_globals = sgtk.platform.import_framework(
-    "tk-framework-shotgunutils", "shotgun_globals")
+    "tk-framework-shotgunutils", "shotgun_globals"
+)
 
 # import the shotgun_model module from the qtwidgets framework
 shotgun_model = sgtk.platform.import_framework(
-    "tk-framework-shotgunutils", "shotgun_model")
+    "tk-framework-shotgunutils", "shotgun_model"
+)
 
 
 task_manager = sgtk.platform.import_framework(
-    "tk-framework-shotgunutils", "task_manager")
+    "tk-framework-shotgunutils", "task_manager"
+)

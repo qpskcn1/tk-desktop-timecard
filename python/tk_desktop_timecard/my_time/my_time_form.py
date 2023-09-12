@@ -9,9 +9,10 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class MyTimeTree(QtGui.QListView):
-    '''
+    """
     a listView whose items can be moved
-    '''
+    """
+
     def __init__(self, parent=None):
         QtGui.QListView.__init__(self, parent)
         self.setSpacing(1)
@@ -61,9 +62,10 @@ class MyTimeTree(QtGui.QListView):
 
 
 class MyTimeForm(QtGui.QWidget):
-    '''
+    """
     a listView of my time which can be moved
-    '''
+    """
+
     def __init__(self, time_model, user, parent=None):
         """
         Construction
