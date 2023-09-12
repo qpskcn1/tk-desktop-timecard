@@ -21,8 +21,8 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class TaskWidget(QtGui.QWidget):
-    """
-    """
+    """ """
+
     def __init__(self, parent):
         """
         Construction
@@ -35,20 +35,22 @@ class TaskWidget(QtGui.QWidget):
         self.setAcceptDrops(True)
 
     def set_selected(self, selected=True):
-        """
-        """
-        set_widget_property(self._ui.background, "selected", selected,
-                            refresh_style=True, refresh_children=True)
+        """ """
+        set_widget_property(
+            self._ui.background,
+            "selected",
+            selected,
+            refresh_style=True,
+            refresh_children=True,
+        )
 
     def set_thumbnail(self, thumb):
-        """
-        """
+        """ """
         geom = self._ui.thumbnail.geometry()
         self._set_label_image(self._ui.thumbnail, thumb, geom.width(), geom.height())
 
     def set_entity(self, name, typ, icon):
-        """
-        """
+        """ """
         self._ui.entity_label.setText(name)
         if name is None or typ is None:
             self._ui.entity_label.setText("<font color=red>undefined</font>")
@@ -59,8 +61,7 @@ class TaskWidget(QtGui.QWidget):
             self._set_label_image(self._ui.entity_icon, icon, 20, 20)
 
     def set_task(self, name, icon):
-        """
-        """
+        """ """
         self._ui.task_label.setText("%s" % name)
         if not icon:
             self._ui.task_icon.hide()
@@ -69,8 +70,7 @@ class TaskWidget(QtGui.QWidget):
             self._set_label_image(self._ui.task_icon, icon, 20, 20)
 
     def set_timelog(self, time, icon):
-        """
-        """
+        """ """
         # self._ui.timelog_label.setText("%.1f hrs" % (time / 60.0))
         self._ui.timelog_label.setText("%.2f hrs" % (time / 60.0))
         if not icon:
@@ -80,8 +80,7 @@ class TaskWidget(QtGui.QWidget):
             self._set_label_image(self._ui.timelog_icon, icon, 20, 20)
 
     def set_project(self, name, icon):
-        """
-        """
+        """ """
         self._ui.project_label.setText(name)
         if not icon:
             self._ui.project_icon.hide()
@@ -90,27 +89,33 @@ class TaskWidget(QtGui.QWidget):
             self._set_label_image(self._ui.project_icon, icon, 20, 20)
 
     def set_other(self, text):
-        """
-        """
+        """ """
         self._ui.other_label.setVisible(bool(text))
         self._ui.other_label.setText(text)
 
     def _set_label_image(self, label, image, w, h):
-        """
-        """
+        """ """
         if not image:
             # make sure it's cleared
             image = QtGui.QPixmap(":/res/thumb_empty.png")
-            #return
+            # return
 
         pm = image
         if isinstance(pm, QtGui.QIcon):
             # extract the largest pixmap from the icon:
-            max_sz = max([(sz.width(), sz.height()) for sz in image.availableSizes()] or [(256, 256)])
+            max_sz = max(
+                [(sz.width(), sz.height()) for sz in image.availableSizes()]
+                or [(256, 256)]
+            )
             pm = image.pixmap(max_sz[0], max_sz[1])
 
         # and scale the pm if needed:
         scaled_pm = pm
         if pm.width() > w or pm.height() > h:
-            scaled_pm = pm.scaled(w, h, QtCore.Qt.KeepAspectRatioByExpanding, QtCore.Qt.SmoothTransformation)
+            scaled_pm = pm.scaled(
+                w,
+                h,
+                QtCore.Qt.KeepAspectRatioByExpanding,
+                QtCore.Qt.SmoothTransformation,
+            )
         label.setPixmap(scaled_pm)

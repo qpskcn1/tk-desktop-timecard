@@ -8,7 +8,6 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class NewTimeLogForm(QtGui.QDialog):
-
     def __init__(self, data, task, preset=False, parent=None):
         super(NewTimeLogForm, self).__init__(parent)
 
@@ -26,10 +25,12 @@ class NewTimeLogForm(QtGui.QDialog):
         self.date = data.timestamp
         self.ui = Ui_NewTimeLogForm()
         self.ui.setupUi(self)
-        self.ui.project_cbBox.addItem("%s" % (task['project']['name']))
-        self.ui.task_cbBox.addItem("%s %s, %s" %
-                                   (task['entity']['type'], task['entity']['name'], task['content']),
-                                   userData=task)
+        self.ui.project_cbBox.addItem("%s" % (task["project"]["name"]))
+        self.ui.task_cbBox.addItem(
+            "%s %s, %s"
+            % (task["entity"]["type"], task["entity"]["name"], task["content"]),
+            userData=task,
+        )
         self.ui.dateEdit.setDate(self.date)
         self.ui.dateEdit.setCalendarPopup(True)
         self.ui.doubleSpinBox.setDecimals(2)
@@ -76,11 +77,16 @@ class NewTimeLogForm(QtGui.QDialog):
                 extra_description = ", " + extra_description
             sg = self._app.context.tank.shotgun
             logger.debug("submit task {}, duration {}".format(task, duration))
-            result = sg.create("TimeLog", {"duration": duration,
-                                           "entity": task,
-                                           "project": task['project'],
-                                           "date": date,
-                                           "description": description + extra_description})
+            result = sg.create(
+                "TimeLog",
+                {
+                    "duration": duration,
+                    "entity": task,
+                    "project": task["project"],
+                    "date": date,
+                    "description": description + extra_description,
+                },
+            )
             logger.debug("create result: {}".format(result))
             # refresh the task model
             self.parent._on_refresh_triggered()

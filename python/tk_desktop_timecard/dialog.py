@@ -19,6 +19,7 @@ from .my_time.my_time_form import MyTimeForm
 from .my_time.my_time_model import MyTimeModel
 from .my_timelog.my_timelog_table import MyTimelogTable
 from .util import monitor_qobject_lifetime
+
 # by importing QT from sgtk rather than directly, we ensure that
 # the code will be compatible with both PySide and PyQt.
 from sgtk.platform.qt import QtCore, QtGui
@@ -28,8 +29,12 @@ from .ui.dialog import Ui_Dialog
 # logger is shotgun logger
 # _logger is a independet logger
 logger = sgtk.platform.get_logger(__name__)
-task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
-shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
+task_manager = sgtk.platform.import_framework(
+    "tk-framework-shotgunutils", "task_manager"
+)
+shotgun_globals = sgtk.platform.import_framework(
+    "tk-framework-shotgunutils", "shotgun_globals"
+)
 
 
 class AppDialog(QtGui.QWidget):
@@ -54,9 +59,7 @@ class AppDialog(QtGui.QWidget):
 
         # create a background task manager
         self._task_manager = task_manager.BackgroundTaskManager(
-            self,
-            start_processing=True,
-            max_threads=4
+            self, start_processing=True, max_threads=4
         )
         monitor_qobject_lifetime(self._task_manager, "Main task manager")
         self._task_manager.start_processing()
@@ -130,7 +133,6 @@ class AppDialog(QtGui.QWidget):
     #     self._logger.addHandler(handler)
     #     self._logger.setLevel(level)
 
-
     @QtCore.Slot(int, str)
     def new_message(self, level, message):
         # This is required for the logger
@@ -143,18 +145,23 @@ class AppDialog(QtGui.QWidget):
         """
         try:
             self._my_tasks_model = self._build_my_tasks_model(
-                self._app.context.project, UI_filters_action)
-            self._my_tasks_form = MyTasksForm(self._my_tasks_model,
-                                              UI_filters_action,
-                                              allow_task_creation=False,
-                                              parent=self)
+                self._app.context.project, UI_filters_action
+            )
+            self._my_tasks_form = MyTasksForm(
+                self._my_tasks_model,
+                UI_filters_action,
+                allow_task_creation=False,
+                parent=self,
+            )
             # refresh tab
             if UI_filters_action is not None:
                 self.ui.taskTabWidget.clear()
             self.ui.taskTabWidget.addTab(self._my_tasks_form, "My Tasks")
         except Exception as e:
-            logger.exception("Failed to Load my tasks, because %s \n %s"
-                             % (e, traceback.format_exc()))
+            logger.exception(
+                "Failed to Load my tasks, because %s \n %s"
+                % (e, traceback.format_exc())
+            )
 
     def createTimeForm(self):
         """
@@ -165,8 +172,9 @@ class AppDialog(QtGui.QWidget):
             self._my_time_form = MyTimeForm(self._my_time_model, self.user)
             self.ui.timeTabWidget.addTab(self._my_time_form, "My Time")
         except Exception as e:
-            logger.exception("Failed to Load my time, because %s \n %s"
-                             % (e, traceback.format_exc()))
+            logger.exception(
+                "Failed to Load my time, because %s \n %s" % (e, traceback.format_exc())
+            )
 
     def createTimelogTable(self):
         """
@@ -177,8 +185,9 @@ class AppDialog(QtGui.QWidget):
             self.my_timelog_table.setMaximumHeight(200)
             self.ui.tableLayout.addWidget(self.my_timelog_table)
         except Exception as e:
-            logger.exception("Failed to Load timelog because %s \n %s"
-                             % (e, traceback.format_exc()))
+            logger.exception(
+                "Failed to Load timelog because %s \n %s" % (e, traceback.format_exc())
+            )
 
     def _build_my_tasks_model(self, project, UI_filters_action=None):
         """
@@ -197,17 +206,19 @@ class AppDialog(QtGui.QWidget):
         # get the my task filters from the config.
         UI_filters = []
         if UI_filters_action is None:
-            UI_filters = [['project', 'is', '{context.project}']]
+            UI_filters = [["project", "is", "{context.project}"]]
         else:
             UI_filters = UI_filters_action.data()
         my_tasks_filters = self._app.get_setting("my_tasks_filters")
-        model = MyTasksModel(project,
-                             self.user,
-                             extra_display_fields,
-                             my_tasks_filters,
-                             UI_filters,
-                             parent=self,
-                             bg_task_manager=self._task_manager)
+        model = MyTasksModel(
+            project,
+            self.user,
+            extra_display_fields,
+            my_tasks_filters,
+            UI_filters,
+            parent=self,
+            bg_task_manager=self._task_manager,
+        )
         monitor_qobject_lifetime(model, "My Tasks Model")
         model.async_refresh()
         logger.debug("Tasks Model Build Finished")
@@ -238,9 +249,7 @@ class AppDialog(QtGui.QWidget):
     def __get_week(self, today):
         week = []
         for i in range(0 - today.weekday(), 7 - today.weekday()):
-            week.append(
-                (today + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
-            )
+            week.append((today + datetime.timedelta(days=i)).strftime("%Y-%m-%d"))
         return week
 
     def _display_hours(self, timelog_sum, day_or_week):
@@ -270,10 +279,7 @@ class AppDialog(QtGui.QWidget):
         <b style=\"color:{color};\">{hours} {unit}</b>
         {day_or_week}
         """.format(
-            color=text_color,
-            hours=timelog_sum_hr,
-            unit=unit,
-            day_or_week=day_or_week
+            color=text_color, hours=timelog_sum_hr, unit=unit, day_or_week=day_or_week
         )
         label_ui.setText(text)
 

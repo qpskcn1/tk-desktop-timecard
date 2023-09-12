@@ -23,6 +23,7 @@ class Threaded(object):
     'exclusive' function decorator that implements exclusive access
     to the contained code using the lock
     """
+
     def __init__(self):
         """
         Construction
@@ -42,6 +43,7 @@ class Threaded(object):
         :param func:    Function to decorate/wrap
         :returns:       Wrapper function that executes the function inside the acquired lock
         """
+
         def wrapper(self, *args, **kwargs):
             """
             Internal wrapper method that executes the function with the specified arguments
@@ -59,6 +61,7 @@ class Threaded(object):
 
         return wrapper
 
+
 def value_to_str(value):
     """
     Safely convert the value to a string - handles QtCore.QString if usign PyQt
@@ -73,7 +76,7 @@ def value_to_str(value):
     if hasattr(QtCore, "QVariant") and isinstance(value, QtCore.QVariant):
         value = value.toPyObject()
 
-    if isinstance(value, unicode):
+    if isinstance(value, str):
         # encode to str utf-8
         return value.encode("utf-8")
     elif isinstance(value, str):
@@ -88,6 +91,7 @@ def value_to_str(value):
     else:
         # For everything else, just return as string
         return str(value)
+
 
 def get_model_data(item_or_index, role=QtCore.Qt.DisplayRole):
     """
@@ -104,6 +108,7 @@ def get_model_data(item_or_index, role=QtCore.Qt.DisplayRole):
         data = data.toPyObject()
     return data
 
+
 def get_model_str(item_or_index, role=QtCore.Qt.DisplayRole):
     """
     Safely get the Qt model data as a Python string for the specified item or index.  This
@@ -116,6 +121,7 @@ def get_model_str(item_or_index, role=QtCore.Qt.DisplayRole):
     """
     data = get_model_data(item_or_index, role)
     return value_to_str(data)
+
 
 def map_to_source(idx, recursive=True):
     """
@@ -137,6 +143,7 @@ def map_to_source(idx, recursive=True):
             break
     return src_idx
 
+
 def get_source_model(model, recursive=True):
     """
     Return the source model for the specified model.  If recursive is True then this will return
@@ -155,7 +162,10 @@ def get_source_model(model, recursive=True):
             break
     return src_model
 
-def set_widget_property(widget, property_name, property_value, refresh_style=True, refresh_children=False):
+
+def set_widget_property(
+    widget, property_name, property_value, refresh_style=True, refresh_children=False
+):
     """
     Set a Qt property on a widget and if requested, also ensure that the style
     sheet is refreshed
@@ -173,6 +183,7 @@ def set_widget_property(widget, property_name, property_value, refresh_style=Tru
     # and if needed, refresh the style:
     if refresh_style:
         refresh_widget_style_r(widget, refresh_children)
+
 
 def refresh_widget_style_r(widget, refresh_children=False):
     """
@@ -193,8 +204,10 @@ def refresh_widget_style_r(widget, refresh_children=False):
             continue
         refresh_widget_style_r(child, refresh_children)
 
+
 # storage for any tracked qobjects
 _g_monitored_qobjects = {}
+
 
 def monitor_qobject_lifetime(obj, name=""):
     """
@@ -213,6 +226,7 @@ def monitor_qobject_lifetime(obj, name=""):
     _g_monitored_qobjects[uid] = msg
     obj.destroyed.connect(lambda m=msg, u=uid: _on_qobject_destroyed(m, u))
 
+
 def _on_qobject_destroyed(name, uid):
     """
     Slot triggered whenever a monitored qobject is destroyed - reports to debug that the object
@@ -227,7 +241,8 @@ def _on_qobject_destroyed(name, uid):
     if uid in _g_monitored_qobjects:
         del _g_monitored_qobjects[uid]
 
-def report_non_destroyed_qobjects(clear_list = True):
+
+def report_non_destroyed_qobjects(clear_list=True):
     """
     Report any monitored QObjects that have not yet been destroyed.  Care should be taken to
     account for QObjects that are pending destruction via deleteLater signals that may be
@@ -238,8 +253,10 @@ def report_non_destroyed_qobjects(clear_list = True):
     """
     app = sgtk.platform.current_bundle()
     global _g_monitored_qobjects
-    app.log_debug("%d monitored QObjects have not been destroyed!" % len(_g_monitored_qobjects))
-    for msg in _g_monitored_qobjects.values():
+    app.log_debug(
+        "%d monitored QObjects have not been destroyed!" % len(_g_monitored_qobjects)
+    )
+    for msg in list(_g_monitored_qobjects.values()):
         app.log_debug(" - %s" % msg)
     if clear_list:
         _g_monitored_qobjects = {}
@@ -257,7 +274,7 @@ def get_template_user_keys(template):
     user_keys = set()
     if "HumanUser" in template.keys:
         user_keys.add("HumanUser")
-    for key in template.keys.values():
+    for key in list(template.keys.values()):
         if key.shotgun_entity_type == "HumanUser":
             user_keys.add(key.name)
     return user_keys
@@ -281,7 +298,8 @@ def resolve_filters(filters):
         if type(filter) is dict:
             resolved_filter = {
                 "filter_operator": filter["filter_operator"],
-                "filters": resolve_filters(filter["filters"])}
+                "filters": resolve_filters(filter["filters"]),
+            }
         else:
             resolved_filter = []
             for field in filter:
@@ -295,9 +313,7 @@ def resolve_filters(filters):
                     field = app.context.user
                 elif field == "{context.user.group}":
                     field = app.shotgun.find_one(
-                        "HumanUser",
-                        [["id", "is", app.context.user["id"]]],
-                        ["groups"]
+                        "HumanUser", [["id", "is", app.context.user["id"]]], ["groups"]
                     )["groups"]
                 elif field == "{context.project}":
                     field = app.context.project
