@@ -11,6 +11,7 @@
 import sgtk
 import traceback
 
+
 class Timecard(sgtk.platform.Application):
     """
     The app entry point. This class is responsible for intializing and tearing down

@@ -1,11 +1,11 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import sgtk
@@ -17,11 +17,10 @@ from .util import get_model_str
 
 
 class EntityProxyModel(HierarchicalFilteringProxyModel):
-    """
-    """
+    """ """
+
     def __init__(self, parent, compare_sg_fields=None):
-        """
-        """
+        """ """
         HierarchicalFilteringProxyModel.__init__(self, parent)
         self._compare_fields = compare_sg_fields
 
@@ -83,7 +82,7 @@ class EntityProxyModel(HierarchicalFilteringProxyModel):
             return False
 
         # test to see if the item 'text' matches:
-        if reg_exp.indexIn(get_model_str(src_idx)) != -1:
+        if reg_exp.indexIn(self.sourceModel().data(src_idx)) != -1:
             # found a match so early out!
             return True
 
@@ -98,8 +97,7 @@ class EntityProxyModel(HierarchicalFilteringProxyModel):
         return False
 
     def _sg_data_matches_r(self, sg_data, compare_fields, reg_exp):
-        """
-        """
+        """ """
         if isinstance(compare_fields, list):
             # e.g. ["one", "two", {"three":"four", "five":["six", "seven"]}]
             for cf in compare_fields:
@@ -119,5 +117,5 @@ class EntityProxyModel(HierarchicalFilteringProxyModel):
             val = sg_data.get(compare_fields)
             if val != None and reg_exp.indexIn(str(val)) != -1:
                 return True
-            
+
         return False

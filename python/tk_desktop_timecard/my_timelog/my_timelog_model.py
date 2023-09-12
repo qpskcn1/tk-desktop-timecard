@@ -10,6 +10,7 @@ class MyTimelogModel(ShotgunModel):
     """
     Specialisation of Shotgun model that represents a single users timelogs
     """
+
     def __init__(self, parent, bg_task_manager):
         # create a SG model to retrieve our data
         ShotgunModel.__init__(
@@ -17,7 +18,7 @@ class MyTimelogModel(ShotgunModel):
             parent=parent,
             download_thumbs=False,
             bg_load_thumbs=False,
-            bg_task_manager=bg_task_manager
+            bg_task_manager=bg_task_manager,
         )
 
     def _before_data_processing(self, data):
@@ -82,7 +83,7 @@ class MyTimelogModel(ShotgunModel):
                         value = "{} {}".format(value, unit)
                     column_item.setData(
                         shotgun_model.sanitize_for_qt_model(value),
-                        self.SG_ASSOCIATED_FIELD_ROLE
+                        self.SG_ASSOCIATED_FIELD_ROLE,
                     )
                     items.append(column_item)
         except Exception as e:
